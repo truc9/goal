@@ -71,6 +71,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{
+		"email": user.Email,
 		"token": signedToken,
 	})
 }
