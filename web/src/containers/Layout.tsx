@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { FiGrid, FiActivity, FiCheckCircle, FiLogOut } from 'react-icons/fi'
+import { FiGrid, FiCheckCircle, FiLogOut } from 'react-icons/fi'
 import { Loading } from '../components/Loading'
 import { useLocalAuth } from '../context/AuthContext'
 import { Button } from '@mui/material'
@@ -17,18 +17,15 @@ const Layout: React.FC = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex bg-slate-50' >
-            <nav className='tw-w-16 tw-border-r tw-bg-white tw-flex tw-flex-col tw-items-center tw-shadow tw-py-5'>
+            <nav className='tw-w-16 tw-border-r tw-flex tw-flex-col tw-items-center tw-shadow tw-py-5'>
                 <NavLink to='/' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
                     <FiGrid size={20} />
                 </NavLink>
                 <NavLink to='/office-booking' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
                     <FiCheckCircle size={20} />
                 </NavLink>
-                <NavLink to='/components' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
-                    <FiActivity size={20} />
-                </NavLink>
             </nav>
-            <main className='tw-bg-slate-100 tw-flex-1'>
+            <main className='tw-flex-1'>
                 <div className='tw-h-14 tw-flex tw-items-center tw-px-5'>
                     <div className='tw-w-60'>
                         <h3>Hi {user.name}</h3>

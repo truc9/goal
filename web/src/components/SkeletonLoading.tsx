@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const SkeletonLoading: React.FC<Props> = ({ number }) => {
-    return Array.from(Array(number).keys()).map((item: any, index: any) => <Skeleton key={index} height={40} variant='rectangular' />)
+    return Array.from(Array(number).keys()).map((_item: any, index: any) => <Skeleton key={index} height={40} variant='rectangular' />)
 }
