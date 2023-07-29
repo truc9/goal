@@ -3,10 +3,11 @@ import authService from "../services/authService"
 
 interface AuthUser {
     name: string
+    email: string
     token: string
 }
 
-type VoidFn = () => void
+type VoidFn = (error?: string) => void
 
 interface AuthContextValue {
     user: AuthUser
@@ -20,13 +21,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<AuthUser>(null!)
 
     const signin = (userName: string, password: string, callback: VoidFn) => {
-        authService.login(userName, password).then((data: any) => {
-            setUser({
-                name: data.email,
-                token: data.token
+        authService.login(userName, password)
+            .then((data: any) => {
+                setUser({
+                    name: data.name,
+                    email: data.email,
+                    token: data.token
+                })
+                callback()
             })
-            callback()
-        })
+            .catch(err => {
+                callback(err)
+            })
     }
 
     const signout = (callback: VoidFn) => {

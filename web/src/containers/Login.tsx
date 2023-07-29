@@ -1,13 +1,14 @@
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
-import { FiLogIn } from 'react-icons/fi'
 import { useLocalAuth } from '../context/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { SkeletonLoading } from '../components/SkeletonLoading'
 
 const Login = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const auth = useLocalAuth()
+    const [loading, setLoading] = useState(false)
 
     const [user, setUser] = useState<{ email?: string, password?: string }>({
         email: 'admin@goal.com',
@@ -15,10 +16,14 @@ const Login = () => {
     })
 
     async function handleSignIn() {
+        setLoading(true)
         const from = location.state?.from?.pathname || "/"
         if (user) {
-            auth.signin(user.email!, user.password!, () => {
-                navigate(from, { replace: true })
+            auth.signin(user.email!, user.password!, (error?: string) => {
+                if (!error) {
+                    navigate(from, { replace: true })
+                }
+                setLoading(false)
             })
         }
     }
@@ -30,14 +35,22 @@ const Login = () => {
         })
     }
 
+
     return (
         <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-60 tw-gap-10'>
             <h3 className='tw-text-4xl'>Login | Welcome to GOAL</h3>
-            <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
-                <TextField variant='outlined' name='email' value='admin@goal.com' onChange={handleChange} placeholder='User Name/Email' />
-                <TextField variant='outlined' type='password' value='admin' name='password' onChange={handleChange} placeholder='Password' />
-                <Button variant='contained' size='large' startIcon={<FiLogIn />} onClick={handleSignIn}>Login</Button>
-            </div>
+            {loading ? (
+                <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
+                    <SkeletonLoading number={4} />
+                </div>
+            ) : (
+                <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
+                    <TextField variant='outlined' name='email' onChange={handleChange} placeholder='User Name/Email' />
+                    <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />
+                    <Button variant='outlined' size='large' onClick={handleSignIn}>Login</Button>
+                    <Button variant='outlined' size='large' onClick={() => navigate('/register')}>Create an Account</Button>
+                </div>
+            )}
         </div>
     )
 }
