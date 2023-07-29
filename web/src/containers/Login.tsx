@@ -35,6 +35,11 @@ const Login = () => {
         })
     }
 
+    if (auth.checkIfUserLoggedIn()) {
+        const from = location.state?.from?.pathname || "/"
+        navigate(from, { replace: true })
+        return
+    }
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-60 tw-gap-10'>
