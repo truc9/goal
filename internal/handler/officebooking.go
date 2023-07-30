@@ -9,6 +9,14 @@ import (
 
 func (h *Handler) CreatePeriod(c echo.Context) (err error) {
 	period := entity.CreateNextOfficeBookingPeriod()
+
+	existing := &entity.OfficeBookingPeriod{}
+	r := h.Db.Where("\"from\" = ?", period.From).First(&existing)
+
+	if r.RowsAffected != 0 {
+		return c.JSON(http.StatusOK, existing)
+	}
+
 	res := h.Db.Create(period)
 	if res.Error != nil {
 		return
@@ -18,7 +26,7 @@ func (h *Handler) CreatePeriod(c echo.Context) (err error) {
 
 func (h *Handler) GetPeriods(c echo.Context) (err error) {
 	var periods []entity.OfficeBookingPeriod
-	res := h.Db.Find(periods)
+	res := h.Db.Find(&periods)
 	if res.Error != nil {
 		return
 	}

@@ -10,6 +10,7 @@ import (
 // Starting from Monday
 func CreateNextOfficeBookingPeriod() (period *OfficeBookingPeriod) {
 	today := time.Now()
+
 	daysUntilMonday := time.Monday - today.Weekday()
 	if daysUntilMonday <= 0 {
 		daysUntilMonday += 7
