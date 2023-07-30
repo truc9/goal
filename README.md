@@ -7,9 +7,14 @@ Simple Office Management System
 
 ## Development
 
-### Start API
+### Start API (hot reload)
 ```
-make dev
+air
+```
+
+### Start API (without hotreload)
+```
+make run
 ```
 
 ### Start web
