@@ -47,6 +47,9 @@ func main() {
 		r.POST("/accounts/individuals", h.CreateIndividualAccount)
 		r.GET("/streaming", h.Streaming)
 		r.GET("/ws", h.HandleWS)
+
+		r.POST("/periods", h.CreatePeriod)
+		r.GET("/periods", h.GetPeriods)
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))

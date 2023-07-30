@@ -9,5 +9,5 @@ test_cov:
 build:
 	go build ./cmd/goal/main.go
 
-dev:
+run:
 	go run ./cmd/goal/main.go

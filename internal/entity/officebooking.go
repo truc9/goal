@@ -6,20 +6,9 @@ import (
 	"github.com/google/uuid"
 )
 
-type Weekday int
-
-const (
-	Sunday Weekday = iota
-	Monday
-	Tuesday
-	Wednesday
-	Thursday
-	Friday
-)
-
 // Create period for next week
 // Starting from Monday
-func CreateNextPeriod() (period *OfficeBookingPeriod) {
+func CreateNextOfficeBookingPeriod() (period *OfficeBookingPeriod) {
 	today := time.Now()
 	daysUntilMonday := time.Monday - today.Weekday()
 	if daysUntilMonday <= 0 {
@@ -30,8 +19,8 @@ func CreateNextPeriod() (period *OfficeBookingPeriod) {
 
 	return &OfficeBookingPeriod{
 		Id:   uuid.New(),
-		From: start,
-		To:   end,
+		From: time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC),
+		To:   time.Date(end.Year(), end.Month(), end.Day(), 0, 0, 0, 0, time.UTC),
 	}
 }
 

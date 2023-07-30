@@ -8,7 +8,7 @@ import (
 )
 
 func TestCreateNewPeriod(t *testing.T) {
-	res := CreateNextPeriod()
+	res := CreateNextOfficeBookingPeriod()
 	start := res.From.Weekday()
 	end := res.To.Weekday()
 	assert.Equal(t, time.Monday, start, "start of period should be Monday")
