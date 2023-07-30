@@ -3,7 +3,7 @@
 Simple Office Management System
 
 ## Features
-[] Office booking: allow employee to book the days going to office
+[ ] Office booking: allow employee to book the days going to office
 
 ## Development
 
