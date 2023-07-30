@@ -5,18 +5,18 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/tnoss/goal/internal/model"
+	"github.com/tnoss/goal/internal/entity"
 )
 
 func (h *Handler) GetAll(c echo.Context) (err error) {
-	var accounts []model.Account
+	var accounts []entity.Account
 	h.Db.Find(&accounts)
 	return c.JSON(http.StatusOK, accounts)
 }
 
 func (h *Handler) CreateCompanyAccount(c echo.Context) (err error) {
-	acc := &model.Account{
-		ID: uuid.New(),
+	acc := &entity.Account{
+		Id: uuid.New(),
 	}
 
 	if err = c.Bind(acc); err != nil {
@@ -28,8 +28,8 @@ func (h *Handler) CreateCompanyAccount(c echo.Context) (err error) {
 }
 
 func (h *Handler) CreateIndividualAccount(c echo.Context) (err error) {
-	acc := &model.Account{
-		ID: uuid.New(),
+	acc := &entity.Account{
+		Id: uuid.New(),
 	}
 
 	if err = c.Bind(acc); err != nil {

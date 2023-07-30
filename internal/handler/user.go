@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"github.com/tnoss/goal/internal/constants"
-	"github.com/tnoss/goal/internal/dto"
+	"github.com/tnoss/goal/internal/entity"
 	"github.com/tnoss/goal/internal/model"
 )
 
@@ -21,12 +21,12 @@ type (
 )
 
 func (h *Handler) RegisterUser(c echo.Context) (err error) {
-	r := &dto.Register{}
+	r := &model.Register{}
 	if err = c.Bind(r); err != nil {
 		return
 	}
 
-	user := model.CreateUser(r.FirstName, r.LastName, r.Email)
+	user := entity.CreateUser(r.FirstName, r.LastName, r.Email)
 	user.SetPassword(r.Password)
 
 	res := h.Db.Create(&user)
@@ -39,12 +39,12 @@ func (h *Handler) RegisterUser(c echo.Context) (err error) {
 }
 
 func (h *Handler) Login(c echo.Context) (err error) {
-	req := dto.Login{}
+	req := model.Login{}
 	if err = c.Bind(&req); err != nil {
 		return
 	}
 
-	user := model.User{}
+	user := entity.User{}
 	res := h.Db.First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
