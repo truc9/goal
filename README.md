@@ -1,4 +1,4 @@
-# GOAL
+<img src="art/logo-color.svg" alt="drawing" style="width:200px;"/>
 
 Simple Office Management System
 
