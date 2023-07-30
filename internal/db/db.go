@@ -20,8 +20,8 @@ func Init() *gorm.DB {
 	db.AutoMigrate(
 		&entity.Account{},
 		&entity.User{},
-		&entity.OfficeBookingPeriod{},
-		&entity.OfficeBooking{},
+		&entity.BookingPeriod{},
+		&entity.Booking{},
 	)
 
 	return db

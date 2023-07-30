@@ -1,6 +1,6 @@
 import axios from 'axios'
-import config from './config'
 import { AuthUser, RegistrationUser } from './models/auth'
+import config from '../config'
 
 const authKey = '__user__'
 

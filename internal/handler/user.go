@@ -59,7 +59,8 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		user.Email,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 15)),
+			ID:        user.Id.String(),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 8)),
 		},
 	}
 
@@ -71,6 +72,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{
+		"id":    user.Id,
 		"email": user.Email,
 		"name":  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		"token": signedToken,

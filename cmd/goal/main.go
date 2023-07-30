@@ -50,6 +50,7 @@ func main() {
 
 		r.POST("/periods", h.CreatePeriod)
 		r.GET("/periods", h.GetPeriods)
+		r.GET("/periods/current", h.GetCurrentPeriod)
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))

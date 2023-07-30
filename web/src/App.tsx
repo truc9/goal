@@ -148,7 +148,8 @@ function Components() {
   )
 }
 
-const OfficeBooking = lazy(() => import('./containers/OfficeBooking'))
+const OfficeBooking = lazy(() => import('./containers/Booking'))
+const OfficeBookingPeriods = lazy(() => import('./containers/BookingPeriods'))
 const Home = lazy(() => import("./containers/Home"))
 const Login = lazy(() => import('./containers/Login'))
 const Register = lazy(() => import('./containers/Register'))
@@ -163,6 +164,7 @@ function App() {
       }>
         <Route index element={<Home />} />
         <Route path='office-booking' element={<OfficeBooking />} />
+        <Route path='office-booking-periods' element={<OfficeBookingPeriods />} />
         <Route path='components' element={<Components />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
