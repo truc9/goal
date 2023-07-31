@@ -51,6 +51,10 @@ func main() {
 		r.POST("/periods", h.CreatePeriod)
 		r.GET("/periods", h.GetPeriods)
 		r.GET("/periods/current", h.GetCurrentPeriod)
+		r.GET("/periods/:bookingPeriodId/bookings", h.GetUserBookingsByPeriods)
+
+		r.POST("/bookings", h.SubmitBooking)
+
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))

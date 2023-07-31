@@ -11,36 +11,56 @@ import { FiCalendar, FiXCircle } from "react-icons/fi"
 
 dayjs.extend(weekday)
 
-const Booking: React.FC = () => {
+interface BookingDate {
+    date: dayjs.Dayjs
+    isTicked: boolean
+}
+
+const MyBooking: React.FC = () => {
     const [periodOptions, setPeriodOptions] = useState<KV[]>([])
     const [periods, setPeriods] = useState<BookingPeriod[]>([])
     const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
-    const [dates, setDates] = useState<dayjs.Dayjs[]>([])
+    const [dates, setDates] = useState<BookingDate[]>([])
 
     useEffect(() => {
-        load()
+        loadPeriods()
     }, [])
 
     useEffect(() => {
-        const days = Array.from(Array(7).keys()).map(d => {
-            return dayjs(currentPeriod?.from).add(d, 'day')
-        })
-        setDates(days)
+        const days = Array.from(Array(7).keys()).map(d => dayjs(currentPeriod?.from).add(d, 'day'))
+        setDates(days.map(dd => ({
+            date: dd,
+            isTicked: false
+        })))
     }, [currentPeriod])
 
-    const load = async () => {
+    const loadPeriods = async () => {
         const result = await bookingService.getPeriods()
         setPeriods(result)
         setPeriodOptions(result.map(v => ({ key: v.id, value: `${dayjs(v.from).format('DD/MM/YYYY')} - ${dayjs(v.to).format('DD/MM/YYYY')}` })))
     }
 
-    const handleSelectDate = (d: dayjs.Dayjs) => {
-        console.log(d)
+    const loadBookings = async (bookingPeriodId: string) => {
+        const data = await bookingService.getUserBookingsByBookingPeriod(bookingPeriodId)
+
+        const updatedDates: BookingDate[] = dates.map(dd => ({
+            date: dd.date,
+            isTicked: !!data.find(d => dd.date.isSame(d.date, "date"))
+        }))
+        setDates(updatedDates)
+    }
+
+    const handleSelectDate = async (bookingPeriodId: string, d: dayjs.Dayjs) => {
+        await bookingService.submitBooking(bookingPeriodId, d.toDate())
+        loadBookings(bookingPeriodId)
     }
 
     const handleChangePeriod = (e: any) => {
         const current = periods.find(p => p.id === e.target.value)
         setCurrentPeriod(current)
+        if (current) {
+            loadBookings(current.id)
+        }
     }
 
     return (
@@ -74,7 +94,7 @@ const Booking: React.FC = () => {
                             <tr>
                                 {dates.map((d, i) => {
                                     return (
-                                        <th key={i} className="tw-border tw-h-10 tw-justify-center tw-items-center">{d.format('ddd DD/MMM/YYYY')}</th>
+                                        <th key={i} className="tw-border tw-h-10 tw-justify-center tw-items-center">{d.date.format('ddd DD/MMM/YYYY')}</th>
                                     )
                                 })}
                             </tr>
@@ -82,11 +102,10 @@ const Booking: React.FC = () => {
                         <tbody>
                             <tr className="tw-table-row">
                                 {dates.map((d, i) => {
-                                    const isSelected = !!dates.find(date => date.isSame(d, 'day'))
                                     return (
                                         <td key={i} className="tw-border">
                                             <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
-                                                <a href="#" onClick={() => handleSelectDate(d)} className={`tw-text-slate-200 active:tw-translate-x-1 active:tw-translate-y-1 ${isSelected ? 'tw-text-green-500' : null}`}>
+                                                <a href="#" onClick={() => handleSelectDate(currentPeriod.id, d.date)} className={`tw-text-slate-200 active:tw-translate-x-1 active:tw-translate-y-1 ${d.isTicked ? 'tw-text-green-500' : null}`}>
                                                     <IoCheckmarkCircle size={40} />
                                                 </a>
                                             </div>
@@ -102,4 +121,4 @@ const Booking: React.FC = () => {
     )
 }
 
-export default Booking
+export default MyBooking

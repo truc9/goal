@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"github.com/tnoss/goal/internal/constants"
-	"github.com/tnoss/goal/internal/entity"
+	"github.com/tnoss/goal/internal/core"
 	"github.com/tnoss/goal/internal/model"
 )
 
@@ -26,7 +26,7 @@ func (h *Handler) RegisterUser(c echo.Context) (err error) {
 		return
 	}
 
-	user := entity.CreateUser(r.FirstName, r.LastName, r.Email)
+	user := core.CreateUser(r.FirstName, r.LastName, r.Email)
 	user.SetPassword(r.Password)
 
 	res := h.Db.Create(&user)
@@ -44,7 +44,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		return
 	}
 
-	user := entity.User{}
+	user := core.User{}
 	res := h.Db.First(&user, "email=?", req.Email)
 
 	if res.Error != nil {

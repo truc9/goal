@@ -5,12 +5,17 @@ import { BookingPeriod } from '../services/models/booking'
 import dayjs from 'dayjs'
 import { PageContainer } from '../components/PageContainer'
 import { FiBookOpen, FiCalendar } from 'react-icons/fi'
+import { IoCheckmarkCircle } from 'react-icons/io5'
 import { Button } from '@mui/material'
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 300 },
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
-    { field: 'to', headerName: 'To', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') }
+    { field: 'to', headerName: 'To', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
+    {
+        field: 'isCurrentWeek',
+        headerName: 'Current Week',
+        renderCell: params => params?.value ? <IoCheckmarkCircle size={26} className="tw-text-green-500" /> : null
+    },
 ]
 
 const BookingPeriods: React.FC = () => {

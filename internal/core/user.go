@@ -1,4 +1,4 @@
-package entity
+package core
 
 import (
 	"github.com/google/uuid"
@@ -6,7 +6,7 @@ import (
 )
 
 type User struct {
-	Id           uuid.UUID `json:"id"`
+	Id           uuid.UUID `gorm:"primaryKey" json:"id"`
 	FirstName    string    `json:"firstName"`
 	LastName     string    `json:"lastName"`
 	Email        string    `json:"email"`

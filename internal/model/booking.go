@@ -1,9 +1,15 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type (
-	OfficeBooking struct {
-		Dates []time.Time `json:"dates"`
+	Booking struct {
+		Id              uuid.UUID `json:"id"`
+		BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
+		Date            time.Time `json:"date"`
 	}
 )

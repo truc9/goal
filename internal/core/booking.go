@@ -1,10 +1,23 @@
-package entity
+package core
 
 import (
 	"time"
 
 	"github.com/google/uuid"
 )
+
+type BookingPeriod struct {
+	Id   uuid.UUID `gorm:"primaryKey" json:"id"`
+	From time.Time `json:"from"`
+	To   time.Time `json:"to"`
+}
+
+type Booking struct {
+	Id              uuid.UUID `gorm:"primaryKey" json:"id"`
+	BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
+	UserId          uuid.UUID `json:"userId"`
+	Date            time.Time `json:"date"`
+}
 
 func CreateNextBookingPeriod() (period *BookingPeriod) {
 	today := time.Now()
@@ -21,17 +34,4 @@ func CreateNextBookingPeriod() (period *BookingPeriod) {
 		From: time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC),
 		To:   time.Date(end.Year(), end.Month(), end.Day(), 0, 0, 0, 0, time.UTC),
 	}
-}
-
-type BookingPeriod struct {
-	Id   uuid.UUID `json:"id"`
-	From time.Time `json:"from"`
-	To   time.Time `json:"to"`
-}
-
-type Booking struct {
-	Id                      uuid.UUID `json:"id"`
-	OfficeBookingDurationId uuid.UUID `json:"officeBookingDurationId"`
-	UserId                  uuid.UUID `json:"userId"`
-	Date                    time.Time `json:"date"`
 }

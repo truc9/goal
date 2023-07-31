@@ -148,7 +148,7 @@ function Components() {
   )
 }
 
-const OfficeBooking = lazy(() => import('./containers/Booking'))
+const OfficeBooking = lazy(() => import('./containers/MyBooking'))
 const OfficeBookingPeriods = lazy(() => import('./containers/BookingPeriods'))
 const Home = lazy(() => import("./containers/Home"))
 const Login = lazy(() => import('./containers/Login'))

@@ -5,17 +5,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/tnoss/goal/internal/entity"
+	"github.com/tnoss/goal/internal/core"
 )
 
 func (h *Handler) GetAll(c echo.Context) (err error) {
-	var accounts []entity.Account
+	var accounts []core.Account
 	h.Db.Find(&accounts)
 	return c.JSON(http.StatusOK, accounts)
 }
 
 func (h *Handler) CreateCompanyAccount(c echo.Context) (err error) {
-	acc := &entity.Account{
+	acc := &core.Account{
 		Id: uuid.New(),
 	}
 
@@ -28,7 +28,7 @@ func (h *Handler) CreateCompanyAccount(c echo.Context) (err error) {
 }
 
 func (h *Handler) CreateIndividualAccount(c echo.Context) (err error) {
-	acc := &entity.Account{
+	acc := &core.Account{
 		Id: uuid.New(),
 	}
 

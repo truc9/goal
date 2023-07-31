@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github.com/tnoss/goal/internal/entity"
+	"github.com/tnoss/goal/internal/core"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,10 +18,10 @@ func Init() *gorm.DB {
 	}
 
 	db.AutoMigrate(
-		&entity.Account{},
-		&entity.User{},
-		&entity.BookingPeriod{},
-		&entity.Booking{},
+		&core.Account{},
+		&core.User{},
+		&core.BookingPeriod{},
+		&core.Booking{},
 	)
 
 	return db
