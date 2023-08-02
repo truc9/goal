@@ -41,8 +41,8 @@ const Login = () => {
     }
 
     return (
-        <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-60 tw-gap-10'>
-            <h3 className='tw-text-4xl'>Login</h3>
+        <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-20'>
+            <img src="logo-color.svg" alt="Logo" width={250} />
             {loading ? (
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
                     <SkeletonLoading number={4} />
