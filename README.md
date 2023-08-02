@@ -9,6 +9,8 @@ Simple Office Management System
 
 ## Screenshots
 
+![0](art/assets/goal-00.png)
+
 ![1](art/assets/goal-01.png)
 
 ![2](art/assets/goal-02.png)
