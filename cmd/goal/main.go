@@ -16,7 +16,6 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
 	e.Use(middleware.Secure())
 	e.Use(middleware.RequestID())
 
@@ -54,6 +53,7 @@ func main() {
 		r.GET("/periods/:bookingPeriodId/bookings", h.GetUserBookingsByPeriods)
 
 		r.POST("/bookings", h.SubmitBooking)
+		r.DELETE("/bookings/:bookingId", h.DeleteBooking)
 
 	}
 

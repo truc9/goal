@@ -20,6 +20,10 @@ const submitBooking = async (bookingPeriodId: string, date: Date) => {
     })
 }
 
+const cancelBooking = async (bookingId: string) => {
+    await httpService.remove(`bookings/${bookingId}`)
+}
+
 const getUserBookingsByBookingPeriod = async (bookingPeriodId: string): Promise<Booking[]> => {
     const res = await httpService.get<Booking[]>(`periods/${bookingPeriodId}/bookings`)
     return res
@@ -29,5 +33,6 @@ export default {
     getPeriods,
     loadNextPeriod,
     submitBooking,
+    cancelBooking,
     getUserBookingsByBookingPeriod,
 }

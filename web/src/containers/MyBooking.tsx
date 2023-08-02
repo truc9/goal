@@ -5,22 +5,21 @@ import { IoBookOutline, IoCheckmarkCircle } from "react-icons/io5"
 import { PageContainer } from "../components/PageContainer"
 import bookingService from "../services/bookingService"
 import { MenuItem, Select } from "@mui/material"
-import { KV } from "../services/models/kv"
 import { BookingPeriod } from "../services/models/booking"
-import { FiCalendar, FiXCircle } from "react-icons/fi"
+import { FiCalendar, FiInfo } from "react-icons/fi"
 
 dayjs.extend(weekday)
 
 interface BookingDate {
-    date: dayjs.Dayjs
-    isTicked: boolean
+    bookingId: string
+    date: number
 }
 
 const MyBooking: React.FC = () => {
-    const [periodOptions, setPeriodOptions] = useState<KV[]>([])
     const [periods, setPeriods] = useState<BookingPeriod[]>([])
     const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
-    const [dates, setDates] = useState<BookingDate[]>([])
+    const [dates, setDates] = useState<Date[]>([])
+    const [bookingDates, setBookingDates] = useState<BookingDate[]>([])
 
     useEffect(() => {
         loadPeriods()
@@ -28,30 +27,27 @@ const MyBooking: React.FC = () => {
 
     useEffect(() => {
         const days = Array.from(Array(7).keys()).map(d => dayjs(currentPeriod?.from).add(d, 'day'))
-        setDates(days.map(dd => ({
-            date: dd,
-            isTicked: false
-        })))
+        setDates(days.map(dd => dd.toDate()))
     }, [currentPeriod])
 
     const loadPeriods = async () => {
         const result = await bookingService.getPeriods()
         setPeriods(result)
-        setPeriodOptions(result.map(v => ({ key: v.id, value: `${dayjs(v.from).format('DD/MM/YYYY')} - ${dayjs(v.to).format('DD/MM/YYYY')}` })))
     }
 
     const loadBookings = async (bookingPeriodId: string) => {
-        const data = await bookingService.getUserBookingsByBookingPeriod(bookingPeriodId)
-
-        const updatedDates: BookingDate[] = dates.map(dd => ({
-            date: dd.date,
-            isTicked: !!data.find(d => dd.date.isSame(d.date, "date"))
-        }))
-        setDates(updatedDates)
+        const bookings = await bookingService.getUserBookingsByBookingPeriod(bookingPeriodId)
+        const dates = bookings.map(booking => ({ date: dayjs(booking.date).date(), bookingId: booking.id }))
+        setBookingDates(dates)
     }
 
-    const handleSelectDate = async (bookingPeriodId: string, d: dayjs.Dayjs) => {
-        await bookingService.submitBooking(bookingPeriodId, d.toDate())
+    const book = async (bookingPeriodId: string, d: Date) => {
+        await bookingService.submitBooking(bookingPeriodId, d)
+        loadBookings(bookingPeriodId)
+    }
+
+    const cancelBooking = async (bookingPeriodId: string, bookingId: string) => {
+        await bookingService.cancelBooking(bookingId)
         loadBookings(bookingPeriodId)
     }
 
@@ -72,20 +68,17 @@ const MyBooking: React.FC = () => {
                             fullWidth
                             onChange={handleChangePeriod}
                         >
-                            <MenuItem value="">
-                                No Selection
-                            </MenuItem>
-                            {periodOptions.map((p, k) => (
-                                <MenuItem key={k} value={p.key}>{p.value}</MenuItem>
+                            {periods.map((p, k) => (
+                                <MenuItem key={k} value={p.id}>{dayjs(p.from).format('DD/MM/YYYY')} - {dayjs(p.to).format('DD/MM/YYYY')}</MenuItem>
                             ))}
                         </Select>
                     </div>
                     {currentPeriod ? (
                         <div>
-                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-2xl"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD/MMM')} - {dayjs(currentPeriod?.to).format('ddd DD/MMM')}</span>
+                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD/MMM')} - {dayjs(currentPeriod?.to).format('ddd DD/MMM')}</span>
                         </div>
                     ) : (
-                        <h3 className="tw-flex tw-items-center tw-gap-3 tw-text-2xl tw-text-red-500"><FiXCircle /> No Period Selected</h3>
+                        <h3 className="tw-flex tw-items-center tw-gap-3 tw-text-orange-500"><FiInfo /> No Period Selected</h3>
                     )}
                 </div>
                 {currentPeriod && (
@@ -94,20 +87,30 @@ const MyBooking: React.FC = () => {
                             <tr>
                                 {dates.map((d, i) => {
                                     return (
-                                        <th key={i} className="tw-border tw-h-10 tw-justify-center tw-items-center">{d.date.format('ddd DD/MMM/YYYY')}</th>
+                                        <th key={i} className="tw-border tw-h-10 tw-justify-center tw-items-center">{dayjs(d).format('ddd DD/MMM/YYYY')}</th>
                                     )
                                 })}
                             </tr>
                         </thead>
                         <tbody>
                             <tr className="tw-table-row">
-                                {dates.map((d, i) => {
+                                {dates.map((date, i) => {
+                                    const booking = bookingDates.find(bd => bd.date == dayjs(date).date())
                                     return (
                                         <td key={i} className="tw-border">
                                             <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
-                                                <a href="#" onClick={() => handleSelectDate(currentPeriod.id, d.date)} className={`tw-text-slate-200 active:tw-translate-x-1 active:tw-translate-y-1 ${d.isTicked ? 'tw-text-green-500' : null}`}>
-                                                    <IoCheckmarkCircle size={40} />
-                                                </a>
+                                                {booking
+                                                    ? (
+                                                        <span onClick={() => cancelBooking(currentPeriod.id, booking.bookingId)} className="tw-text-emerald-500 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                            <IoCheckmarkCircle size={40} />
+                                                        </span>
+                                                    )
+                                                    : (
+                                                        <span onClick={() => book(currentPeriod.id, date)} className="tw-text-orange-500 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                            <IoCheckmarkCircle size={40} />
+                                                        </span>
+                                                    )
+                                                }
                                             </div>
                                         </td>
                                     )

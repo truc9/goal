@@ -77,6 +77,17 @@ func (h *Handler) SubmitBooking(c echo.Context) (err error) {
 	return c.JSON(http.StatusCreated, entity)
 }
 
+func (h Handler) DeleteBooking(c echo.Context) (err error) {
+	bookingId := c.Param("bookingId")
+	entity := &core.Booking{}
+	res := h.Db.Where("id = ?", bookingId).First(entity)
+	if res.Error != nil {
+		return c.JSON(http.StatusInternalServerError, res.Error)
+	}
+	h.Db.Delete(entity)
+	return c.JSON(http.StatusOK, nil)
+}
+
 func (h *Handler) GetUserBookingsByPeriods(c echo.Context) (err error) {
 	userId := httpcontext.GetContextUserId(c)
 	bookingPeriodId := c.Param("bookingPeriodId")

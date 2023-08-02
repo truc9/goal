@@ -23,7 +23,18 @@ const post = async <T = any>(resource: string, body?: T) => {
     })
 }
 
+const remove = async <T = any>(resource: string) => {
+    const url = `${config.apiUrl}/${resource}`
+    const { token } = authService.getAuthUser()
+    await axios.delete<T>(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+
 export default {
     get,
-    post
+    post,
+    remove
 }
