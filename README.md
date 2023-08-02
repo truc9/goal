@@ -2,8 +2,16 @@
 
 Simple Office Management System
 
-## WIP
-- [ ] Office booking: allow employee to book the days going to office
+## Planning
+- [x] Local DB authN
+- [x] My Booking
+- [ ] Booking Dashboard (Reatime showing all employee's bookings)
+
+## Screenshots
+
+![1](art/assets/goal-01.png)
+
+![2](art/assets/goal-02.png)
 
 ## Development
 
