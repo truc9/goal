@@ -9,11 +9,11 @@ import { Loading } from './components/Loading.tsx'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading />}>
+        <AuthProvider>
           <App />
-        </Suspense>
-      </AuthProvider>
+        </AuthProvider>
+      </Suspense>
     </BrowserRouter>
   </React.StrictMode>,
 )

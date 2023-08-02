@@ -9,10 +9,9 @@ const Login = () => {
     const navigate = useNavigate()
     const auth = useLocalAuth()
     const [loading, setLoading] = useState(false)
-
     const [user, setUser] = useState<{ email?: string, password?: string }>({
-        email: 'admin@goal.com',
-        password: 'admin'
+        email: '',
+        password: ''
     })
 
     async function handleSignIn() {
@@ -43,7 +42,7 @@ const Login = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-60 tw-gap-10'>
-            <h3 className='tw-text-4xl'>Login | Welcome to GOAL</h3>
+            <h3 className='tw-text-4xl'>Login</h3>
             {loading ? (
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
                     <SkeletonLoading number={4} />

@@ -16,9 +16,11 @@ interface BookingDate {
 
 const MyBooking: React.FC = () => {
     const [periods, setPeriods] = useState<BookingPeriod[]>([])
-    const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
     const [dates, setDates] = useState<Date[]>([])
     const [bookingDates, setBookingDates] = useState<BookingDate[]>([])
+
+    const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
+    const [index, setIndex] = useState(0)
 
     useEffect(() => {
         loadPeriods()
@@ -32,13 +34,22 @@ const MyBooking: React.FC = () => {
         }
     }, [currentPeriod])
 
-    const loadPeriods = async () => {
+    useEffect(() => {
+        if (index >= 0 && index <= periods.length - 1) {
+            setCurrentPeriod(periods[index])
+        }
+    }, [index, periods])
+
+    async function loadPeriods() {
         const periods = await bookingService.getPeriods()
         const currentPeriod = periods.find(p => p.isCurrentWeek)
         if (currentPeriod) {
             setCurrentPeriod(currentPeriod)
         }
         setPeriods(periods)
+
+        const index = periods.findIndex(p => p.isCurrentWeek)
+        setIndex(index)
     }
 
     const loadMyBookings = async (bookingPeriodId: string) => {
@@ -58,39 +69,29 @@ const MyBooking: React.FC = () => {
     }
 
     const goNext = () => {
-        if (currentPeriod) {
-            const next = dayjs(currentPeriod.to).add(1, 'day')
-            const nextPeriod = periods.find(p => dayjs(p.from).isSame(next))
-            setCurrentPeriod(nextPeriod)
-        }
-        else {
-            setCurrentPeriod(periods.find(p => p.isCurrentWeek))
+        if (index < periods.length - 1) {
+            setIndex(index + 1)
         }
     }
 
     const goBack = () => {
-        if (currentPeriod) {
-            const prev = dayjs(currentPeriod.from).subtract(1, 'day')
-            const prevPeriod = periods.find(p => dayjs(p.from).isSame(prev))
-            setCurrentPeriod(prevPeriod)
-        }
-        else {
-            setCurrentPeriod(periods.find(p => p.isCurrentWeek))
+        if (index > 0) {
+            setIndex(index - 1)
         }
     }
 
     return (
-        <PageContainer icon={<IoBookOutline size={26} />} title="Office Booking">
+        <PageContainer icon={<IoBookOutline size={26} />} title="My Booking">
             <div className="tw-flex tw-flex-col tw-gap-5">
                 <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                     <div className="tw-flex tw-items-center tw-gap-5">
-                        <button onClick={goBack} className="tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="22" /></button>
+                        <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="22" /></button>
                         {currentPeriod ? (
                             <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD/MMM')} - {dayjs(currentPeriod?.to).format('ddd DD/MMM')}</span>
                         ) : (
                             <span className="tw-text-orange-500 tw-bg-orange-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
                         )}
-                        <button onClick={goNext} className="tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronRight size="22" /></button>
+                        <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronRight size="22" /></button>
                     </div>
                 </div>
                 {currentPeriod && (
