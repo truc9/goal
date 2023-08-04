@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -11,7 +12,7 @@ import (
 )
 
 func (h *Handler) CreatePeriod(c echo.Context) (err error) {
-	period := core.CreateNextBookingPeriod()
+	period := core.CreateNextBookingPeriod(time.Now())
 
 	existing := &core.BookingPeriod{}
 	r := h.Db.Where("\"from\" = ?", period.From).First(&existing)

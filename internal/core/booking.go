@@ -19,14 +19,12 @@ type Booking struct {
 	Date            time.Time `json:"date"`
 }
 
-func CreateNextBookingPeriod() (period *BookingPeriod) {
-	today := time.Now()
-
-	daysUntilMonday := time.Monday - today.Weekday()
+func CreateNextBookingPeriod(current time.Time) (period *BookingPeriod) {
+	daysUntilMonday := time.Monday - current.Weekday()
 	if daysUntilMonday <= 0 {
 		daysUntilMonday += 7
 	}
-	start := today.AddDate(0, 0, int(daysUntilMonday))
+	start := current.AddDate(0, 0, int(daysUntilMonday))
 	end := start.AddDate(0, 0, 6)
 
 	return &BookingPeriod{

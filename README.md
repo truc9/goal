@@ -40,3 +40,6 @@ cd ./web && pnpm dev
 ```
 make test_cov
 ```
+### Go Notes
+- Go does not support default parameter
+- Go does not support overload (https://go.dev/doc/faq#overloading)
