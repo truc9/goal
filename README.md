@@ -20,6 +20,8 @@ Simple Office Management System
 
 ![2](art/assets/goal-02.png)
 
+![3](art/assets/goal-03.png)
+
 ## Development
 
 ### Start API (hot reload)
