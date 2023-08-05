@@ -9,7 +9,8 @@ Simple Office Management System
 ## Planning
 - [x] Local DB authN
 - [x] My Booking
-- [ ] Booking Dashboard (Reatime showing all employee's bookings)
+- [x] Booking Dashboard
+- [ ] Realtime Update for Dashboard
 
 ## Screenshots
 
