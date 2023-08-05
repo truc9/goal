@@ -46,7 +46,7 @@ const BookingDashboard: React.FC = () => {
                         <th></th>
                         {dates.map((d, i) => {
                             return (
-                                <th key={i} className="tw-w-[130px] tw-h-10 tw-bg-slate-100 tw-justify-center tw-items-center tw-border">{dayjs(d).format('ddd')}</th>
+                                <th key={i} className="tw-w-[130px] tw-h-10 tw-bg-slate-100 tw-justify-center tw-items-center">{dayjs(d).format('ddd')}</th>
                             )
                         })}
                     </tr>
@@ -54,21 +54,21 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row tw-border" key={idx}>
-                                <td className="tw-bg-slate-100">
-                                    <span className="tw-justify-center tw-items-center tw-flex">{ub.userDisplayName}</span>
+                            <tr className="tw-table-row hover:tw-bg-green-50" key={idx}>
+                                <td>
+                                    <span className="tw-justify-start tw-pl-5 tw-items-center tw-flex">{ub.userDisplayName}</span>
                                 </td>
                                 {dates.map((date, i) => {
                                     const booking = ub.bookings.find(bd => dayjs(bd.bookingDate).date() == dayjs(date).date())
                                     return (
-                                        <td key={i} className="tw-border tw-p-2">
+                                        <td key={i} className="tw-p-2">
                                             {booking ? (
                                                 <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="30" />
+                                                    <IoCheckmarkCircle size="24" />
                                                 </span>
                                             ) : (
                                                 <span className="tw-text-orange-200 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="30" />
+                                                    <IoCheckmarkCircle size="24" />
                                                 </span>
                                             )}
                                         </td>

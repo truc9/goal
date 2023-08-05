@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -67,11 +68,12 @@ func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 		"bookings.date as booking_date"
 
 	// Query statement
-	res := h.Db.Table("bookings").
+	res := h.Db.Debug().
+		Table("users").
 		Order("users.first_name asc").
-		Where("bookings.booking_period_id = ?", periodId).
+		Where("bookings.booking_period_id = ? OR bookings.booking_period_id IS NULL", periodId).
 		Select(columns).
-		Joins("JOIN users ON bookings.user_id = users.id").
+		Joins("left join bookings ON bookings.user_id = users.id").
 		Scan(&userBookingItems)
 
 	// Process dataset to groupped dataset using samber/lo (lodash-alike)
@@ -82,6 +84,7 @@ func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 	// Populate to final result set
 	groupedResult := []model.GrouppedUserBooking{}
 	for key, items := range groups {
+		fmt.Println(key)
 		groupedResult = append(groupedResult, model.GrouppedUserBooking{
 			UserDisplayName: key,
 			Bookings:        items,
