@@ -32,7 +32,7 @@ const BookingPeriods: React.FC = () => {
     }
 
     const loadNextPeriod = async () => {
-        await officeBookingService.loadNextPeriod()
+        await officeBookingService.createNextPeriod()
         await load()
     }
 

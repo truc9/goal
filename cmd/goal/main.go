@@ -41,20 +41,25 @@ func main() {
 	r := e.Group("api")
 	{
 		r.Use(jwt.JWT([]byte(constants.Secret)))
+		// accounts
 		r.GET("/accounts", h.GetAll)
 		r.POST("/accounts/companies", h.CreateCompanyAccount)
 		r.POST("/accounts/individuals", h.CreateIndividualAccount)
+
+		// streaming
 		r.GET("/streaming", h.Streaming)
 		r.GET("/ws", h.HandleWS)
 
-		r.POST("/periods", h.CreatePeriod)
+		// periods
+		r.POST("/periods", h.CreateNextPeriod)
 		r.GET("/periods", h.GetPeriods)
 		r.GET("/periods/current", h.GetCurrentPeriod)
-		r.GET("/periods/:bookingPeriodId/bookings", h.GetUserBookingsByPeriods)
+		r.GET("/periods/:bookingPeriodId/my-bookings", h.GetMyBookings)
+		r.GET("/periods/:bookingPeriodId/bookings", h.GetAllBookings)
 
+		// bookings
 		r.POST("/bookings", h.SubmitBooking)
 		r.DELETE("/bookings/:bookingId", h.DeleteBooking)
-
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))

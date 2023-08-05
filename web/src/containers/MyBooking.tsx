@@ -53,18 +53,18 @@ const MyBooking: React.FC = () => {
     }
 
     const loadMyBookings = async (bookingPeriodId: string) => {
-        const bookings = await bookingService.getUserBookingsByBookingPeriod(bookingPeriodId)
+        const bookings = await bookingService.getMyBookings(bookingPeriodId)
         const dates = bookings.map(booking => ({ date: dayjs(booking.date).date(), bookingId: booking.id }))
         setBookingDates(dates)
     }
 
     const createBooking = async (bookingPeriodId: string, d: Date) => {
-        await bookingService.submitBooking(bookingPeriodId, d)
+        await bookingService.createBooking(bookingPeriodId, d)
         loadMyBookings(bookingPeriodId)
     }
 
     const cancelBooking = async (bookingPeriodId: string, bookingId: string) => {
-        await bookingService.cancelBooking(bookingId)
+        await bookingService.deleteBooking(bookingId)
         loadMyBookings(bookingPeriodId)
     }
 

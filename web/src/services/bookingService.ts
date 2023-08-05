@@ -9,30 +9,42 @@ const getPeriods = async (): Promise<BookingPeriod[]> => {
     return res
 }
 
-const loadNextPeriod = async () => {
+const getCurrentPeriod = async (): Promise<BookingPeriod> => {
+    const period = await httpService.get<BookingPeriod>('periods/current')
+    return period
+}
+
+const createNextPeriod = async () => {
     await httpService.post('periods')
 }
 
-const submitBooking = async (bookingPeriodId: string, date: Date) => {
+const createBooking = async (bookingPeriodId: string, date: Date) => {
     await httpService.post('bookings', {
         date,
         bookingPeriodId
     })
 }
 
-const cancelBooking = async (bookingId: string) => {
+const deleteBooking = async (bookingId: string) => {
     await httpService.remove(`bookings/${bookingId}`)
 }
 
-const getUserBookingsByBookingPeriod = async (bookingPeriodId: string): Promise<Booking[]> => {
-    const res = await httpService.get<Booking[]>(`periods/${bookingPeriodId}/bookings`)
+const getMyBookings = async (periodId: string): Promise<Booking[]> => {
+    const res = await httpService.get<Booking[]>(`periods/${periodId}/my-bookings`)
+    return res
+}
+
+const getAllBookings = async (periodId: string): Promise<Booking[]> => {
+    const res = await httpService.get<Booking[]>(`periods/${periodId}/bookings`)
     return res
 }
 
 export default {
     getPeriods,
-    loadNextPeriod,
-    submitBooking,
-    cancelBooking,
-    getUserBookingsByBookingPeriod,
+    createNextPeriod,
+    getCurrentPeriod,
+    createBooking,
+    deleteBooking,
+    getMyBookings,
+    getAllBookings
 }

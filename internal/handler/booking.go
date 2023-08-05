@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -10,41 +9,6 @@ import (
 	"github.com/tnoss/goal/internal/model"
 	"github.com/tnoss/goal/internal/utils/httpcontext"
 )
-
-func (h *Handler) CreatePeriod(c echo.Context) (err error) {
-	period := core.CreateNextBookingPeriod(time.Now())
-
-	existing := &core.BookingPeriod{}
-	r := h.Db.Where("\"from\" = ?", period.From).First(&existing)
-
-	if r.RowsAffected != 0 {
-		return c.JSON(http.StatusOK, existing)
-	}
-
-	res := h.Db.Create(period)
-	if res.Error != nil {
-		return
-	}
-	return c.JSON(http.StatusOK, period)
-}
-
-func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
-	period := &core.BookingPeriod{}
-	res := h.Db.Order("\"from\" desc").First(period)
-	if res.Error != nil {
-		return
-	}
-	return c.JSON(http.StatusOK, period)
-}
-
-func (h *Handler) GetPeriods(c echo.Context) (err error) {
-	var periods []core.BookingPeriod
-	res := h.Db.Find(&periods)
-	if res.Error != nil {
-		return
-	}
-	return c.JSON(http.StatusOK, periods)
-}
 
 func (h *Handler) SubmitBooking(c echo.Context) (err error) {
 	userId := httpcontext.GetContextUserId(c)
@@ -89,7 +53,17 @@ func (h Handler) DeleteBooking(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, nil)
 }
 
-func (h *Handler) GetUserBookingsByPeriods(c echo.Context) (err error) {
+func (h *Handler) GetAllBookings(c echo.Context) (err error) {
+	periodId := c.Param("bookingPeriodId")
+	bookings := &[]core.Booking{}
+	res := h.Db.Where("booking_period_id = ?", periodId).Find(bookings)
+	if res.Error != nil {
+		return c.JSON(http.StatusInternalServerError, res.Error)
+	}
+	return c.JSON(http.StatusOK, bookings)
+}
+
+func (h *Handler) GetMyBookings(c echo.Context) (err error) {
 	userId := httpcontext.GetContextUserId(c)
 	bookingPeriodId := c.Param("bookingPeriodId")
 	bookings := &[]core.Booking{}
