@@ -34,8 +34,8 @@ const getMyBookings = async (periodId: string): Promise<Booking[]> => {
     return res
 }
 
-const getAllBookings = async (periodId: string): Promise<Booking[]> => {
-    const res = await httpService.get<Booking[]>(`periods/${periodId}/bookings`)
+const getAllBookings = async (periodId: string): Promise<any[]> => {
+    const res = await httpService.get<any[]>(`periods/${periodId}/bookings`)
     return res
 }
 

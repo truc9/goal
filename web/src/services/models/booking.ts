@@ -10,3 +10,15 @@ export interface Booking {
     userId: string
     date: Date
 }
+
+export interface UserBookingItem {
+    bookingId: string
+    bookingPeriodId: string
+    userDisplayName: string
+    bookingDate: string
+}
+
+export interface UserBooking {
+    userDisplayName: string
+    bookings: UserBookingItem[]
+}

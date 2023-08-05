@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/samber/lo"
 	"github.com/tnoss/goal/internal/core"
 	"github.com/tnoss/goal/internal/model"
 	"github.com/tnoss/goal/internal/utils/httpcontext"
@@ -55,12 +56,43 @@ func (h Handler) DeleteBooking(c echo.Context) (err error) {
 
 func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 	periodId := c.Param("bookingPeriodId")
-	bookings := &[]core.Booking{}
-	res := h.Db.Where("booking_period_id = ?", periodId).Find(bookings)
+
+	var userBookingItems []model.UserBookingItem
+
+	// Split select fields to multiple row for readability
+	columns := "bookings.id as booking_id, " +
+		"bookings.booking_period_id, " +
+		"bookings.user_id, " +
+		"CONCAT(users.first_name, ' ', users.last_name) as user_display_name , " +
+		"bookings.date as booking_date"
+
+	// Query statement
+	res := h.Db.Table("bookings").
+		Order("users.first_name asc").
+		Where("bookings.booking_period_id = ?", periodId).
+		Select(columns).
+		Joins("JOIN users ON bookings.user_id = users.id").
+		Scan(&userBookingItems)
+
+	// Process dataset to groupped dataset using samber/lo (lodash-alike)
+	groups := lo.GroupBy(userBookingItems, func(item model.UserBookingItem) string {
+		return item.UserDisplayName
+	})
+
+	// Populate to final result set
+	groupedResult := []model.GrouppedUserBooking{}
+	for key, items := range groups {
+		groupedResult = append(groupedResult, model.GrouppedUserBooking{
+			UserDisplayName: key,
+			Bookings:        items,
+		})
+	}
+
 	if res.Error != nil {
 		return c.JSON(http.StatusInternalServerError, res.Error)
 	}
-	return c.JSON(http.StatusOK, bookings)
+
+	return c.JSON(http.StatusOK, groupedResult)
 }
 
 func (h *Handler) GetMyBookings(c echo.Context) (err error) {
