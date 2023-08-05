@@ -1,10 +1,10 @@
 import { FiBarChart2 } from "react-icons/fi"
+import dayjs from "dayjs"
 import { PageContainer } from "../components/PageContainer"
 import { useEffect, useState } from "react"
 import bookingService from "../services/bookingService"
 import { BookingPeriod, UserBooking } from "../services/models/booking"
-import dayjs from "dayjs"
-import { IoCheckmarkCircle } from "react-icons/io5"
+import { IoCheckmarkCircle, IoCheckmarkCircleOutline } from "react-icons/io5"
 
 const BookingDashboard: React.FC = () => {
     const [userBookings, setUserBookings] = useState<UserBooking[]>([])
@@ -43,7 +43,7 @@ const BookingDashboard: React.FC = () => {
             <table className='tw-w-full tw-table'>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th className="tw-w-[100px]"></th>
                         {dates.map((d, i) => {
                             return (
                                 <th key={i} className="tw-w-[130px] tw-h-10 tw-bg-slate-100 tw-justify-center tw-items-center">{dayjs(d).format('ddd')}</th>
@@ -54,8 +54,8 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row hover:tw-bg-green-50" key={idx}>
-                                <td>
+                            <tr className="tw-table-row tw-border hover:tw-bg-green-50" key={idx}>
+                                <td className="tw-bg-slate-100">
                                     <span className="tw-justify-start tw-pl-5 tw-items-center tw-flex">{ub.userDisplayName}</span>
                                 </td>
                                 {dates.map((date, i) => {
@@ -64,11 +64,11 @@ const BookingDashboard: React.FC = () => {
                                         <td key={i} className="tw-p-2">
                                             {booking ? (
                                                 <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="24" />
+                                                    <IoCheckmarkCircle size="26" />
                                                 </span>
                                             ) : (
                                                 <span className="tw-text-orange-200 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="24" />
+                                                    <IoCheckmarkCircleOutline size="26" />
                                                 </span>
                                             )}
                                         </td>

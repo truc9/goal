@@ -85,13 +85,13 @@ const MyBooking: React.FC = () => {
             <div className="tw-flex tw-flex-col tw-gap-5">
                 <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                     <div className="tw-flex tw-items-center tw-gap-5">
-                        <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="22" /></button>
+                        <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="26" /></button>
                         {currentPeriod ? (
                             <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD/MMM')} - {dayjs(currentPeriod?.to).format('ddd DD/MMM')}</span>
                         ) : (
                             <span className="tw-text-orange-500 tw-bg-orange-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
                         )}
-                        <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronRight size="22" /></button>
+                        <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronRight size="26" /></button>
                     </div>
                 </div>
                 {currentPeriod && (
