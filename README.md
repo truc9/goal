@@ -7,10 +7,11 @@ Simple Office Management System
 [![Go](https://github.com/tnoss/goal/actions/workflows/go.yml/badge.svg)](https://github.com/tnoss/goal/actions/workflows/go.yml)
 
 ## Planning
-- [x] Local DB authN
+- [x] Local DB AuthN
 - [x] My Booking
 - [x] Booking Dashboard
 - [ ] Realtime Update for Dashboard
+- [ ] Role-based AuthZ
 
 ## Screenshots
 
