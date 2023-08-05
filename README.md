@@ -13,6 +13,7 @@ Simple Office Management System
 - [x] My Booking
 - [x] Booking Dashboard
 - [ ] Realtime Update for Dashboard
+- [ ] Charts for Dashboard
 - [ ] Role-based AuthZ
 
 ## Screenshots
