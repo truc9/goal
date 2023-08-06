@@ -31,5 +31,5 @@ func Init() *gorm.DB {
 	}
 	seeder.Seed()
 
-	return db
+	return db.Debug()
 }

@@ -27,10 +27,11 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 
 func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
 	period := &core.BookingPeriod{}
-	now := time.Now()
-	res := h.DB.Where("\"from\" <= ? AND \"to\" > ?", now, now).First(period)
+	ct := time.Now()
+	now := time.Date(ct.Year(), ct.Month(), ct.Day(), 0, 0, 0, 0, time.Local)
+	res := h.DB.Where("\"from\" <= ? AND \"to\" >= ?", now, now).First(period)
 	if res.Error != nil {
-		return
+		return c.JSON(http.StatusBadRequest, res.Error)
 	}
 	return c.JSON(http.StatusOK, period)
 }
