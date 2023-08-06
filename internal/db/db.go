@@ -22,7 +22,15 @@ func Init() *gorm.DB {
 		&core.User{},
 		&core.BookingPeriod{},
 		&core.Booking{},
+		&core.Role{},
+		&core.Policy{},
 	)
+
+	seeding := &Seeding{
+		DB: db,
+	}
+
+	seeding.Seed()
 
 	return db
 }

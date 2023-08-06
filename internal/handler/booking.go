@@ -21,7 +21,7 @@ func (h *Handler) SubmitBooking(c echo.Context) (err error) {
 	}
 
 	if model.Id != uuid.Nil {
-		deleted := h.Db.Delete(&core.Booking{}, model.Id)
+		deleted := h.DB.Delete(&core.Booking{}, model.Id)
 		if deleted.Error != nil {
 			return
 		}
@@ -35,7 +35,7 @@ func (h *Handler) SubmitBooking(c echo.Context) (err error) {
 		Date:            model.Date,
 	}
 
-	res := h.Db.Create(entity)
+	res := h.DB.Create(entity)
 
 	if res.Error != nil {
 		return c.JSON(http.StatusInternalServerError, res.Error)
@@ -47,11 +47,11 @@ func (h *Handler) SubmitBooking(c echo.Context) (err error) {
 func (h Handler) DeleteBooking(c echo.Context) (err error) {
 	bookingId := c.Param("bookingId")
 	entity := &core.Booking{}
-	res := h.Db.Where("id = ?", bookingId).First(entity)
+	res := h.DB.Where("id = ?", bookingId).First(entity)
 	if res.Error != nil {
 		return c.JSON(http.StatusInternalServerError, res.Error)
 	}
-	h.Db.Delete(entity)
+	h.DB.Delete(entity)
 	return c.JSON(http.StatusOK, nil)
 }
 
@@ -68,7 +68,7 @@ func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 		"bookings.date as booking_date"
 
 	// Query statement
-	res := h.Db.Debug().
+	res := h.DB.Debug().
 		Table("users").
 		Order("users.first_name asc").
 		Where("bookings.booking_period_id = ? OR bookings.booking_period_id IS NULL", periodId).
@@ -102,6 +102,6 @@ func (h *Handler) GetMyBookings(c echo.Context) (err error) {
 	userId := httpcontext.GetContextUserId(c)
 	bookingPeriodId := c.Param("bookingPeriodId")
 	bookings := &[]core.Booking{}
-	h.Db.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(bookings)
+	h.DB.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(bookings)
 	return c.JSON(http.StatusOK, bookings)
 }

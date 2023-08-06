@@ -29,7 +29,7 @@ func (h *Handler) RegisterUser(c echo.Context) (err error) {
 	user := core.CreateUser(r.FirstName, r.LastName, r.Email)
 	user.SetPassword(r.Password)
 
-	res := h.Db.Create(&user)
+	res := h.DB.Create(&user)
 
 	if res.Error != nil {
 		return
@@ -45,7 +45,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	}
 
 	user := core.User{}
-	res := h.Db.First(&user, "email=?", req.Email)
+	res := h.DB.First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
 		return c.JSON(http.StatusUnauthorized, "User does not exist")
@@ -77,4 +77,28 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		"name":  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		"token": signedToken,
 	})
+}
+
+func (h *Handler) AssignRole(c echo.Context) (err error) {
+	userId := c.Param("userId")
+	model := model.RoleAssignment{}
+	if err := c.Bind(&model); err != nil {
+		return c.JSON(http.StatusBadRequest, "Unable to process the request")
+	}
+
+	user := core.User{}
+	if res := h.DB.Find(&user, userId); res.RowsAffected == 0 {
+		return c.JSON(http.StatusNotFound, "User not found")
+	}
+
+	role := core.Role{}
+	if res := h.DB.Find(&role, model.RoleId); res.RowsAffected == 0 {
+		return c.JSON(http.StatusNotFound, "Role not found")
+	}
+
+	user.UpdateRole(model.RoleId)
+
+	h.DB.Save(&user)
+
+	return c.JSON(http.StatusOK, nil)
 }

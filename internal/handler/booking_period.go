@@ -12,13 +12,13 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 	period := core.CreateNextBookingPeriod(time.Now())
 
 	existing := &core.BookingPeriod{}
-	r := h.Db.Where("\"from\" = ?", period.From).First(&existing)
+	r := h.DB.Where("\"from\" = ?", period.From).First(&existing)
 
 	if r.RowsAffected != 0 {
 		return c.JSON(http.StatusOK, existing)
 	}
 
-	res := h.Db.Create(period)
+	res := h.DB.Create(period)
 	if res.Error != nil {
 		return
 	}
@@ -28,7 +28,7 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
 	period := &core.BookingPeriod{}
 	now := time.Now()
-	res := h.Db.Where("\"from\" <= ? AND \"to\" > ?", now, now).First(period)
+	res := h.DB.Where("\"from\" <= ? AND \"to\" > ?", now, now).First(period)
 	if res.Error != nil {
 		return
 	}
@@ -37,7 +37,7 @@ func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
 
 func (h *Handler) GetPeriods(c echo.Context) (err error) {
 	var periods []core.BookingPeriod
-	res := h.Db.Find(&periods)
+	res := h.DB.Find(&periods)
 	if res.Error != nil {
 		return
 	}

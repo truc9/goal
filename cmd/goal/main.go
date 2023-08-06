@@ -29,7 +29,7 @@ func main() {
 	db := db.Init()
 
 	h := &handler.Handler{
-		Db: db,
+		DB: db,
 	}
 
 	a := e.Group("api")
