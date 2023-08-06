@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type Seeding struct {
+type Seeder struct {
 	DB *gorm.DB
 }
 
-func (s Seeding) Seed() {
+func (s Seeder) Seed() {
 	var roleCount int64
 	if err := s.DB.Model(&core.Role{}).Count(&roleCount).Error; err == nil {
 		if roleCount == 0 {

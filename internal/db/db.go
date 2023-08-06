@@ -26,11 +26,10 @@ func Init() *gorm.DB {
 		&core.Policy{},
 	)
 
-	seeding := &Seeding{
+	seeder := &Seeder{
 		DB: db,
 	}
-
-	seeding.Seed()
+	seeder.Seed()
 
 	return db
 }
