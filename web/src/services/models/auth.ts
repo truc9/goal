@@ -8,5 +8,6 @@ export interface RegistrationUser {
 export interface AuthUser {
     name: string
     email: string
+    expire: number
     token: string
 }

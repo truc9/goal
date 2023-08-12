@@ -37,7 +37,7 @@ const Layout: React.FC = () => {
 
                     </div>
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
-                        <h3>Hi {user.name}</h3>
+                        <h3>Hi {user?.name}</h3>
                         <IconButton onClick={handleSignOut} color='warning' ><FiLogOut /></IconButton>
                     </div>
                 </div>

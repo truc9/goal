@@ -22,14 +22,15 @@ function logout() {
     localStorage.removeItem(authKey)
 }
 
-function getAuthUser(): AuthUser {
+function getUserProfile(): AuthUser {
     const res = localStorage.getItem(authKey)
     if (!res) throw new Error("User not logged in")
-    return JSON.parse(res)
+    const auth = JSON.parse(res) as AuthUser
+    return auth
 }
 
 export default {
-    getAuthUser,
+    getUserProfile,
     login,
     logout,
     register

@@ -4,7 +4,7 @@ import authService from "./authService"
 
 const get = async <T = any>(resource: string) => {
     const url = `${config.apiUrl}/${resource}`
-    const { token } = authService.getAuthUser()
+    const { token } = authService.getUserProfile()
     const res = await axios.get<T>(url, {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -15,7 +15,7 @@ const get = async <T = any>(resource: string) => {
 
 const post = async <T = any>(resource: string, body?: T) => {
     const url = `${config.apiUrl}/${resource}`
-    const { token } = authService.getAuthUser()
+    const { token } = authService.getUserProfile()
     await axios.post<T>(url, body, {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -25,7 +25,7 @@ const post = async <T = any>(resource: string, body?: T) => {
 
 const remove = async <T = any>(resource: string) => {
     const url = `${config.apiUrl}/${resource}`
-    const { token } = authService.getAuthUser()
+    const { token } = authService.getUserProfile()
     await axios.delete<T>(url, {
         headers: {
             'Authorization': `Bearer ${token}`

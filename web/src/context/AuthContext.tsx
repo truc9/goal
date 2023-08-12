@@ -8,7 +8,7 @@ interface AuthContextValue {
     user: AuthUser
     checkIfUserLoggedIn: () => boolean
     signin: (userName: string, password: string, callback: VoidFn) => void
-    signout: (callback: VoidFn) => void
+    signout: (callback?: VoidFn) => void
 }
 
 const AuthContext = React.createContext<AuthContextValue>(null!)
@@ -26,7 +26,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 const user = {
                     name: data.name,
                     email: data.email,
-                    token: data.token
+                    token: data.token,
+                    expire: data.expire
                 }
                 setUser(user)
                 callback()
@@ -36,14 +37,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             })
     }
 
-    const signout = (callback: VoidFn) => {
+    const signout = (callback?: VoidFn) => {
         authService.logout()
-        callback()
+        if (callback) {
+            callback()
+        }
     }
 
     const checkIfUserLoggedIn = () => {
         try {
-            const user = authService.getAuthUser()
+            const user = authService.getUserProfile()
             setUser(user)
             return !!user?.token
         }

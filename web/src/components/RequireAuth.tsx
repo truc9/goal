@@ -9,10 +9,8 @@ interface Props {
 const RequireAuth: React.FC<Props> = ({
     children
 }) => {
-
     const auth = useLocalAuth()
     const location = useLocation()
-
     if (!auth.user?.token) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }

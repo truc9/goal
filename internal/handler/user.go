@@ -55,12 +55,14 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		return c.JSON(http.StatusUnauthorized, "Invalid password")
 	}
 
+	expiry := jwt.NewNumericDate(time.Now().Add(time.Hour * 3))
+
 	claims := &jwtClaims{
 		fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		user.Email,
 		jwt.RegisteredClaims{
 			ID:        user.Id.String(),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 8)),
+			ExpiresAt: expiry,
 		},
 	}
 
@@ -75,7 +77,9 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		"id":    user.Id,
 		"email": user.Email,
 		"name":  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
-		"token": signedToken,
+		// ms from 1.Jan.1970
+		"expire": expiry.UnixMilli(),
+		"token":  signedToken,
 	})
 }
 
