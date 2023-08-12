@@ -12,9 +12,9 @@ Simple Office Management System
 - [x] Local DB AuthN
 - [x] My Booking
 - [x] Booking Dashboard
+- [x] Role-based AuthZ
 - [ ] Realtime Update for Dashboard
 - [ ] Charts for Dashboard
-- [ ] Role-based AuthZ
 
 ## Screenshots
 
