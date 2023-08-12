@@ -13,7 +13,7 @@ import (
 )
 
 func (h *Handler) SubmitBooking(c echo.Context) (err error) {
-	userId := httpcontext.GetContextUserId(c)
+	userId := httpcontext.GetUserId(c)
 	model := &model.Booking{}
 
 	if err := c.Bind(model); err != nil {
@@ -99,7 +99,7 @@ func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 }
 
 func (h *Handler) GetMyBookings(c echo.Context) (err error) {
-	userId := httpcontext.GetContextUserId(c)
+	userId := httpcontext.GetUserId(c)
 	bookingPeriodId := c.Param("bookingPeriodId")
 	bookings := &[]core.Booking{}
 	h.DB.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(bookings)

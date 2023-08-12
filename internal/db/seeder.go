@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/tnoss/goal/internal/core"
 	"github.com/tnoss/goal/internal/core/enums"
@@ -16,14 +17,14 @@ func (s Seeder) Seed() {
 	var roleCount int64
 	if err := s.DB.Model(&core.Role{}).Count(&roleCount).Error; err == nil {
 		if roleCount == 0 {
-			fmt.Println("Data seeding for Role is started")
-			adminRole, _ := core.CreateNewRole(enums.Admin, "Admin", "Administrator, highest permission role")
-			managerRole, _ := core.CreateNewRole(enums.Manager, "Manager", "Office Manager, 2nd highest permission role")
-			userRole, _ := core.CreateNewRole(enums.User, "User", "Normal user role (employee...)")
+			x := time.Now()
+			adminRole, _ := core.CreateNewRole(enums.RoleAdminId, string(enums.RoleAdmin), "Administrator, highest permission role")
+			managerRole, _ := core.CreateNewRole(enums.RoleManagerId, string(enums.RoleManager), "Office Manager, 2nd highest permission role")
+			userRole, _ := core.CreateNewRole(enums.RoleUserId, string(enums.RoleUser), "Normal user role (employee...)")
 			s.DB.Create(adminRole)
 			s.DB.Create(managerRole)
 			s.DB.Create(userRole)
-			fmt.Println("Data seeding for Role is completed")
+			fmt.Printf("Data seeding for Role is completed in %v ms\n", time.Since(x).Milliseconds())
 		}
 	}
 
@@ -32,12 +33,13 @@ func (s Seeder) Seed() {
 	var userCount int64
 	if err := s.DB.Model(&core.User{}).Count(&userCount).Error; err == nil {
 		if userCount == 0 {
-			fmt.Println("Data seeding for Admin is started")
-			//TODO: read seeding email/password from env
+			x := time.Now()
+			// TODO: read seeding email/password from env
 			user := core.CreateUser("Admin", "User", "admin@goal.com")
 			user.SetPassword("admin")
+			user.SetRole(enums.RoleAdminId)
 			s.DB.Create(&user)
-			fmt.Println("Data seeding for Admin is completed")
+			fmt.Printf("Data seeding for Admin is completed in %v ms\n", time.Since(x).Milliseconds())
 		}
 	}
 }

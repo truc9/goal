@@ -1,7 +1,5 @@
 package model
 
-import "github.com/google/uuid"
-
 type (
 	Register struct {
 		FirstName string `json:"firstName"`
@@ -16,6 +14,6 @@ type (
 	}
 
 	RoleAssignment struct {
-		RoleId uuid.UUID `json:"roleId"`
+		RoleId int `json:"roleId"`
 	}
 )

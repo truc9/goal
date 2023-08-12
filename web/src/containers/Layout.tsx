@@ -21,15 +21,20 @@ const Layout: React.FC = () => {
                 <NavLink to='/' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
                     <FiGrid size={20} />
                 </NavLink>
-                <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
-                    <FiBarChart2 size={20} />
-                </NavLink>
                 <NavLink to='/my-booking' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
                     <FiCheckCircle size={20} />
                 </NavLink>
-                <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
-                    <FiCalendar size={20} />
-                </NavLink>
+                {user.role == 'admin' && (
+                    <>
+                        <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                            <FiBarChart2 size={20} />
+                        </NavLink>
+                        <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                            <FiCalendar size={20} />
+                        </NavLink>
+                    </>
+                )}
+
             </nav>
             <main className='tw-flex-1 tw-bg-slate-50'>
                 <div className='tw-h-14 tw-flex tw-items-center tw-px-5'>

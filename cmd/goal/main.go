@@ -7,8 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/tnoss/goal/internal/constants"
+	"github.com/tnoss/goal/internal/core/enums"
 	"github.com/tnoss/goal/internal/db"
 	"github.com/tnoss/goal/internal/handler"
+	"github.com/tnoss/goal/internal/utils/authz"
 )
 
 func main() {
@@ -51,11 +53,13 @@ func main() {
 		r.GET("/ws", h.HandleWS)
 
 		// periods
-		r.POST("/periods", h.CreateNextPeriod)
-		r.GET("/periods", h.GetPeriods)
+		r.POST("/periods", h.CreateNextPeriod, authz.RequireRoles(enums.RoleAdmin))
+		r.GET("/periods", h.GetPeriods, authz.RequireRoles(enums.RoleAdmin))
 		r.GET("/periods/current", h.GetCurrentPeriod)
 		r.GET("/periods/:bookingPeriodId/my-bookings", h.GetMyBookings)
-		r.GET("/periods/:bookingPeriodId/bookings", h.GetAllBookings)
+
+		// Get booking info of all users
+		r.GET("/periods/:bookingPeriodId/bookings", h.GetAllBookings, authz.RequireRoles(enums.RoleAdmin))
 
 		// bookings
 		r.POST("/bookings", h.SubmitBooking)

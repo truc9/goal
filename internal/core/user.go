@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/google/uuid"
+	"github.com/tnoss/goal/internal/core/enums"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -11,7 +12,7 @@ type User struct {
 	LastName     string    `json:"lastName"`
 	Email        string    `json:"email"`
 	HashPassword string    `json:"hashPassword"`
-	RoleId       uuid.UUID `json:"roleId"`
+	RoleId       int       `json:"roleId"`
 	Role         Role      `gorm:"foreignKey:RoleId" json:"role"`
 }
 
@@ -20,13 +21,13 @@ func (u *User) SetPassword(password string) {
 	u.HashPassword = hash
 }
 
+func (u *User) SetRole(roleId enums.RoleType) {
+	u.RoleId = int(roleId)
+}
+
 func (u *User) VerifyPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.HashPassword), []byte(password))
 	return err == nil
-}
-
-func (u *User) UpdateRole(roleId uuid.UUID) {
-	u.RoleId = roleId
 }
 
 func CreateUser(firstName, lastName, email string) *User {
@@ -35,6 +36,7 @@ func CreateUser(firstName, lastName, email string) *User {
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
+		RoleId:    int(enums.RoleUserId),
 	}
 	return user
 }

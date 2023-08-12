@@ -8,6 +8,7 @@ export interface RegistrationUser {
 export interface AuthUser {
     name: string
     email: string
+    role?: string
     expire: number
     token: string
 }

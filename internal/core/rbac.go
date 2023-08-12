@@ -9,10 +9,9 @@ import (
 
 type (
 	Role struct {
-		Id          uuid.UUID `gorm:"primaryKey" json:"id"`
-		Type        int       `json:"code"`
-		Name        string    `json:"name"`
-		Description string    `json:"description"`
+		Id          int    `gorm:"primaryKey" json:"id"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
 	}
 
 	Policy struct {
@@ -29,11 +28,8 @@ func CreateNewRole(roleType enums.RoleType, name, description string) (role *Rol
 		return nil, errors.New("name is required")
 	}
 
-	var roleTypeId int = int(roleType)
-
 	res := &Role{
-		Id:          uuid.New(),
-		Type:        roleTypeId,
+		Id:          int(roleType),
 		Name:        name,
 		Description: description,
 	}

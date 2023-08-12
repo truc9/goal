@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/tnoss/goal/internal/constants"
 	"github.com/tnoss/goal/internal/core"
+	"github.com/tnoss/goal/internal/core/enums"
 	"github.com/tnoss/goal/internal/model"
 )
 
@@ -16,6 +17,7 @@ type (
 	jwtClaims struct {
 		Name  string `json:"name"`
 		Email string `json:"email"`
+		Role  string `json:"role"`
 		jwt.RegisteredClaims
 	}
 )
@@ -45,7 +47,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	}
 
 	user := core.User{}
-	res := h.DB.First(&user, "email=?", req.Email)
+	res := h.DB.Joins("Role").First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
 		return c.JSON(http.StatusUnauthorized, "User does not exist")
@@ -60,11 +62,14 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	claims := &jwtClaims{
 		fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		user.Email,
+		user.Role.Name,
 		jwt.RegisteredClaims{
 			ID:        user.Id.String(),
 			ExpiresAt: expiry,
 		},
 	}
+
+	fmt.Printf("Auth user: %v\n", claims.Role)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -77,6 +82,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 		"id":    user.Id,
 		"email": user.Email,
 		"name":  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
+		"role":  user.Role.Name,
 		// ms from 1.Jan.1970
 		"expire": expiry.UnixMilli(),
 		"token":  signedToken,
@@ -100,7 +106,7 @@ func (h *Handler) AssignRole(c echo.Context) (err error) {
 		return c.JSON(http.StatusNotFound, "Role not found")
 	}
 
-	user.UpdateRole(model.RoleId)
+	user.SetRole(enums.RoleType(model.RoleId))
 
 	h.DB.Save(&user)
 

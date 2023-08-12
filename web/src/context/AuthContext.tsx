@@ -25,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .then((data: any) => {
                 const user = {
                     name: data.name,
+                    role: data.role,
                     email: data.email,
                     token: data.token,
                     expire: data.expire
