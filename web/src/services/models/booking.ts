@@ -2,7 +2,7 @@ export interface BookingPeriod {
     id: string
     from: Date
     to: Date
-    isCurrentWeek: boolean
+    isCurrentPeriod: boolean
 }
 
 export interface Booking {

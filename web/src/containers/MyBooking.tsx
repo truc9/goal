@@ -42,13 +42,13 @@ const MyBooking: React.FC = () => {
 
     async function loadPeriods() {
         const periods = await bookingService.getPeriods()
-        const currentPeriod = periods.find(p => p.isCurrentWeek)
+        const currentPeriod = periods.find(p => p.isCurrentPeriod)
         if (currentPeriod) {
             setCurrentPeriod(currentPeriod)
         }
         setPeriods(periods)
 
-        const index = periods.findIndex(p => p.isCurrentWeek)
+        const index = periods.findIndex(p => p.isCurrentPeriod)
         setIndex(index)
     }
 

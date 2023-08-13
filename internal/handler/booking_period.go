@@ -12,15 +12,14 @@ import (
 )
 
 type periodDto struct {
-	Id              uuid.UUID          `json:"id"`
-	From            time.Time          `json:"from"`
-	To              time.Time          `json:"to"`
-	Period          core.BookingPeriod `json:"period"`
-	IsCurrentPeriod bool               `json:"isCurrentPeriod"`
+	Id              uuid.UUID `json:"id"`
+	From            time.Time `json:"from"`
+	To              time.Time `json:"to"`
+	IsCurrentPeriod bool      `json:"isCurrentPeriod"`
 }
 
 func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
-	period := core.CreateNextBookingPeriod(time.Now())
+	period := core.CreateNextPeriod(time.Now())
 
 	existing := &core.BookingPeriod{}
 	r := h.DB.Where("\"from\" = ?", period.From).First(&existing)
@@ -38,9 +37,9 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 
 func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
 	period := &core.BookingPeriod{}
-	ct := time.Now()
-	now := time.Date(ct.Year(), ct.Month(), ct.Day(), 0, 0, 0, 0, time.Local)
-	res := h.DB.Where("\"from\" <= ? AND \"to\" >= ?", now, now).First(period)
+	todayNextWeek := core.GetTodayNextWeek(time.Now())
+	fmt.Println(todayNextWeek)
+	res := h.DB.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
 	if res.Error != nil {
 		return c.JSON(http.StatusBadRequest, res.Error)
 	}
@@ -54,15 +53,15 @@ func (h *Handler) GetPeriods(c echo.Context) (err error) {
 		return c.JSON(http.StatusBadRequest, res.Error)
 	}
 
-	ct := time.Now()
-	now := time.Date(ct.Year(), ct.Month(), ct.Day(), 0, 0, 0, 0, time.Local)
+	todayNextWeek := core.GetTodayNextWeek(time.Now())
+	fmt.Println(todayNextWeek)
 
 	result := lo.Map(periods, func(item core.BookingPeriod, index int) periodDto {
 		return periodDto{
 			Id:              item.Id,
 			From:            item.From,
 			To:              item.To,
-			IsCurrentPeriod: item.From.Before(now) && item.To.After(now),
+			IsCurrentPeriod: item.From.Before(todayNextWeek) && item.To.After(todayNextWeek),
 		}
 	})
 

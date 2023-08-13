@@ -54,7 +54,7 @@ func main() {
 
 		// periods
 		r.POST("/periods", h.CreateNextPeriod, authz.RequireRoles(enums.RoleAdmin))
-		r.GET("/periods", h.GetPeriods, authz.RequireRoles(enums.RoleAdmin))
+		r.GET("/periods", h.GetPeriods, authz.RequireRoles(enums.RoleAdmin, enums.RoleUser))
 		r.GET("/periods/current", h.GetCurrentPeriod)
 		r.GET("/periods/:bookingPeriodId/my-bookings", h.GetMyBookings)
 
