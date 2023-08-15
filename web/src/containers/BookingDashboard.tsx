@@ -54,9 +54,9 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row hover:tw-bg-green-50" key={idx}>
-                                <td className="tw-bg-slate-100">
-                                    <span className="tw-justify-start tw-px-5 tw-items-center tw-flex">{ub.userDisplayName}</span>
+                            <tr className="tw-table-row hover:tw-bg-green-50 tw-border" key={idx}>
+                                <td>
+                                    <span className="tw-justify-start tw-px-5 tw-items-center tw-flex tw-font-bold">{ub.userDisplayName}</span>
                                 </td>
                                 {dates.map((date, i) => {
                                     const booking = ub.bookings.find(bd => dayjs(bd.bookingDate).date() == dayjs(date).date())
@@ -64,11 +64,11 @@ const BookingDashboard: React.FC = () => {
                                         <td key={i} className="tw-p-2">
                                             {booking ? (
                                                 <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="36" />
+                                                    <IoCheckmarkCircle size="30" />
                                                 </span>
                                             ) : (
                                                 <span className="tw-text-orange-200 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircleOutline size="36" />
+                                                    <IoCheckmarkCircleOutline size="30" />
                                                 </span>
                                             )}
                                         </td>
