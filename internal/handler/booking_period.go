@@ -35,10 +35,9 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, period)
 }
 
-func (h *Handler) GetCurrentPeriod(c echo.Context) (err error) {
+func (h *Handler) GetNextPeriod(c echo.Context) (err error) {
 	period := &core.BookingPeriod{}
 	todayNextWeek := core.GetTodayNextWeek(time.Now())
-	fmt.Println(todayNextWeek)
 	res := h.DB.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
 	if res.Error != nil {
 		return c.JSON(http.StatusBadRequest, res.Error)

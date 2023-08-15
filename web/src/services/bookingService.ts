@@ -9,8 +9,8 @@ const getPeriods = async (): Promise<BookingPeriod[]> => {
     return res
 }
 
-const getCurrentPeriod = async (): Promise<BookingPeriod> => {
-    const period = await httpService.get<BookingPeriod>('periods/current')
+const getNextPeriod = async (): Promise<BookingPeriod> => {
+    const period = await httpService.get<BookingPeriod>('periods/next')
     return period
 }
 
@@ -42,7 +42,7 @@ const getAllBookings = async (periodId: string): Promise<any[]> => {
 export default {
     getPeriods,
     createNextPeriod,
-    getCurrentPeriod,
+    getNextPeriod,
     createBooking,
     deleteBooking,
     getMyBookings,
