@@ -64,6 +64,9 @@ func main() {
 		// bookings
 		r.POST("/bookings", h.SubmitBooking)
 		r.DELETE("/bookings/:bookingId", h.DeleteBooking)
+
+		// stats
+		r.GET("/stats/booking-overall", h.GetBookingOverallStats)
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))
