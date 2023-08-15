@@ -1,6 +1,9 @@
 package core
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/google/uuid"
 	"github.com/tnoss/goal/internal/core/enums"
 	"golang.org/x/crypto/bcrypt"
@@ -11,6 +14,7 @@ type User struct {
 	FirstName    string    `json:"firstName"`
 	LastName     string    `json:"lastName"`
 	Email        string    `json:"email"`
+	UserName     string    `json:"username"`
 	HashPassword string    `json:"hashPassword"`
 	RoleId       int       `json:"roleId"`
 	Role         Role      `gorm:"foreignKey:RoleId" json:"role"`
@@ -30,15 +34,20 @@ func (u *User) VerifyPassword(password string) bool {
 	return err == nil
 }
 
-func CreateUser(firstName, lastName, email string) *User {
+func CreateUser(firstName, lastName, email string, userName string) (*User, error) {
+	if strings.TrimSpace(email) == "" && strings.TrimSpace(userName) == "" {
+		return nil, fmt.Errorf("email or username must be provided")
+	}
+
 	user := &User{
 		Id:        uuid.New(),
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
+		UserName:  userName,
 		RoleId:    int(enums.RoleUserId),
 	}
-	return user
+	return user, nil
 }
 
 func hashPassword(pw string) (hash string) {

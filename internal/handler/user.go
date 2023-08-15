@@ -28,13 +28,23 @@ func (h *Handler) RegisterUser(c echo.Context) (err error) {
 		return
 	}
 
-	user := core.CreateUser(r.FirstName, r.LastName, r.Email)
+	dup := h.DB.Where("email = ? OR user_name = ?", r.Email, r.UserName).First(&core.User{})
+	if dup.RowsAffected != 0 {
+		return c.JSON(http.StatusBadRequest, core.Create("email or user name already in use"))
+	}
+
+	user, err := core.CreateUser(r.FirstName, r.LastName, r.Email, r.UserName)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, core.CreateError(err))
+	}
+
 	user.SetPassword(r.Password)
 
 	res := h.DB.Create(&user)
 
 	if res.Error != nil {
-		return
+		return c.JSON(http.StatusInternalServerError, res.Error)
 	}
 
 	return c.JSON(http.StatusOK, user)

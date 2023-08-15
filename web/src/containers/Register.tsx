@@ -10,15 +10,20 @@ const Register = () => {
     const [register, setRegister] = useState<any>()
 
     async function handleRegister() {
-        setLoading(true)
-        await authService.register({
-            email: register.email,
-            firstName: register.firstName,
-            lastName: register.lastName,
-            password: register.password
-        })
-        setLoading(false)
-        navigate('login')
+        try {
+            setLoading(true)
+            await authService.register({
+                email: register.email,
+                firstName: register.firstName,
+                lastName: register.lastName,
+                password: register.password
+            })
+            setLoading(false)
+            navigate('login')
+        }
+        catch (err) {
+            setLoading(false)
+        }
     }
 
     function handleChange(e: any) {
@@ -37,7 +42,7 @@ const Register = () => {
                 </div>
             ) : (
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
-                    <TextField variant='outlined' name='email' onChange={handleChange} placeholder='User Name/Email' />
+                    <TextField variant='outlined' name='email' onChange={handleChange} placeholder='Email' />
                     <TextField variant='outlined' name='firstName' onChange={handleChange} placeholder='First Name' />
                     <TextField variant='outlined' name='lastName' onChange={handleChange} placeholder='Last Name' />
                     <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />

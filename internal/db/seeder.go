@@ -35,7 +35,7 @@ func (s Seeder) Seed() {
 		if userCount == 0 {
 			x := time.Now()
 			// TODO: read seeding email/password from env
-			user := core.CreateUser("Admin", "User", "admin@goal.com")
+			user, _ := core.CreateUser("Admin", "User", "admin@goal.com", "admin")
 			user.SetPassword("admin")
 			user.SetRole(enums.RoleAdminId)
 			s.DB.Create(&user)
