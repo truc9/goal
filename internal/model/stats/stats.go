@@ -1,4 +1,4 @@
-package stats
+package model
 
 type BookingOverall struct {
 	Booked   int `json:"booked"`

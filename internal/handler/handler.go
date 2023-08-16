@@ -1,7 +1,11 @@
 package handler
 
-import "gorm.io/gorm"
+import (
+	"github.com/tnoss/goal/internal/repository"
+	"gorm.io/gorm"
+)
 
 type Handler struct {
-	DB *gorm.DB
+	DB   gorm.DB
+	Repo repository.Repository
 }

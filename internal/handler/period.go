@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
 	"github.com/tnoss/goal/internal/core"
+	"github.com/tnoss/goal/internal/utils/timeutil"
 )
 
 type periodDto struct {
@@ -36,11 +37,9 @@ func (h *Handler) CreateNextPeriod(c echo.Context) (err error) {
 }
 
 func (h *Handler) GetNextPeriod(c echo.Context) (err error) {
-	period := &core.BookingPeriod{}
-	todayNextWeek := core.GetTodayNextWeek(time.Now())
-	res := h.DB.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
-	if res.Error != nil {
-		return c.JSON(http.StatusBadRequest, res.Error)
+	period, err := h.Repo.GetNextPeriod()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, period)
 }
@@ -52,7 +51,7 @@ func (h *Handler) GetPeriods(c echo.Context) (err error) {
 		return c.JSON(http.StatusBadRequest, res.Error)
 	}
 
-	todayNextWeek := core.GetTodayNextWeek(time.Now())
+	todayNextWeek := timeutil.GetTodayNextWeek(time.Now())
 	fmt.Println(todayNextWeek)
 
 	result := lo.Map(periods, func(item core.BookingPeriod, index int) periodDto {

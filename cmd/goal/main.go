@@ -10,6 +10,7 @@ import (
 	"github.com/tnoss/goal/internal/core/enums"
 	"github.com/tnoss/goal/internal/db"
 	"github.com/tnoss/goal/internal/handler"
+	"github.com/tnoss/goal/internal/repository"
 	"github.com/tnoss/goal/internal/utils/authz"
 )
 
@@ -28,10 +29,12 @@ func main() {
 
 	e.Static("/", "web/dist")
 
+	//TODO: Using Wire Google for DI ?
 	db := db.Init()
-
+	repo := repository.NewRepository(db)
 	h := &handler.Handler{
-		DB: db,
+		DB:   *db,
+		Repo: repo,
 	}
 
 	a := e.Group("api")
