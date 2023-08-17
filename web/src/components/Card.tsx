@@ -12,7 +12,7 @@ export const Card: FC<Props> = ({
 
     return (
         <div className="tw-p-5 tw-text-black/40 tw-gap-3 tw-flex tw-flex-col tw-text-center tw-items-center tw-bg-slate-50 tw-border tw-rounded">
-            <div>
+            <div className="tw-flex tw-flex-1 tw-flex-col tw-justify-center tw-items-center">
                 {children}
             </div>
             <div className="tw-font-bold">

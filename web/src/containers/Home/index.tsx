@@ -1,25 +1,28 @@
 import { FiBarChart2, FiCalendar, FiCheckCircle, FiGrid } from "react-icons/fi"
 import { PageContainer } from "../../components/PageContainer"
 import { ClickableCard } from "./ClickableCard"
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Pie } from 'react-chartjs-2'
 import { useLocalAuth } from "../../context/AuthContext"
 import { Card } from "../../components/Card"
 import { useEffect, useState } from "react"
 import httpService from "../../services/httpService"
-ChartJS.register(ArcElement, Tooltip, Legend)
+import { PieChart, Pie, Tooltip, Legend } from 'recharts'
 
 const Home = () => {
     const { user } = useLocalAuth()
-    const [bookingStats, setBookingStats] = useState<number[]>([])
+    const [totalEmployee, setTotalEmployee] = useState(0)
+    const [stats, setStats] = useState<any[]>([])
 
     useEffect(() => {
         load()
     }, [])
 
     const load = async () => {
-        const { booked, unbooked } = await httpService.get('stats/booking-overall')
-        setBookingStats([booked, unbooked])
+        const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
+        setTotalEmployee(total)
+        setStats([
+            { name: 'Booked', value: booked, fill: "green" },
+            { name: 'Unbooked', value: unbooked, fill: "red" },
+        ])
     }
 
     return (
@@ -30,22 +33,22 @@ const Home = () => {
                 <ClickableCard disabled={user.role !== 'admin'} title="Booking Periods" subTitle="Open Booking Periods" icon={<FiCalendar size={30} />} link="/booking-periods" />
             </div>
             <div className="tw-grid tw-grid-cols-3 tw-gap-5 tw-mt-3">
+                <Card title="Total Employee">
+                    <h3 className="tw-text-8xl">{totalEmployee}</h3>
+                </Card>
                 <Card title="Booking Overall Status">
                     <div>
-                        <Pie data={{
-                            labels: ['Booked', 'Unbooked'],
-                            datasets: [
-                                {
-                                    label: 'Count',
-                                    data: bookingStats,
-                                    backgroundColor: [
-                                        'rgba(66, 245, 117, 1)',
-                                        'rgba(245, 170, 66, 1)',
-                                    ],
-                                    borderWidth: 1,
-                                },
-                            ],
-                        }} />
+                        <PieChart width={300} height={300}>
+                            <Pie
+                                dataKey="value"
+                                isAnimationActive={false}
+                                data={stats}
+                                outerRadius={90}
+                                label
+                            />
+                            <Tooltip />
+                            <Legend verticalAlign="top" height={36} />
+                        </PieChart>
                     </div>
                 </Card>
             </div>

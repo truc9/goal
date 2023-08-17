@@ -23,5 +23,6 @@ func (h *Handler) GetBookingOverallStats(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, model.BookingOverall{
 		Booked:   int(bookedCount),
 		Unbooked: int(userCount) - int(bookedCount),
+		Total:    int(userCount),
 	})
 }
