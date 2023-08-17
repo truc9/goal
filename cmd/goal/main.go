@@ -33,7 +33,7 @@ func main() {
 	db := db.Init()
 	repo := repository.NewRepository(db)
 	h := &handler.Handler{
-		DB:   *db,
+		DB:   db,
 		Repo: repo,
 	}
 

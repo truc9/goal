@@ -20,7 +20,7 @@ func GetNextMonday(current time.Time) time.Time {
 }
 
 func GetTodayNextWeek(current time.Time) time.Time {
-	dayCount := int(current.Weekday()) + 7
-	todayNextWeek := current.AddDate(0, 0, dayCount)
+	today := time.Date(current.Year(), current.Month(), current.Day(), 0, 0, 0, 0, time.UTC)
+	todayNextWeek := today.AddDate(0, 0, 7)
 	return todayNextWeek
 }

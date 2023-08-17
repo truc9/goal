@@ -6,6 +6,6 @@ import (
 )
 
 type Handler struct {
-	DB   gorm.DB
+	DB   *gorm.DB
 	Repo repository.Repository
 }
