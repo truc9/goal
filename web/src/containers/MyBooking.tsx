@@ -87,7 +87,7 @@ const MyBooking: React.FC = () => {
                     <div className="tw-flex tw-items-center tw-gap-5">
                         <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="26" /></button>
                         {currentPeriod ? (
-                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD/MMM')} - {dayjs(currentPeriod?.to).format('ddd DD/MMM')}</span>
+                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD.MM.YYYY')} - {dayjs(currentPeriod?.to).format('ddd DD.MM.YYYY')}</span>
                         ) : (
                             <span className="tw-text-orange-500 tw-bg-orange-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
                         )}
@@ -100,7 +100,7 @@ const MyBooking: React.FC = () => {
                             <tr>
                                 {dates.map((d, i) => {
                                     return (
-                                        <th key={i} className="tw-h-10 tw-justify-center tw-items-center">{dayjs(d).format('ddd DD/MMM/YYYY')}</th>
+                                        <th key={i} className="tw-h-10 tw-justify-center tw-items-center tw-uppercase">{dayjs(d).format('ddd')}</th>
                                     )
                                 })}
                             </tr>
