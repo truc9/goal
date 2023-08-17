@@ -11,24 +11,7 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 
 const Home = () => {
     const { user } = useLocalAuth()
-    const [bookingOverallChart, setBookingOverallChart] = useState<any>({
-        labels: ['Booked', 'Unbooked'],
-        datasets: [
-            {
-                label: 'Number of Employee',
-                data: null,
-                backgroundColor: [
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
-            },
-        ],
-    })
+    const [bookingStats, setBookingStats] = useState<number[]>([])
 
     useEffect(() => {
         load()
@@ -36,24 +19,7 @@ const Home = () => {
 
     const load = async () => {
         const { booked, unbooked } = await httpService.get('stats/booking-overall')
-        setBookingOverallChart({
-            labels: ['Booked', 'Unbooked'],
-            datasets: [
-                {
-                    label: 'Number of Employee',
-                    data: [booked, unbooked],
-                    backgroundColor: [
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                    ],
-                    borderWidth: 1,
-                },
-            ],
-        })
+        setBookingStats([booked, unbooked])
     }
 
     return (
@@ -66,7 +32,20 @@ const Home = () => {
             <div className="tw-grid tw-grid-cols-3 tw-gap-5 tw-mt-3">
                 <Card title="Booking Overall Status">
                     <div>
-                        <Pie data={bookingOverallChart} />
+                        <Pie data={{
+                            labels: ['Booked', 'Unbooked'],
+                            datasets: [
+                                {
+                                    label: 'Count',
+                                    data: bookingStats,
+                                    backgroundColor: [
+                                        'rgba(66, 245, 117, 1)',
+                                        'rgba(245, 170, 66, 1)',
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        }} />
                     </div>
                 </Card>
             </div>
