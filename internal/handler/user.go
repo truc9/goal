@@ -28,9 +28,9 @@ func (h *Handler) RegisterUser(c echo.Context) (err error) {
 		return
 	}
 
-	dup := h.DB.Where("email = ? OR user_name = ?", r.Email, r.UserName).First(&core.User{})
+	dup := h.DB.Where("email = ?", r.Email, r.UserName).First(&core.User{})
 	if dup.RowsAffected != 0 {
-		return c.JSON(http.StatusBadRequest, core.Create("email or user name already in use"))
+		return c.JSON(http.StatusBadRequest, core.Create("email already in use"))
 	}
 
 	user, err := core.CreateUser(r.FirstName, r.LastName, r.Email, r.UserName)
