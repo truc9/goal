@@ -2,6 +2,13 @@ import axios from 'axios'
 import { AuthUser, RegistrationUser } from './models/auth'
 import config from '../config'
 
+axios.interceptors.response.use((res) => res, (err) => {
+    if (err.response.status === 401) {
+        clearToken()
+        window.location.reload()
+    }
+})
+
 const authKey = '__user__'
 
 async function login(email: string, password: string) {
@@ -19,6 +26,10 @@ async function register(model: RegistrationUser) {
 }
 
 function logout() {
+    clearToken()
+}
+
+function clearToken() {
     localStorage.removeItem(authKey)
 }
 

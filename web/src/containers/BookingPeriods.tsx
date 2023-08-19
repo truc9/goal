@@ -4,7 +4,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { BookingPeriod } from '../services/models/booking'
 import dayjs from 'dayjs'
 import { PageContainer } from '../components/PageContainer'
-import { FiBookOpen, FiCalendar } from 'react-icons/fi'
+import { FiCalendar } from 'react-icons/fi'
 import { IoCheckmarkCircle } from 'react-icons/io5'
 import { Button } from '@mui/material'
 
@@ -39,8 +39,8 @@ const BookingPeriods: React.FC = () => {
 
     return (
         <PageContainer icon={<FiCalendar size={26} />} title='Office Booking Periods'>
-            <div>
-                <Button onClick={loadNextPeriod} startIcon={<FiBookOpen />} variant='outlined'>Open New Period</Button>
+            <div className='tw-flex tw-items-center tw-justify-center'>
+                <Button onClick={loadNextPeriod} variant='contained' color="success">Create Period</Button>
             </div>
             <DataGrid
                 autoHeight

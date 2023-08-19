@@ -71,9 +71,8 @@ func (h *Handler) GetAllBookings(c echo.Context) (err error) {
 	res := h.DB.Debug().
 		Table("users").
 		Order("users.first_name asc").
-		Where("bookings.booking_period_id = ? OR bookings.booking_period_id IS NULL", periodId).
 		Select(columns).
-		Joins("left join bookings ON bookings.user_id = users.id").
+		Joins("LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_period_id = ?", periodId).
 		Scan(&userBookingItems)
 
 	// Process dataset to groupped dataset using samber/lo (lodash-alike)
