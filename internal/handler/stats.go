@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -16,9 +17,11 @@ func (h *Handler) GetBookingOverallStats(c echo.Context) (err error) {
 
 	h.DB.
 		Where("booking_period_id = ?", nextPeriod.Id).
-		Select("COUNT(user_id)").
-		Group("user_id").
-		Find(&core.Booking{}).Count(&bookedCount)
+		Distinct("user_id").
+		Find(&core.Booking{}).
+		Count(&bookedCount)
+
+	fmt.Println(bookedCount)
 
 	return c.JSON(http.StatusOK, model.BookingOverall{
 		Booked:   int(bookedCount),
