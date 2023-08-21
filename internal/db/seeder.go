@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tnoss/goal/internal/core"
-	"github.com/tnoss/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/core"
+	"github.com/truc9/goal/internal/core/enums"
 	"gorm.io/gorm"
 )
 

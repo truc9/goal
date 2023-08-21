@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/tnoss/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/core/enums"
 	"golang.org/x/crypto/bcrypt"
 )
 

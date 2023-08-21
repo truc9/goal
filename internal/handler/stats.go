@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/tnoss/goal/internal/core"
-	model "github.com/tnoss/goal/internal/model/stats"
+	"github.com/truc9/goal/internal/core"
+	model "github.com/truc9/goal/internal/model/stats"
 )
 
 func (h *Handler) GetBookingOverallStats(c echo.Context) (err error) {

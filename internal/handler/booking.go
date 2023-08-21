@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
-	"github.com/tnoss/goal/internal/core"
-	"github.com/tnoss/goal/internal/model"
-	"github.com/tnoss/goal/internal/utils/httpcontext"
+	"github.com/truc9/goal/internal/core"
+	"github.com/truc9/goal/internal/model"
+	"github.com/truc9/goal/internal/utils/httpcontext"
 )
 
 func (h *Handler) SubmitBooking(c echo.Context) (err error) {

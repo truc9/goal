@@ -8,8 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
-	"github.com/tnoss/goal/internal/core"
-	"github.com/tnoss/goal/internal/utils/timeutil"
+	"github.com/truc9/goal/internal/core"
+	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
 type periodDto struct {

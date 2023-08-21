@@ -4,9 +4,9 @@ Simple Office Management System
 
 *⚠️ This project for learning purpose*
 
-[![CodeQL](https://github.com/tnoss/goal/actions/workflows/codeql.yml/badge.svg)](https://github.com/tnoss/goal/actions/workflows/codeql.yml)
+[![CodeQL](https://github.com/truc9/goal/actions/workflows/codeql.yml/badge.svg)](https://github.com/truc9/goal/actions/workflows/codeql.yml)
 
-[![Go](https://github.com/tnoss/goal/actions/workflows/go.yml/badge.svg)](https://github.com/tnoss/goal/actions/workflows/go.yml)
+[![Go](https://github.com/truc9/goal/actions/workflows/go.yml/badge.svg)](https://github.com/truc9/goal/actions/workflows/go.yml)
 
 ## Planning
 - [x] Local DB AuthN

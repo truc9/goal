@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/tnoss/goal/internal/repository"
+	"github.com/truc9/goal/internal/repository"
 	"gorm.io/gorm"
 )
 

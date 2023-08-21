@@ -6,12 +6,12 @@ import (
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/tnoss/goal/internal/constants"
-	"github.com/tnoss/goal/internal/core/enums"
-	"github.com/tnoss/goal/internal/db"
-	"github.com/tnoss/goal/internal/handler"
-	"github.com/tnoss/goal/internal/repository"
-	"github.com/tnoss/goal/internal/utils/authz"
+	"github.com/truc9/goal/internal/constants"
+	"github.com/truc9/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/db"
+	"github.com/truc9/goal/internal/handler"
+	"github.com/truc9/goal/internal/repository"
+	"github.com/truc9/goal/internal/utils/authz"
 )
 
 func main() {

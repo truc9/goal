@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tnoss/goal/internal/core"
-	"github.com/tnoss/goal/internal/utils/timeutil"
+	"github.com/truc9/goal/internal/core"
+	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
 // Get period of next week

@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/tnoss/goal/internal/utils/timeutil"
+	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
 type BookingPeriod struct {

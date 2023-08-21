@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/tnoss/goal/internal/core"
+	"github.com/truc9/goal/internal/core"
 )
 
 func (h *Handler) GetAll(c echo.Context) (err error) {

@@ -7,10 +7,10 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-	"github.com/tnoss/goal/internal/constants"
-	"github.com/tnoss/goal/internal/core"
-	"github.com/tnoss/goal/internal/core/enums"
-	"github.com/tnoss/goal/internal/model"
+	"github.com/truc9/goal/internal/constants"
+	"github.com/truc9/goal/internal/core"
+	"github.com/truc9/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/model"
 )
 
 type (

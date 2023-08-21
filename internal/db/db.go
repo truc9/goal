@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github.com/tnoss/goal/internal/core"
+	"github.com/truc9/goal/internal/core"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

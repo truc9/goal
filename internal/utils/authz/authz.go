@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
-	"github.com/tnoss/goal/internal/core/enums"
-	"github.com/tnoss/goal/internal/utils/httpcontext"
+	"github.com/truc9/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/utils/httpcontext"
 )
 
 func RequireRoles(roleTypes ...enums.RoleNameType) echo.MiddlewareFunc {

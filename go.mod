@@ -1,4 +1,4 @@
-module github.com/tnoss/goal
+module github.com/truc9/goal
 
 go 1.20
 
