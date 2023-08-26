@@ -1,4 +1,4 @@
-package model
+package booking
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 )
 
 type (
-	Booking struct {
+	BookingModel struct {
 		Id              uuid.UUID `json:"id"`
 		BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
 		Date            time.Time `json:"date"`
@@ -23,5 +23,12 @@ type (
 	GrouppedUserBooking struct {
 		UserDisplayName string            `json:"userDisplayName"`
 		Bookings        []UserBookingItem `json:"bookings"`
+	}
+
+	PeriodModel struct {
+		Id              uuid.UUID `json:"id"`
+		From            time.Time `json:"from"`
+		To              time.Time `json:"to"`
+		IsCurrentPeriod bool      `json:"isCurrentPeriod"`
 	}
 )

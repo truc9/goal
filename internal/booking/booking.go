@@ -1,9 +1,10 @@
-package core
+package booking
 
 import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
@@ -17,7 +18,7 @@ type Booking struct {
 	Id              uuid.UUID `gorm:"primaryKey" json:"id"`
 	BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
 	UserId          uuid.UUID `json:"userId"`
-	User            User      `json:"user" gorm:"foreignKey:UserId"`
+	User            iam.User  `json:"user" gorm:"foreignKey:UserId"`
 	Date            time.Time `json:"date"`
 }
 

@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/truc9/goal/internal/core"
-	"github.com/truc9/goal/internal/core/enums"
+	"github.com/truc9/goal/internal/iam"
 	"gorm.io/gorm"
 )
 
@@ -15,12 +14,12 @@ type Seeder struct {
 
 func (s Seeder) Seed() {
 	var roleCount int64
-	if err := s.DB.Model(&core.Role{}).Count(&roleCount).Error; err == nil {
+	if err := s.DB.Model(&iam.Role{}).Count(&roleCount).Error; err == nil {
 		if roleCount == 0 {
 			x := time.Now()
-			adminRole, _ := core.CreateNewRole(enums.RoleAdminId, string(enums.RoleAdmin), "Administrator, highest permission role")
-			managerRole, _ := core.CreateNewRole(enums.RoleManagerId, string(enums.RoleManager), "Office Manager, 2nd highest permission role")
-			userRole, _ := core.CreateNewRole(enums.RoleUserId, string(enums.RoleUser), "Normal user role (employee...)")
+			adminRole, _ := iam.CreateNewRole(iam.RoleAdminId, string(iam.RoleAdmin), "Administrator, highest permission role")
+			managerRole, _ := iam.CreateNewRole(iam.RoleManagerId, string(iam.RoleManager), "Office Manager, 2nd highest permission role")
+			userRole, _ := iam.CreateNewRole(iam.RoleUserId, string(iam.RoleUser), "Normal user role (employee...)")
 			s.DB.Create(adminRole)
 			s.DB.Create(managerRole)
 			s.DB.Create(userRole)
@@ -31,13 +30,13 @@ func (s Seeder) Seed() {
 	// Create Admin user when seeding data
 	// TODO: provide password reset after the first login
 	var userCount int64
-	if err := s.DB.Model(&core.User{}).Count(&userCount).Error; err == nil {
+	if err := s.DB.Model(&iam.User{}).Count(&userCount).Error; err == nil {
 		if userCount == 0 {
 			x := time.Now()
 			// TODO: read seeding email/password from env
-			user, _ := core.CreateUser("Admin", "User", "admin@goal.com", "admin")
+			user, _ := iam.CreateUser("Admin", "User", "admin@goal.com", "admin")
 			user.SetPassword("admin")
-			user.SetRole(enums.RoleAdminId)
+			user.SetRole(iam.RoleAdminId)
 			s.DB.Create(&user)
 			fmt.Printf("Data seeding for Admin is completed in %v ms\n", time.Since(x).Milliseconds())
 		}

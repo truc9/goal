@@ -1,4 +1,4 @@
-package core
+package errors
 
 type Errors struct {
 	Message string `json:"message"`

@@ -1,6 +1,6 @@
-package model
+package stats
 
-type BookingOverall struct {
+type BookingModel struct {
 	Booked   int `json:"booked"`
 	Unbooked int `json:"unbooked"`
 	Total    int `json:"total"`

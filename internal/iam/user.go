@@ -1,12 +1,28 @@
-package core
+package iam
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/truc9/goal/internal/core/enums"
 	"golang.org/x/crypto/bcrypt"
+)
+
+type RoleType int
+
+const (
+	RoleAdminId   RoleType = 1
+	RoleManagerId RoleType = 2
+	RoleUserId    RoleType = 3
+)
+
+type RoleNameType string
+
+const (
+	RoleAdmin   RoleNameType = "admin"
+	RoleManager RoleNameType = "manager"
+	RoleUser    RoleNameType = "normal_user"
 )
 
 type User struct {
@@ -25,11 +41,11 @@ func (u *User) SetPassword(password string) {
 	u.HashPassword = hash
 }
 
-func (u *User) SetRole(roleId enums.RoleType) {
+func (u *User) SetRole(roleId RoleType) {
 	u.RoleId = int(roleId)
 }
 
-func (u *User) VerifyPassword(password string) bool {
+func (u User) VerifyPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.HashPassword), []byte(password))
 	return err == nil
 }
@@ -45,12 +61,33 @@ func CreateUser(firstName, lastName, email string, userName string) (*User, erro
 		LastName:  lastName,
 		Email:     email,
 		UserName:  userName,
-		RoleId:    int(enums.RoleUserId),
+		RoleId:    int(RoleUserId),
 	}
+
 	return user, nil
 }
 
 func hashPassword(pw string) (hash string) {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(pw), 14)
 	return string(bytes)
+}
+
+type Role struct {
+	Id          int    `gorm:"primaryKey" json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+func CreateNewRole(roleType RoleType, name, description string) (role *Role, err error) {
+	if len(name) == 0 {
+		return nil, errors.New("name is required")
+	}
+
+	res := &Role{
+		Id:          int(roleType),
+		Name:        name,
+		Description: description,
+	}
+
+	return res, nil
 }
