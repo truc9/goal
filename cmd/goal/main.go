@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/truc9/goal/internal/constants"
-	"github.com/truc9/goal/internal/controller"
+	"github.com/truc9/goal/internal/di"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/authz"
 )
@@ -27,15 +28,20 @@ func main() {
 
 	e.Static("/", "web/dist")
 
-	iamCtrl := controller.InitIamController()
-	periodCtrl := controller.InitPeriodController()
-	bookingCtrl := controller.InitBookingController()
-	statsService := controller.InitStatsService()
+	iamController := di.InitIamController()
+	periodController := di.InitPeriodController()
+	bookingController := di.InitBookingController()
+	statsService := di.InitStatsService()
+	scheduler := di.InitScheduler()
+
+	fmt.Println("starting scheduler...")
+	go scheduler.Execute()
+	fmt.Println("started scheduler...")
 
 	a := e.Group("api")
 	{
-		a.POST("/register", iamCtrl.RegisterUser)
-		a.POST("/login", iamCtrl.Login)
+		a.POST("/register", iamController.RegisterUser)
+		a.POST("/login", iamController.Login)
 	}
 
 	r := e.Group("api")
@@ -43,17 +49,17 @@ func main() {
 		r.Use(jwt.JWT([]byte(constants.Secret)))
 
 		// periods
-		r.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
-		r.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(iam.RoleAdmin, iam.RoleUser))
-		r.GET("/periods/next", periodCtrl.GetNextPeriod)
-		r.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
+		r.POST("/periods", periodController.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
+		r.GET("/periods", periodController.GetPeriods, authz.RequireRoles(iam.RoleAdmin, iam.RoleUser))
+		r.GET("/periods/next", periodController.GetNextPeriod)
+		r.GET("/periods/:bookingPeriodId/my-bookings", bookingController.GetMyBookings)
 
 		// Get booking info of all users
-		r.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(iam.RoleAdmin))
+		r.GET("/periods/:bookingPeriodId/bookings", bookingController.GetAllBookings, authz.RequireRoles(iam.RoleAdmin))
 
 		// bookings
-		r.POST("/bookings", bookingCtrl.SubmitBooking)
-		r.DELETE("/bookings/:bookingId", bookingCtrl.DeleteBooking)
+		r.POST("/bookings", bookingController.SubmitBooking)
+		r.DELETE("/bookings/:bookingId", bookingController.DeleteBooking)
 
 		// stats
 		r.GET("/stats/booking-overall", statsService.GetBookingOverallStats)

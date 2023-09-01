@@ -4,35 +4,37 @@
 //go:build !wireinject
 // +build !wireinject
 
-package controller
+package di
 
 import (
 	"github.com/truc9/goal/internal/booking"
+	"github.com/truc9/goal/internal/controller"
 	"github.com/truc9/goal/internal/db"
 	"github.com/truc9/goal/internal/iam"
+	"github.com/truc9/goal/internal/scheduler"
 	"github.com/truc9/goal/internal/stats"
 )
 
 // Injectors from wire.go:
 
-func InitBookingController() BookingController {
+func InitBookingController() controller.BookingController {
 	gormDB := db.New()
 	bookingService := booking.NewBookingService(gormDB)
-	bookingController := NewBookingController(bookingService)
+	bookingController := controller.NewBookingController(bookingService)
 	return bookingController
 }
 
-func InitPeriodController() PeriodController {
+func InitPeriodController() controller.PeriodController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
-	periodController := NewPeriodController(periodService)
+	periodController := controller.NewPeriodController(periodService)
 	return periodController
 }
 
-func InitIamController() IamController {
+func InitIamController() controller.IamController {
 	gormDB := db.New()
 	iamService := iam.NewIamService(gormDB)
-	iamController := NewIamController(iamService)
+	iamController := controller.NewIamController(iamService)
 	return iamController
 }
 
@@ -41,4 +43,11 @@ func InitStatsService() stats.StatsService {
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
 	return statsService
+}
+
+func InitScheduler() scheduler.DailyScheduler {
+	gormDB := db.New()
+	periodService := booking.NewPeriodService(gormDB)
+	dailyScheduler := scheduler.NewDailyScheduler(periodService)
+	return dailyScheduler
 }
