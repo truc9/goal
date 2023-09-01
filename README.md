@@ -14,17 +14,21 @@ Simple Office Management System
 - [x] Booking Dashboard
 - [x] Role-based AuthZ
 - [ ] Realtime Update for Dashboard
-- [ ] Charts for Dashboard
+- [x] Charts for Dashboard
 
 ## Screenshots
 
 ![0](art/assets/goal-00.png)
+
+![3](art/assets/goal-04.png)
 
 ![1](art/assets/goal-01.png)
 
 ![2](art/assets/goal-02.png)
 
 ![3](art/assets/goal-03.png)
+
+
 
 ## Development
 
