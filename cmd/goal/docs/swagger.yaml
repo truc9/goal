@@ -1,0 +1,14 @@
+basePath: /api
+info:
+  contact:
+    email: truchjkl@gmail.com
+    name: GOAL Support
+  description: This is a simple office management REST API.
+  license:
+    name: MIT License
+    url: http://github.com/truc9/goal/LICENSE
+  termsOfService: http://swagger.io/terms/
+  title: GOAL Swagger API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

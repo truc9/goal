@@ -7,12 +7,26 @@ import (
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	_ "github.com/swaggo/echo-swagger/example/docs"
 	"github.com/truc9/goal/internal/config"
 	"github.com/truc9/goal/internal/di"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/authz"
 )
 
+// @title GOAL Swagger API
+// @version 1.0
+// @description This is a simple office management REST API.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name GOAL Support
+// @contact.email truchjkl@gmail.com
+
+// @license.name MIT License
+// @license.url http://github.com/truc9/goal/LICENSE
+
+// @BasePath /api
 func main() {
 
 	e := echo.New()
@@ -37,6 +51,8 @@ func main() {
 	fmt.Println("starting scheduler...")
 	go scheduler.Execute()
 	fmt.Println("started scheduler...")
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	a := e.Group("api")
 	{
