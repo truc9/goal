@@ -1,10 +1,6 @@
 package stats
 
 import (
-	"fmt"
-	"net/http"
-
-	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/iam"
 	"gorm.io/gorm"
@@ -22,7 +18,7 @@ func NewStatService(db *gorm.DB, periodService booking.PeriodService) StatsServi
 	}
 }
 
-func (s *StatsService) GetBookingOverallStats(c echo.Context) (err error) {
+func (s *StatsService) GetBookingOverallStats() (model BookingModel, err error) {
 	var userCount int64
 	var bookedCount int64
 	s.db.Model(&iam.User{}).Count(&userCount)
@@ -34,11 +30,9 @@ func (s *StatsService) GetBookingOverallStats(c echo.Context) (err error) {
 		Find(&booking.Booking{}).
 		Count(&bookedCount)
 
-	fmt.Println(bookedCount)
-
-	return c.JSON(http.StatusOK, BookingModel{
+	return BookingModel{
 		Booked:   int(bookedCount),
 		Unbooked: int(userCount) - int(bookedCount),
 		Total:    int(userCount),
-	})
+	}, nil
 }

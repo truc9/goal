@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
+	"github.com/labstack/echo-contrib/echoprometheus"
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	echoSwagger "github.com/swaggo/echo-swagger"
+	"github.com/labstack/gommon/log"
+	sg "github.com/swaggo/echo-swagger"
 	_ "github.com/truc9/goal/docs"
 	"github.com/truc9/goal/internal/config"
 	"github.com/truc9/goal/internal/di"
@@ -29,8 +30,9 @@ import (
 func main() {
 
 	e := echo.New()
+	e.Logger.SetLevel(log.INFO)
 
-	e.Use(middleware.Logger())
+	e.Use(echoprometheus.NewMiddleware("monitoring"))
 	e.Use(middleware.Secure())
 	e.Use(middleware.RequestID())
 
@@ -40,22 +42,22 @@ func main() {
 	}))
 
 	e.Static("/", "web/dist")
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	e.GET("/swagger/*", sg.WrapHandler)
+	e.GET("/metrics", echoprometheus.NewHandler())
 
-	iamController := di.InitIamController()
-	periodController := di.InitPeriodController()
-	bookingController := di.InitBookingController()
-	statsService := di.InitStatsService()
-	scheduler := di.InitScheduler()
+	scheduler := di.GetScheduler()
+	iamCtrl := di.GetIAMController()
+	periodCtrl := di.GetPeriodController()
+	bookingCtrl := di.GetBookingController()
+	statCtrl := di.GetStatController()
+	wsCtrl := di.GetWSController()
 
-	fmt.Println("starting scheduler...")
 	go scheduler.Execute()
-	fmt.Println("started scheduler...")
 
 	a := e.Group("api")
 	{
-		a.POST("/register", iamController.RegisterUser)
-		a.POST("/login", iamController.Login)
+		a.POST("/register", iamCtrl.RegisterUser)
+		a.POST("/login", iamCtrl.Login)
 	}
 
 	r := e.Group("api")
@@ -63,20 +65,23 @@ func main() {
 		r.Use(jwt.JWT([]byte(config.Secret)))
 
 		// periods
-		r.POST("/periods", periodController.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
-		r.GET("/periods", periodController.GetPeriods, authz.RequireRoles(iam.RoleAdmin, iam.RoleUser))
-		r.GET("/periods/next", periodController.GetNextPeriod)
-		r.GET("/periods/:bookingPeriodId/my-bookings", bookingController.GetMyBookings)
+		r.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
+		r.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(iam.RoleAdmin, iam.RoleUser))
+		r.GET("/periods/next", periodCtrl.GetNextPeriod)
+		r.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
 
 		// Get booking info of all users
-		r.GET("/periods/:bookingPeriodId/bookings", bookingController.GetAllBookings, authz.RequireRoles(iam.RoleAdmin))
+		r.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(iam.RoleAdmin))
 
 		// bookings
-		r.POST("/bookings", bookingController.SubmitBooking)
-		r.DELETE("/bookings/:bookingId", bookingController.DeleteBooking)
+		r.POST("/bookings", bookingCtrl.SubmitBooking)
+		r.DELETE("/bookings/:bookingId", bookingCtrl.DeleteBooking)
 
 		// stats
-		r.GET("/stats/booking-overall", statsService.GetBookingOverallStats)
+		r.GET("/stats/booking-overall", statCtrl.GetBookingOverallStats)
+
+		// websocket
+		r.GET("/ws", wsCtrl.HandleWebSocket)
 	}
 
 	e.Logger.Fatal(e.Start(":8000"))

@@ -9,7 +9,6 @@ import (
 	"github.com/truc9/goal/internal/controller"
 	"github.com/truc9/goal/internal/db"
 	"github.com/truc9/goal/internal/scheduler"
-	"github.com/truc9/goal/internal/stats"
 )
 
 func InitBookingController() controller.BookingController {
@@ -27,12 +26,17 @@ func InitIamController() controller.IamController {
 	return controller.IamController{}
 }
 
-func InitStatsService() stats.StatsService {
+func InitStatController() controller.StatController {
 	wire.Build(StatSet)
-	return stats.StatsService{}
+	return controller.StatController{}
 }
 
 func InitScheduler() scheduler.DailyScheduler {
 	wire.Build(scheduler.NewDailyScheduler, booking.NewPeriodService, db.New)
 	return scheduler.DailyScheduler{}
+}
+
+func InitWsController() controller.WsController {
+	wire.Build(WsSet)
+	return controller.WsController{}
 }

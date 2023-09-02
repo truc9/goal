@@ -9,6 +9,9 @@ test_cov:
 build:
 	go build ./cmd/goal/main.go
 
+wire:
+	cd internal/di && wire
+
 run:
 	go run ./cmd/goal/main.go
 
