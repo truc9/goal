@@ -27,8 +27,13 @@ Simple Office Management System
 ![3](art/assets/goal-03.png)
 
 
-
 ## Development
+
+### Environment Variable
+```
+<!-- For signing JWT token -->
+SECRET_KEY=
+```
 
 ### Start API (hot reload)
 ```

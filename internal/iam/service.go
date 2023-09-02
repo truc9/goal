@@ -7,8 +7,9 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/samber/lo"
-	"github.com/truc9/goal/internal/constants"
+	"github.com/truc9/goal/internal/config"
 	"gorm.io/gorm"
 )
 
@@ -101,7 +102,7 @@ func (s IamService) Login(req LoginModel) (*LoginResult, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	signedToken, err := token.SignedString([]byte(constants.Secret))
+	signedToken, err := token.SignedString([]byte(config.SecretKey))
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,7 @@ import (
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/truc9/goal/internal/constants"
+	"github.com/truc9/goal/internal/config"
 	"github.com/truc9/goal/internal/di"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/authz"
@@ -46,7 +46,7 @@ func main() {
 
 	r := e.Group("api")
 	{
-		r.Use(jwt.JWT([]byte(constants.Secret)))
+		r.Use(jwt.JWT([]byte(config.SecretKey)))
 
 		// periods
 		r.POST("/periods", periodController.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
