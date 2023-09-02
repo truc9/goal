@@ -12,7 +12,7 @@ func init() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal("error while loading .env file")
+		log.Fatal("Error while loading .env file, %v", err)
 	}
 
 	envMap, _ := godotenv.Read()

@@ -9,9 +9,6 @@ on:
   pull_request:
     branches: ["main"]
 
-env:
-  SECRET_KEY: GMP6wYUsfg9mO2jXy0NQRZzQFuFGiRNi
-
 jobs:
   build:
     runs-on: ubuntu-latest
