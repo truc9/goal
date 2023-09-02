@@ -60,7 +60,7 @@ func main() {
 
 	r := e.Group("api")
 	{
-		r.Use(jwt.JWT([]byte(config.SecretKey)))
+		r.Use(jwt.JWT([]byte(config.Secret)))
 
 		// periods
 		r.POST("/periods", periodController.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))

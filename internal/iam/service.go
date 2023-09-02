@@ -102,7 +102,7 @@ func (s IamService) Login(req LoginModel) (*LoginResult, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	signedToken, err := token.SignedString([]byte(config.SecretKey))
+	signedToken, err := token.SignedString([]byte(config.Secret))
 	if err != nil {
 		return nil, err
 	}

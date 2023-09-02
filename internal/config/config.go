@@ -1,21 +1,26 @@
 package config
 
 import (
-	"log"
+	"fmt"
+	"os"
 
 	"github.com/joho/godotenv"
 )
 
-var SecretKey string
+var Secret string
+
+const (
+	secretKey = "SECRET_KEY"
+)
 
 func init() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal("Error while loading .env file, %v", err)
+		fmt.Println("Environment .env does not exist. env variables getting from pipeline")
 	}
 
-	envMap, _ := godotenv.Read()
+	Secret = os.Getenv(secretKey)
 
-	SecretKey = envMap["SECRET_KEY"]
+	fmt.Printf("Found secret %s\n", Secret)
 }
