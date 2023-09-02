@@ -16,7 +16,7 @@ func NewBookingService(db *gorm.DB) BookingService {
 	}
 }
 
-func (h BookingService) CreateBooking(userId uuid.UUID, model Booking) (*Booking, error) {
+func (h BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Booking, error) {
 	booking := &Booking{
 		Id:              uuid.New(),
 		UserId:          userId,

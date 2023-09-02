@@ -11,3 +11,6 @@ build:
 
 run:
 	go run ./cmd/goal/main.go
+
+doc:
+	swag init -pd -g main.go

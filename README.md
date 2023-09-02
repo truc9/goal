@@ -29,6 +29,12 @@ Simple Office Management System
 
 ## Development
 
+### Swagger API
+```
+http://localhost:8000/swagger/index.html#/
+```
+![0](art/assets/goal-swagger.png)
+
 ### Environment Variable
 ```
 <!-- For signing JWT token -->

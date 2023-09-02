@@ -1,0 +1,151 @@
+basePath: /api
+definitions:
+  booking.Booking:
+    properties:
+      bookingPeriodId:
+        type: string
+      date:
+        type: string
+      id:
+        type: string
+      user:
+        $ref: '#/definitions/iam.User'
+      userId:
+        type: string
+    type: object
+  booking.GrouppedUserBooking:
+    properties:
+      bookings:
+        items:
+          $ref: '#/definitions/booking.UserBookingItem'
+        type: array
+      userDisplayName:
+        type: string
+    type: object
+  booking.UserBookingItem:
+    properties:
+      bookingDate:
+        type: string
+      bookingId:
+        type: string
+      bookingPeriodId:
+        type: string
+      userDisplayName:
+        type: string
+    type: object
+  iam.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  iam.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      hashPassword:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      role:
+        $ref: '#/definitions/iam.Role'
+      roleId:
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: truchjkl@gmail.com
+    name: Support
+  description: This is a simple office management REST API.
+  license:
+    name: MIT License
+    url: http://github.com/truc9/goal/LICENSE
+  title: GOAL Swagger API
+  version: "1.0"
+paths:
+  /api/bookings:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/booking.GrouppedUserBooking'
+            type: array
+      summary: Get all bookings
+      tags:
+      - bookings
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Submit Booking
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/booking.Booking'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booking.Booking'
+      summary: Submit booking
+      tags:
+      - bookings
+  /api/bookings/{bookingId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booking ID
+        in: path
+        name: bookingId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete booking
+      tags:
+      - bookings
+  /api/bookings/{bookingPeriodId}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booking Period ID
+        in: path
+        name: bookingPeriodId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/booking.Booking'
+            type: array
+      summary: Get all bookings by Period ID
+      tags:
+      - bookings
+swagger: "2.0"
