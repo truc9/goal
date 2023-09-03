@@ -4,7 +4,7 @@ import { ClickableCard } from "./ClickableCard"
 import { useLocalAuth } from "../../context/AuthContext"
 import { Card } from "../../components/Card"
 import { useEffect, useState } from "react"
-import httpService from "../../services/httpService"
+import httpService from "../../services/httpClient"
 import { PieChart, Pie, Tooltip, Legend } from 'recharts'
 
 const Home = () => {

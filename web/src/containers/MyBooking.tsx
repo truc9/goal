@@ -6,6 +6,7 @@ import { PageContainer } from "../components/PageContainer"
 import bookingService from "../services/bookingService"
 import { BookingPeriod } from "../services/models/booking"
 import { FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import useWebSocket from "react-use-websocket"
 
 dayjs.extend(weekday)
 
@@ -21,6 +22,17 @@ const MyBooking: React.FC = () => {
 
     const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
     const [index, setIndex] = useState(0)
+
+    const { sendMessage, lastMessage } = useWebSocket("ws://localhost:8000/ws", {
+        onOpen: () => {
+            console.log("WebSocket opened")
+        },
+        shouldReconnect: () => true
+    })
+
+    useEffect(() => {
+        console.log(lastMessage)
+    }, [lastMessage])
 
     useEffect(() => {
         loadPeriods()
@@ -61,11 +73,13 @@ const MyBooking: React.FC = () => {
     const createBooking = async (bookingPeriodId: string, d: Date) => {
         await bookingService.createBooking(bookingPeriodId, d)
         loadMyBookings(bookingPeriodId)
+        sendMessage('booking_updated')
     }
 
     const cancelBooking = async (bookingPeriodId: string, bookingId: string) => {
         await bookingService.deleteBooking(bookingId)
         loadMyBookings(bookingPeriodId)
+        sendMessage('booking_updated')
     }
 
     const goNext = () => {

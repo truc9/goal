@@ -12,7 +12,7 @@ const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
     { field: 'to', headerName: 'To', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
     {
-        field: 'isCurrentWeek',
+        field: 'isCurrentPeriod',
         headerName: 'Current Period ?',
         width: 400,
         renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-green-500" /> : null

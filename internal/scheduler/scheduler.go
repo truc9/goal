@@ -20,10 +20,14 @@ func NewDailyScheduler(periodService booking.PeriodService) DailyScheduler {
 
 func (ds DailyScheduler) Execute() {
 	scheduler := gocron.NewScheduler(time.UTC)
-	fmt.Println("Executing...")
 	scheduler.Every(1).Day().Do(func() {
-		ds.periodService.CreateNextPeriod()
-		fmt.Printf("%v executed\n", time.Now())
+		period, err := ds.periodService.CreateNextPeriod()
+		if err != nil {
+			fmt.Printf("[ERROR] %s\n", err)
+		} else {
+			fmt.Println(period)
+		}
+		fmt.Printf("[%v] Schedule executed\n", time.Now())
 	})
 
 	scheduler.StartAsync()
