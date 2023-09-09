@@ -2,8 +2,8 @@ import React, { Suspense } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { FiGrid, FiCheckCircle, FiLogOut, FiCalendar, FiBarChart2 } from 'react-icons/fi'
 import { Loading } from '../components/Loading'
-import { useLocalAuth } from '../context/AuthContext'
 import { IconButton } from '@mui/material'
+import useLocalAuth from '../hooks/useLocalAuth'
 
 const Layout: React.FC = () => {
     const { user, signout } = useLocalAuth()

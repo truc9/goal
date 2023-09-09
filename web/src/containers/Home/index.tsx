@@ -1,22 +1,28 @@
 import { FiBarChart2, FiCalendar, FiCheckCircle, FiGrid } from "react-icons/fi"
 import { PageContainer } from "../../components/PageContainer"
-import { ClickableCard } from "./ClickableCard"
-import { useLocalAuth } from "../../context/AuthContext"
+import { ClickableCard } from "../../components/ClickableCard"
 import { Card } from "../../components/Card"
 import { useEffect, useState } from "react"
-import httpService from "../../services/httpClient"
 import { PieChart, Pie, Tooltip, Legend } from 'recharts'
+import httpService from "../../services/httpClient"
+import useLocalAuth from "../../hooks/useLocalAuth"
+import useWebSocket from "../../hooks/useWebSocket"
 
 const Home = () => {
-    const { user } = useLocalAuth()
     const [totalEmployee, setTotalEmployee] = useState(0)
     const [stats, setStats] = useState<any[]>([])
+    const { user } = useLocalAuth()
+    const ws = useWebSocket()
+
+    ws.onMessage((data) => {
+        console.log(data)
+    })
 
     useEffect(() => {
-        load()
+        handleLoad()
     }, [])
 
-    const load = async () => {
+    const handleLoad = async () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
         setTotalEmployee(total)
         setStats([

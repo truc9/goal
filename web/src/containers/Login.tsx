@@ -1,8 +1,8 @@
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
-import { useLocalAuth } from '../context/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SkeletonLoading } from '../components/SkeletonLoading'
+import useLocalAuth from '../hooks/useLocalAuth'
 
 const Login = () => {
     const location = useLocation()

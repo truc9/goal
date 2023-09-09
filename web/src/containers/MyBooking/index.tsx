@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react"
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import { IoBookOutline, IoCheckmarkCircle } from "react-icons/io5"
-import { PageContainer } from "../components/PageContainer"
-import bookingService from "../services/bookingService"
-import { BookingPeriod } from "../services/models/booking"
+import { PageContainer } from "../../components/PageContainer"
+import bookingService from "../../services/bookingService"
+import { BookingPeriod } from "../../models/booking"
 import { FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi"
-import useWebSocket from "react-use-websocket"
+import useWebSocket from "../../hooks/useWebSocket"
 
 dayjs.extend(weekday)
 
@@ -19,20 +19,9 @@ const MyBooking: React.FC = () => {
     const [periods, setPeriods] = useState<BookingPeriod[]>([])
     const [dates, setDates] = useState<Date[]>([])
     const [bookingDates, setBookingDates] = useState<BookingDate[]>([])
-
     const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
     const [index, setIndex] = useState(0)
-
-    const { sendMessage, lastMessage } = useWebSocket("ws://localhost:8000/ws", {
-        onOpen: () => {
-            console.log("WebSocket opened")
-        },
-        shouldReconnect: () => true
-    })
-
-    useEffect(() => {
-        console.log(lastMessage)
-    }, [lastMessage])
+    const ws = useWebSocket()
 
     useEffect(() => {
         loadPeriods()
@@ -73,13 +62,13 @@ const MyBooking: React.FC = () => {
     const createBooking = async (bookingPeriodId: string, d: Date) => {
         await bookingService.createBooking(bookingPeriodId, d)
         loadMyBookings(bookingPeriodId)
-        sendMessage('booking_updated')
+        ws.send("booking_updated")
     }
 
     const cancelBooking = async (bookingPeriodId: string, bookingId: string) => {
         await bookingService.deleteBooking(bookingId)
         loadMyBookings(bookingPeriodId)
-        sendMessage('booking_updated')
+        ws.send("booking_updated")
     }
 
     const goNext = () => {

@@ -54,8 +54,8 @@ dependencies:
     specifier: ^6.14.2
     version: 6.14.2(react-dom@18.2.0)(react@18.2.0)
   react-use-websocket:
-    specifier: ^4.3.1
-    version: 4.3.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^4.4.0
+    version: 4.4.0(react-dom@18.2.0)(react@18.2.0)
   recharts:
     specifier: ^2.7.3
     version: 2.7.3(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -5263,8 +5263,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-use-websocket@4.3.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zHPLWrgcqydJaak2O5V9hiz4q2dwkwqNQqpgFVmSuPxLZdsZlnDs8DVHy3WtHH+A6ms/8aHIyX7+7ulOcrnR0Q==}
+  /react-use-websocket@4.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-V48JEPMwTUp31oXxBZYTk27aHOHwTeYEhCOb2uPXwcnzolMkLacesRdu4TmEuN5QeuKRenEjCBMVKPsB98aaDg==}
     peerDependencies:
       react: '>= 18.0.0'
       react-dom: '>= 18.0.0'

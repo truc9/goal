@@ -29,21 +29,21 @@ import (
 // @BasePath /api
 func main() {
 
-	e := echo.New()
-	e.Logger.SetLevel(log.INFO)
+	app := echo.New()
+	app.Logger.SetLevel(log.INFO)
 
-	e.Use(echoprometheus.NewMiddleware("monitoring"))
-	e.Use(middleware.Secure())
-	e.Use(middleware.RequestID())
+	app.Use(echoprometheus.NewMiddleware("monitoring"))
+	app.Use(middleware.Secure())
+	app.Use(middleware.RequestID())
 
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:5173", "http://*.goal.co.uk"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
-	e.Static("/", "web/dist")
-	e.GET("/swagger/*", sg.WrapHandler)
-	e.GET("/metrics", echoprometheus.NewHandler())
+	app.Static("/", "web/dist")
+	app.GET("/swagger/*", sg.WrapHandler)
+	app.GET("/metrics", echoprometheus.NewHandler())
 
 	scheduler := di.GetScheduler()
 	iamCtrl := di.GetIAMController()
@@ -54,13 +54,15 @@ func main() {
 
 	go scheduler.Execute()
 
-	a := e.Group("api")
+	app.GET("/ws", wsCtrl.ServeWS)
+
+	a := app.Group("api")
 	{
 		a.POST("/register", iamCtrl.RegisterUser)
 		a.POST("/login", iamCtrl.Login)
 	}
 
-	r := e.Group("api")
+	r := app.Group("api")
 	{
 		r.Use(jwt.JWT([]byte(config.Secret)))
 
@@ -80,9 +82,7 @@ func main() {
 		// stats
 		r.GET("/stats/booking-overall", statCtrl.GetBookingOverallStats)
 
-		// websocket
-		r.GET("/ws", wsCtrl.HandleWebSocket)
 	}
 
-	e.Logger.Fatal(e.Start(":8000"))
+	app.Logger.Fatal(app.Start(":8000"))
 }

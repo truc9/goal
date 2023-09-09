@@ -1,4 +1,4 @@
-import { Booking, BookingPeriod } from "./models/booking"
+import { Booking, BookingPeriod } from "../models/booking"
 import httpClient from "./httpClient"
 import dayjs from "dayjs"
 

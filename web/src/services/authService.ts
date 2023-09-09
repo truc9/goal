@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AuthUser, RegistrationUser } from './models/auth'
+import { AuthUser, RegistrationUser } from '../models/auth'
 import config from '../config'
 
 axios.interceptors.response.use((res) => res, (err) => {

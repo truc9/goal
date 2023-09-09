@@ -2,55 +2,75 @@ package controller
 
 import (
 	"fmt"
-	"time"
+	"log"
+	"net/http"
 
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/stats"
-	"golang.org/x/net/websocket"
 )
 
-type NotificationEvent string
+type event string
+
+type payload interface{}
 
 const (
-	BookingUpdated   NotificationEvent = "booking_updated"
-	SomeOneHasJoined NotificationEvent = "someone_has_joined"
+	BookingUpdated   event = "booking_updated"
+	SomeOneHasJoined event = "user_joined"
 )
 
-type WsController struct {
-	stats    stats.StatsService
-	bookings booking.BookingService
-}
+type (
+	WebSocketController struct {
+		stats    stats.StatsService
+		bookings booking.BookingService
+	}
 
-func NewWsController(stats stats.StatsService, bookings booking.BookingService) WsController {
-	return WsController{
+	notification struct {
+		Event   event   `json:"event"`
+		Payload payload `json:"payload"`
+	}
+)
+
+func NewWebSocketController(stats stats.StatsService, bookings booking.BookingService) WebSocketController {
+	return WebSocketController{
 		stats:    stats,
 		bookings: bookings,
 	}
 }
 
-func (ctrl WsController) HandleWebSocket(c echo.Context) error {
-	websocket.Handler(func(ws *websocket.Conn) {
-		defer ws.Close()
-		for {
-			var event NotificationEvent = ""
-			err := websocket.Message.Receive(ws, &event)
-			if err != nil {
-				c.Logger().Error(err)
-			}
+var (
+	upgrader = websocket.Upgrader{}
+)
 
-			switch event {
-			case BookingUpdated:
-				stats, _ := ctrl.stats.GetBookingOverallStats()
-				websocket.Message.Send(ws, stats)
-				fmt.Printf("Booking update at %s", time.Now())
-			case SomeOneHasJoined:
+func (ctrl WebSocketController) ServeWS(c echo.Context) error {
+	//TODO: check origin
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
 
-			default:
-				fmt.Println("Noop!")
-			}
+	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+	if err != nil {
+		log.Fatalf("Failed ws with %v", err)
+	}
+
+	defer ws.Close()
+
+	for {
+		_, msg, err := ws.ReadMessage()
+		if err != nil {
+			c.Logger().Error(err)
 		}
 
-	}).ServeHTTP(c.Response(), c.Request())
-	return nil
+		switch string(msg) {
+		case string(BookingUpdated):
+			data, _ := ctrl.stats.GetBookingOverallStats()
+			fmt.Println("dispatch notification")
+			fmt.Println(data)
+			ws.WriteJSON(notification{
+				Event:   BookingUpdated,
+				Payload: data,
+			})
+		}
+	}
 }

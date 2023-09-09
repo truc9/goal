@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react"
 import authService from "../services/authService"
-import { AuthUser } from "../services/models/auth"
+import { AuthUser } from "../models/auth"
 
 type VoidFn = (error?: string) => void
 
@@ -11,7 +11,7 @@ interface AuthContextValue {
     signout: (callback?: VoidFn) => void
 }
 
-const AuthContext = React.createContext<AuthContextValue>(null!)
+export const AuthContext = React.createContext<AuthContextValue>(null!)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<AuthUser>(null!)
@@ -63,6 +63,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     )
 }
 
-export const useLocalAuth = () => {
-    return React.useContext(AuthContext)
-}

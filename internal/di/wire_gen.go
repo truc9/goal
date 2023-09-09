@@ -53,11 +53,11 @@ func GetScheduler() scheduler.DailyScheduler {
 	return dailyScheduler
 }
 
-func GetWSController() controller.WsController {
+func GetWSController() controller.WebSocketController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
 	bookingService := booking.NewBookingService(gormDB)
-	wsController := controller.NewWsController(statsService, bookingService)
+	wsController := controller.NewWebSocketController(statsService, bookingService)
 	return wsController
 }

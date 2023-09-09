@@ -1,9 +1,9 @@
 import { FiBarChart2 } from "react-icons/fi"
 import dayjs from "dayjs"
-import { PageContainer } from "../components/PageContainer"
+import { PageContainer } from "../../components/PageContainer"
 import { useEffect, useState } from "react"
-import bookingService from "../services/bookingService"
-import { BookingPeriod, UserBooking } from "../services/models/booking"
+import bookingService from "../../services/bookingService"
+import { BookingPeriod, UserBooking } from "../../models/booking"
 import { IoCheckmarkCircle, IoCheckmarkCircleOutline } from "react-icons/io5"
 
 const BookingDashboard: React.FC = () => {
@@ -12,7 +12,7 @@ const BookingDashboard: React.FC = () => {
     const [nextPeriod, setNextPeriod] = useState<BookingPeriod>()
 
     useEffect(() => {
-        loadNextPeriod()
+        handleNextPeriod()
     }, [])
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const BookingDashboard: React.FC = () => {
         }
     }, [nextPeriod])
 
-    const loadNextPeriod = async () => {
+    const handleNextPeriod = async () => {
         const period = await bookingService.getNextPeriod()
         setNextPeriod(period)
     }

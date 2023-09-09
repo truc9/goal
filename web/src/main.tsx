@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom'
 import './main.css'
 import { AuthProvider } from './context/AuthContext.tsx'
 import { Loading } from './components/Loading.tsx'
+import { WebSocketProvider } from './context/WebSocketContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
         <AuthProvider>
-          <App />
+          <WebSocketProvider>
+            <App />
+          </WebSocketProvider>
         </AuthProvider>
       </Suspense>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from "react"
-import { useLocalAuth } from "../context/AuthContext"
 import { Navigate, useLocation } from "react-router-dom"
+import useLocalAuth from "../hooks/useLocalAuth"
 
 interface Props {
     children: React.ReactNode
