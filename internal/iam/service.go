@@ -98,8 +98,6 @@ func (s IamService) Login(req LoginModel) (*LoginResult, error) {
 		},
 	}
 
-	fmt.Printf("Auth user: %v\n", claims.Role)
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	signedToken, err := token.SignedString([]byte(config.Secret))

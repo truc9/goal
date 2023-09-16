@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SkeletonLoading } from '../components/SkeletonLoading'
 import useLocalAuth from '../hooks/useLocalAuth'
@@ -14,6 +14,13 @@ const Login = () => {
         password: ''
     })
 
+    useEffect(() => {
+        if (auth.checkIfUserLoggedIn()) {
+            const from = location.state?.from?.pathname || "/"
+            navigate(from, { replace: true })
+        }
+    }, [auth, location.state?.from?.pathname, navigate])
+
     async function handleSignIn() {
         setLoading(true)
         const from = location.state?.from?.pathname || "/"
@@ -22,7 +29,6 @@ const Login = () => {
                 if (!error) {
                     navigate(from, { replace: true })
                 }
-                setLoading(false)
             })
         }
     }
@@ -32,12 +38,6 @@ const Login = () => {
             ...user,
             [e.target.name]: e.target.value
         })
-    }
-
-    if (auth.checkIfUserLoggedIn()) {
-        const from = location.state?.from?.pathname || "/"
-        navigate(from, { replace: true })
-        return
     }
 
     return (

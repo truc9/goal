@@ -15,7 +15,14 @@ const Home = () => {
     const ws = useWebSocket()
 
     ws.onMessage((data) => {
-        console.log(data)
+        if (data.event === "booking_updated") {
+            const payload = data.payload
+            setTotalEmployee(payload.total)
+            setStats([
+                { name: 'Booked', value: payload.booked, fill: "#22C5BA" },
+                { name: 'Unbooked', value: payload.unbooked, fill: "#9E36E3" },
+            ])
+        }
     })
 
     useEffect(() => {
@@ -26,8 +33,8 @@ const Home = () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
         setTotalEmployee(total)
         setStats([
-            { name: 'Booked', value: booked, fill: "#22c55e" },
-            { name: 'Unbooked', value: unbooked, fill: "#6366f1" },
+            { name: 'Booked', value: booked, fill: "#22C5BA" },
+            { name: 'Unbooked', value: unbooked, fill: "#9E36E3" },
         ])
     }
 

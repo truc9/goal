@@ -1,34 +1,21 @@
 package controller
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/stats"
-)
-
-type event string
-
-type payload interface{}
-
-const (
-	BookingUpdated   event = "booking_updated"
-	SomeOneHasJoined event = "user_joined"
+	"github.com/truc9/goal/internal/ws"
 )
 
 type (
 	WebSocketController struct {
 		stats    stats.StatsService
 		bookings booking.BookingService
-	}
-
-	notification struct {
-		Event   event   `json:"event"`
-		Payload payload `json:"payload"`
 	}
 )
 
@@ -43,34 +30,36 @@ var (
 	upgrader = websocket.Upgrader{}
 )
 
-func (ctrl WebSocketController) ServeWS(c echo.Context) error {
-	//TODO: check origin
+func (ctrl WebSocketController) ServeWS(ctx echo.Context, h *ws.Hub) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
-		return true
+		return strings.Contains(r.Host, "localhost") ||
+			strings.Contains(r.Host, "app.goal.co.uk")
 	}
 
-	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+	conn, err := upgrader.Upgrade(ctx.Response(), ctx.Request(), nil)
 	if err != nil {
-		log.Fatalf("Failed ws with %v", err)
+		log.Fatalf("Failed ws with %v\n", err)
 	}
 
-	defer ws.Close()
+	defer conn.Close()
 
-	for {
-		_, msg, err := ws.ReadMessage()
-		if err != nil {
-			c.Logger().Error(err)
-		}
+	cl := ws.NewClient(conn)
+	h.AddClient(cl)
 
-		switch string(msg) {
-		case string(BookingUpdated):
-			data, _ := ctrl.stats.GetBookingOverallStats()
-			fmt.Println("dispatch notification")
-			fmt.Println(data)
-			ws.WriteJSON(notification{
-				Event:   BookingUpdated,
-				Payload: data,
-			})
-		}
+	notification := &ws.Notification{}
+	err = conn.ReadJSON(notification)
+	if err != nil {
+		log.Printf("error when read messasge %v", err)
+		h.RemoveClient(cl)
+		return
+	}
+
+	switch notification.Event {
+	case ws.BookingUpdated:
+		log.Println("booking updated ack")
+		data, _ := ctrl.stats.GetBookingOverallStats()
+		h.AddPayload(data)
+	default:
+		log.Println("unhandled")
 	}
 }

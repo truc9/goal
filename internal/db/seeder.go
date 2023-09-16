@@ -1,7 +1,7 @@
 package db
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/truc9/goal/internal/iam"
@@ -23,7 +23,7 @@ func (s Seeder) Seed() {
 			s.DB.Create(adminRole)
 			s.DB.Create(managerRole)
 			s.DB.Create(userRole)
-			fmt.Printf("Data seeding for Role is completed in %v ms\n", time.Since(x).Milliseconds())
+			log.Printf("Data seeding for Role is completed in %v ms\n", time.Since(x).Milliseconds())
 		}
 	}
 
@@ -38,7 +38,7 @@ func (s Seeder) Seed() {
 			user.SetPassword("admin")
 			user.SetRole(iam.RoleAdminId)
 			s.DB.Create(&user)
-			fmt.Printf("Data seeding for Admin is completed in %v ms\n", time.Since(x).Milliseconds())
+			log.Printf("Data seeding for Admin is completed in %v ms\n", time.Since(x).Milliseconds())
 		}
 	}
 }

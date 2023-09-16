@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/labstack/echo-contrib/echoprometheus"
 	jwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -14,6 +13,7 @@ import (
 	"github.com/truc9/goal/internal/di"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/authz"
+	"github.com/truc9/goal/internal/ws"
 )
 
 // @title GOAL Swagger API
@@ -32,10 +32,9 @@ func main() {
 	app := echo.New()
 	app.Logger.SetLevel(log.INFO)
 
-	app.Use(echoprometheus.NewMiddleware("monitoring"))
+	// app.Use(echoprometheus.NewMiddleware("monitoring"))
 	app.Use(middleware.Secure())
 	app.Use(middleware.RequestID())
-
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:5173", "http://*.goal.co.uk"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
@@ -43,7 +42,7 @@ func main() {
 
 	app.Static("/", "web/dist")
 	app.GET("/swagger/*", sg.WrapHandler)
-	app.GET("/metrics", echoprometheus.NewHandler())
+	// app.GET("/metrics", echoprometheus.NewHandler())
 
 	scheduler := di.GetScheduler()
 	iamCtrl := di.GetIAMController()
@@ -52,9 +51,17 @@ func main() {
 	statCtrl := di.GetStatController()
 	wsCtrl := di.GetWSController()
 
+	// init & run hub in a different go routine
+	hub := ws.NewHub()
+	go hub.Run()
+
+	// run schedule in a differnt go routine
 	go scheduler.Execute()
 
-	app.GET("/ws", wsCtrl.ServeWS)
+	app.GET("/ws", func(c echo.Context) error {
+		wsCtrl.ServeWS(c, hub)
+		return nil
+	})
 
 	a := app.Group("api")
 	{

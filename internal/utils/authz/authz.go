@@ -1,7 +1,7 @@
 package authz
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
@@ -14,9 +14,9 @@ func RequireRoles(roleTypes ...iam.RoleNameType) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			role := httpcontext.GetUserRole(c)
 			if lo.Contains(roleTypes, iam.RoleNameType(role)) {
-				fmt.Printf("Authorized role %s successfully\n", role)
 				return next(c)
 			}
+			log.Println("[ERROR] Unauthorized")
 			return echo.ErrUnauthorized
 		}
 	}

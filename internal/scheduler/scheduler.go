@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -23,11 +23,11 @@ func (ds DailyScheduler) Execute() {
 	scheduler.Every(1).Day().Do(func() {
 		period, err := ds.periodService.CreateNextPeriod()
 		if err != nil {
-			fmt.Printf("[ERROR] %s\n", err)
+			log.Printf("[ERROR] %s\n", err)
 		} else {
-			fmt.Println(period)
+			log.Println(period)
 		}
-		fmt.Printf("[%v] Schedule executed\n", time.Now())
+		log.Printf("[%v] Schedule executed\n", time.Now())
 	})
 
 	scheduler.StartAsync()

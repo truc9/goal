@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -17,10 +17,10 @@ func init() {
 	err := godotenv.Load()
 
 	if err != nil {
-		fmt.Println("Environment .env does not exist. env variables getting from pipeline")
+		log.Println("Environment .env does not exist. env variables getting from pipeline")
 	}
 
 	Secret = os.Getenv(secretKey)
 
-	fmt.Printf("Found secret %s\n", Secret)
+	log.Printf("Found secret %s\n", Secret)
 }

@@ -2,7 +2,6 @@ package booking
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/samber/lo"
@@ -56,9 +55,6 @@ func (s PeriodService) GetPeriods() ([]PeriodModel, error) {
 	x := time.Now()
 	now := time.Date(x.Year(), x.Month(), x.Day(), 0, 0, 0, 0, time.UTC)
 	todayNextWeek := timeutil.GetTodayNextWeek(now)
-
-	fmt.Println("Today next week")
-	fmt.Println(todayNextWeek)
 
 	periods := lo.Map(entities, func(item BookingPeriod, index int) PeriodModel {
 		return PeriodModel{

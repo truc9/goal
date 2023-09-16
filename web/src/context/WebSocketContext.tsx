@@ -1,9 +1,14 @@
 import { FC, ReactNode, createContext, useEffect, useState } from "react"
 
+interface BroadcastData {
+    event: string
+    payload: any
+}
+
 interface WebSocketContextValue {
     socket: WebSocket
-    onMessage: (callback: (data: any) => void) => void
-    send: (data: any) => void
+    onMessage: (callback: (data: BroadcastData) => void) => void
+    send: (event: string, data?: any) => void
 }
 
 export const WebSocketContext = createContext<WebSocketContextValue>(null!)
@@ -14,18 +19,39 @@ export const WebSocketProvider: FC<{
     const [socket, setSocket] = useState<WebSocket>(null!)
 
     useEffect(() => {
-        const socket = new WebSocket(`ws://localhost:8000/ws`)
-        setSocket(socket)
+        connect()
     }, [])
 
-    const onMessage = (callback: (data: any) => void) => {
+    useEffect(() => {
+        if (socket) {
+            socket.onclose = () => {
+                console.log(`${new Date()}: websocket reconnecting...`)
+                connect()
+                console.log(`${new Date()}: websocket connected...`)
+            }
+        }
+    }, [socket])
+
+    const connect = () => {
+        const socket = new WebSocket(`ws://localhost:8000/ws`)
+        setSocket(socket)
+    }
+
+    const onMessage = (callback: (data: BroadcastData) => void) => {
         socket.addEventListener("message", (message: MessageEvent<any>) => {
-            callback(message.data)
+            const parsedData = JSON.parse(message.data)
+            callback({
+                event: parsedData.event,
+                payload: parsedData.payload
+            })
         })
     }
 
-    const send = (data: any) => {
-        socket.send(data)
+    const send = (event: string, payload?: any) => {
+        socket.send(JSON.stringify({
+            event,
+            payload
+        }))
     }
 
     return (
