@@ -15,6 +15,7 @@ Simple Office Management System
 - [x] Role-based AuthZ
 - [x] Realtime Update for Dashboard
 - [x] Charts for Dashboard
+- [ ] Testing
 
 ## Screenshots
 
