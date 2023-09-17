@@ -33,8 +33,8 @@ const Home = () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
         setTotalEmployee(total)
         setStats([
-            { name: 'Booked', value: booked, fill: "#22C5BA" },
-            { name: 'Unbooked', value: unbooked, fill: "#9E36E3" },
+            { name: 'Booked', value: booked, fill: "#f43f5e" },
+            { name: 'Unbooked', value: unbooked, fill: "#3b82f6" },
         ])
     }
 
