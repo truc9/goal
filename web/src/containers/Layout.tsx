@@ -18,18 +18,18 @@ const Layout: React.FC = () => {
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
             <nav className='tw-w-16 tw-border-r tw-flex tw-flex-col tw-items-center tw-shadow tw-py-5'>
-                <NavLink to='/' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                <NavLink to='/' className='tw-p-3 hover:tw-bg-emerald-500 hover:tw-text-white tw-rounded'>
                     <FiGrid size={20} />
                 </NavLink>
-                <NavLink to='/my-booking' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                <NavLink to='/my-booking' className='tw-p-3 hover:tw-bg-emerald-500 hover:tw-text-white tw-rounded'>
                     <FiCheckCircle size={20} />
                 </NavLink>
                 {user.role == 'admin' && (
                     <>
-                        <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                        <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-emerald-500 hover:tw-text-white tw-rounded'>
                             <FiBarChart2 size={20} />
                         </NavLink>
-                        <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-green-500 hover:tw-text-white tw-rounded'>
+                        <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-emerald-500 hover:tw-text-white tw-rounded'>
                             <FiCalendar size={20} />
                         </NavLink>
                     </>

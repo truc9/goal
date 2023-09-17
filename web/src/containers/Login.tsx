@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SkeletonLoading } from '../components/SkeletonLoading'
@@ -51,8 +51,8 @@ const Login = () => {
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
                     <TextField variant='outlined' name='email' onChange={handleChange} placeholder='User Name/Email' />
                     <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />
-                    <Button variant='outlined' size='large' onClick={handleSignIn}>Login</Button>
-                    <Button variant='outlined' size='large' onClick={() => navigate('/register')}>Create an Account</Button>
+                    <button className='btn-primary' onClick={handleSignIn}>Login</button>
+                    <button className='btn-secondary' onClick={() => navigate('/register')}>Create an Account</button>
                 </div>
             )}
         </div>

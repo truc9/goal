@@ -6,3 +6,13 @@
 body {
   font-family: "DM Sans", sans-serif;
 }
+
+@layer components {
+  .btn-primary {
+    @apply tw-bg-emerald-500 tw-text-white tw-px-4 tw-py-2 tw-rounded tw-ring-emerald-400 tw-ring-2 hover:tw-bg-emerald-400 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+  }
+
+  .btn-secondary {
+    @apply tw-bg-slate-500 tw-text-white tw-px-4 tw-py-2 tw-rounded tw-ring-slate-400 tw-ring-2 hover:tw-bg-slate-400 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+  }
+}

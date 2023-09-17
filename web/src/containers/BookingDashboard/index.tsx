@@ -54,7 +54,7 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row hover:tw-bg-green-50 tw-border" key={idx}>
+                            <tr className="tw-table-row hover:tw-bg-emerald-50 tw-border" key={idx}>
                                 <td>
                                     <span className="tw-justify-start tw-px-5 tw-items-center tw-flex tw-font-bold">{ub.userDisplayName}</span>
                                 </td>

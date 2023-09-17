@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 import { PageContainer } from '../../components/PageContainer'
 import { FiCalendar } from 'react-icons/fi'
 import { IoCheckmarkCircle } from 'react-icons/io5'
-import { Button } from '@mui/material'
 
 const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
@@ -15,7 +14,7 @@ const columns: GridColDef[] = [
         field: 'isCurrentPeriod',
         headerName: 'Current Period ?',
         width: 400,
-        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-green-500" /> : null
+        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-emerald-500" /> : null
     },
 ]
 
@@ -39,8 +38,8 @@ const BookingPeriods: React.FC = () => {
 
     return (
         <PageContainer icon={<FiCalendar size={26} />} title='Office Booking Periods'>
-            <div className='tw-flex tw-items-center tw-justify-center'>
-                <Button onClick={loadNextPeriod} variant='contained' color="success">Create Period</Button>
+            <div className='tw-flex'>
+                <button className='btn-primary' onClick={loadNextPeriod}>Create Period</button>
             </div>
             <DataGrid
                 autoHeight
