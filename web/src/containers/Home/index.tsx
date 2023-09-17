@@ -19,8 +19,8 @@ const Home = () => {
             const payload = data.payload
             setTotalEmployee(payload.total)
             setStats([
-                { name: 'Booked', value: payload.booked, fill: "#22C5BA" },
-                { name: 'Unbooked', value: payload.unbooked, fill: "#9E36E3" },
+                { name: 'Booked', value: payload.booked, fill: "#f43f5e" },
+                { name: 'Unbooked', value: payload.unbooked, fill: "#3b82f6" },
             ])
         }
     })
