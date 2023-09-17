@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
-import { IoBookOutline, IoCheckmarkCircle } from "react-icons/io5"
+import { IoBookOutline, IoCheckmarkCircle, IoLockClosed, IoLockClosedOutline, IoLockClosedSharp } from "react-icons/io5"
 import { PageContainer } from "../../components/PageContainer"
 import bookingService from "../../services/bookingService"
 import { BookingPeriod } from "../../models/booking"
-import { FiCalendar, FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { FiCalendar, FiChevronLeft, FiChevronRight, FiLock } from "react-icons/fi"
 import useWebSocket from "../../hooks/useWebSocket"
+import cn from 'classnames'
 
 dayjs.extend(weekday)
 
@@ -17,10 +18,15 @@ interface BookingDate {
 
 const MyBooking: React.FC = () => {
     const [periods, setPeriods] = useState<BookingPeriod[]>([])
+
+    const [period, setPeriod] = useState<BookingPeriod>()
+
     const [dates, setDates] = useState<Date[]>([])
+
     const [bookingDates, setBookingDates] = useState<BookingDate[]>([])
-    const [currentPeriod, setCurrentPeriod] = useState<BookingPeriod>()
+
     const [index, setIndex] = useState(0)
+
     const ws = useWebSocket()
 
     useEffect(() => {
@@ -28,16 +34,16 @@ const MyBooking: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if (currentPeriod) {
-            const days = Array.from(Array(7).keys()).map(d => dayjs(currentPeriod.from).add(d, 'day'))
+        if (period) {
+            const days = Array.from(Array(7).keys()).map(d => dayjs(period.from).add(d, 'day'))
             setDates(days.map(dd => dd.toDate()))
-            loadMyBookings(currentPeriod.id)
+            loadMyBookings(period.id)
         }
-    }, [currentPeriod])
+    }, [period])
 
     useEffect(() => {
         if (index >= 0 && index <= periods.length - 1) {
-            setCurrentPeriod(periods[index])
+            setPeriod(periods[index])
         }
     }, [index, periods])
 
@@ -45,8 +51,9 @@ const MyBooking: React.FC = () => {
         const periods = await bookingService.getPeriods()
         const currentPeriod = periods.find(p => p.isCurrentPeriod)
         if (currentPeriod) {
-            setCurrentPeriod(currentPeriod)
+            setPeriod(currentPeriod)
         }
+
         setPeriods(periods)
 
         const index = periods.findIndex(p => p.isCurrentPeriod)
@@ -89,21 +96,26 @@ const MyBooking: React.FC = () => {
                 <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                     <div className="tw-flex tw-items-center tw-gap-5">
                         <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronLeft size="26" /></button>
-                        {currentPeriod ? (
-                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded"><FiCalendar /> {dayjs(currentPeriod?.from).format('ddd DD.MM.YYYY')} - {dayjs(currentPeriod?.to).format('ddd DD.MM.YYYY')}</span>
+                        {period ? (
+                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-green-500 tw-bg-green-50 tw-p-2 tw-rounded tw-text-xl">{dayjs(period?.from).format('DD MMM YYYY')} 🤡 {dayjs(period?.to).format('DD MMM YYYY')}</span>
                         ) : (
                             <span className="tw-text-orange-500 tw-bg-orange-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
                         )}
                         <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-2 tw-bg-green-500 tw-text-white tw-rounded"><FiChevronRight size="26" /></button>
                     </div>
                 </div>
-                {currentPeriod && (
+                {period && (
                     <table className='tw-w-full tw-table'>
                         <thead>
                             <tr>
                                 {dates.map((d, i) => {
                                     return (
-                                        <th key={i} className="tw-h-10 tw-justify-center tw-items-center tw-uppercase">{dayjs(d).format('ddd')}</th>
+                                        <th key={i} className="tw-h-10 tw-justify-center tw-items-center">
+                                            <div className="tw-flex tw-flex-col">
+                                                <span className="tw-text-rose-500 tw-font-bold tw-uppercase">{dayjs(d).format('ddd')}</span>
+                                                <small className="tw-text-rose-500/50">{dayjs(d).format('DD-MMM-YYYY')}</small>
+                                            </div>
+                                        </th>
                                     )
                                 })}
                             </tr>
@@ -114,20 +126,28 @@ const MyBooking: React.FC = () => {
                                     const booking = bookingDates.find(bd => bd.date == dayjs(date).date())
                                     return (
                                         <td key={i}>
-                                            <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
-                                                {booking
-                                                    ? (
-                                                        <span onClick={() => cancelBooking(currentPeriod.id, booking.bookingId)} className="tw-text-emerald-500 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
-                                                            <IoCheckmarkCircle size={40} />
-                                                        </span>
-                                                    )
-                                                    : (
-                                                        <span onClick={() => createBooking(currentPeriod.id, date)} className="tw-text-slate-200 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
-                                                            <IoCheckmarkCircle size={40} />
-                                                        </span>
-                                                    )
-                                                }
-                                            </div>
+                                            {period.isCurrentPeriod ? (
+                                                <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
+                                                    {booking
+                                                        ? (
+                                                            <button onClick={() => cancelBooking(period.id, booking.bookingId)} className="tw-text-emerald-500 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                                <IoCheckmarkCircle size={40} />
+                                                            </button>
+                                                        )
+                                                        : (
+                                                            <button onClick={() => createBooking(period.id, date)} className="tw-text-slate-200 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                                <IoCheckmarkCircle size={40} />
+                                                            </button>
+                                                        )
+                                                    }
+                                                </div>
+                                            ) : (
+                                                <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
+                                                    {booking && (
+                                                        <span className="tw-text-emerald-500"><IoLockClosedSharp size={40} /></span>
+                                                    )}
+                                                </div>
+                                            )}
                                         </td>
                                     )
                                 })}

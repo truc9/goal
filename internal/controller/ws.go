@@ -25,7 +25,7 @@ func NewWebSocketController(stats stats.StatsService, bookings booking.BookingSe
 		bookings: bookings,
 	}
 }
-
+ 
 var (
 	upgrader = websocket.Upgrader{}
 )
