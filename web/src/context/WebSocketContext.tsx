@@ -19,20 +19,18 @@ export const WebSocketProvider: FC<{
     const [socket, setSocket] = useState<WebSocket>(null!)
 
     useEffect(() => {
-        connect()
+        createWebSocket()
     }, [])
 
     useEffect(() => {
         if (socket) {
             socket.onclose = () => {
-                console.log(`${new Date()}: websocket reconnecting...`)
-                connect()
-                console.log(`${new Date()}: websocket connected...`)
+                createWebSocket()
             }
         }
     }, [socket])
 
-    const connect = () => {
+    const createWebSocket = () => {
         const socket = new WebSocket(`ws://localhost:8000/ws`)
         setSocket(socket)
     }

@@ -5,22 +5,23 @@ import (
 )
 
 type Hub struct {
-	clients    map[*Client]bool
-	connect    chan *Client
-	disconnect chan *Client
-	payload    chan interface{}
+	clients      map[*Client]bool
+	connect      chan *Client
+	disconnect   chan *Client
+	notification chan *Notification
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		clients:    make(map[*Client]bool),
-		connect:    make(chan *Client),
-		disconnect: make(chan *Client),
-		payload:    make(chan interface{}),
+		clients:      make(map[*Client]bool),
+		connect:      make(chan *Client),
+		disconnect:   make(chan *Client),
+		notification: make(chan *Notification),
 	}
 }
 
 // This method executed on a different go routine
+//
 // A lightweight thread manages clients and messages via channel
 func (h *Hub) Run() {
 	for {
@@ -31,32 +32,34 @@ func (h *Hub) Run() {
 		case c, ready := <-h.connect:
 			if ready {
 				h.clients[c] = true
-				log.Println("user joined")
 			}
 		case c, ready := <-h.disconnect:
 			if ready {
 				delete(h.clients, c)
-				log.Println("user unjoined")
 			}
-		case pl, ready := <-h.payload:
+		case n, ready := <-h.notification:
 			if ready {
-				for cl := range h.clients {
-					cl.Dispatch(pl)
-					log.Printf("dispatched to client %s", cl.Id)
+				// iterate through all connected clients and send the message
+				for client := range h.clients {
+					client.Send(n)
+					log.Printf("dispatched to client %s", client.id)
 				}
 			}
 		}
 	}
 }
 
-func (h *Hub) AddClient(c *Client) {
+// User connect
+func (h *Hub) ClientConnect(c *Client) {
 	h.connect <- c
 }
 
-func (h *Hub) RemoveClient(c *Client) {
+// User disconnected
+func (h *Hub) ClientDisconnect(c *Client) {
 	h.disconnect <- c
 }
 
-func (h *Hub) AddPayload(pl interface{}) {
-	h.payload <- pl
+// Add client notification to channel in hub
+func (h *Hub) AddNotification(n *Notification) {
+	h.notification <- n
 }

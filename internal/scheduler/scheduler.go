@@ -18,7 +18,7 @@ func NewDailyScheduler(periodService booking.PeriodService) DailyScheduler {
 	}
 }
 
-func (ds DailyScheduler) Execute() {
+func (ds DailyScheduler) Run() {
 	scheduler := gocron.NewScheduler(time.UTC)
 	scheduler.Every(1).Day().Do(func() {
 		period, err := ds.periodService.CreateNextPeriod()

@@ -14,7 +14,7 @@ export const PageContainer: React.FC<Props> = ({
 
     return (
         <div className="tw-flex tw-flex-col tw-gap-5 tw-bg-white tw-p-5 tw-rounded tw-border">
-            <div className="tw-flex tw-items-center tw-gap-3">
+            <div className="tw-flex tw-items-center tw-gap-3 tw-font-bold tw-text-slate-500">
                 {icon}
                 <h3 className="tw-text-2xl tw-uppercase">{title}</h3>
             </div>

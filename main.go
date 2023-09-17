@@ -56,7 +56,7 @@ func main() {
 	go hub.Run()
 
 	// run schedule in a differnt go routine
-	go scheduler.Execute()
+	go scheduler.Run()
 
 	app.GET("/ws", func(c echo.Context) error {
 		wsCtrl.ServeWS(c, hub)

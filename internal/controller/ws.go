@@ -25,12 +25,12 @@ func NewWebSocketController(stats stats.StatsService, bookings booking.BookingSe
 		bookings: bookings,
 	}
 }
- 
+
 var (
 	upgrader = websocket.Upgrader{}
 )
 
-func (ctrl WebSocketController) ServeWS(ctx echo.Context, h *ws.Hub) {
+func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return strings.Contains(r.Host, "localhost") ||
 			strings.Contains(r.Host, "app.goal.co.uk")
@@ -43,22 +43,29 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, h *ws.Hub) {
 
 	defer conn.Close()
 
-	cl := ws.NewClient(conn)
-	h.AddClient(cl)
+	client := ws.NewClient(conn)
+	hub.ClientConnect(client)
+
+	defer hub.ClientDisconnect(client)
 
 	notification := &ws.Notification{}
 	err = conn.ReadJSON(notification)
 	if err != nil {
-		log.Printf("error when read messasge %v", err)
-		h.RemoveClient(cl)
+		if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure, websocket.CloseGoingAway) {
+			log.Printf("websocket closed %v", err)
+			hub.ClientDisconnect(client)
+		}
 		return
 	}
 
 	switch notification.Event {
 	case ws.BookingUpdated:
 		log.Println("booking updated ack")
-		data, _ := ctrl.stats.GetBookingOverallStats()
-		h.AddPayload(data)
+		payload, _ := ctrl.stats.GetBookingOverallStats()
+		hub.AddNotification(&ws.Notification{
+			Event:   ws.BookingUpdated,
+			Payload: payload,
+		})
 	default:
 		log.Println("unhandled")
 	}

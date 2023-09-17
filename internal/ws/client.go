@@ -6,20 +6,17 @@ import (
 )
 
 type Client struct {
-	Id   uuid.UUID
-	Conn *websocket.Conn
+	id   uuid.UUID
+	conn *websocket.Conn
 }
 
 func NewClient(conn *websocket.Conn) *Client {
 	return &Client{
-		Conn: conn,
-		Id:   uuid.New(),
+		conn: conn,
+		id:   uuid.New(),
 	}
 }
 
-func (c *Client) Dispatch(payload Payload) {
-	c.Conn.WriteJSON(Notification{
-		Event:   BookingUpdated,
-		Payload: payload,
-	})
+func (c *Client) Send(n *Notification) {
+	c.conn.WriteJSON(n)
 }
