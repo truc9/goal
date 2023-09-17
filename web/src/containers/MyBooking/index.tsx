@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react"
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
-import { IoBookOutline, IoCheckmarkCircle, IoLockClosed, IoLockClosedOutline, IoLockClosedSharp } from "react-icons/io5"
+import { IoBookOutline, IoCheckmarkCircle, IoLockClosedSharp } from "react-icons/io5"
 import { PageContainer } from "../../components/PageContainer"
 import bookingService from "../../services/bookingService"
 import { BookingPeriod } from "../../models/booking"
-import { FiCalendar, FiChevronLeft, FiChevronRight, FiLock } from "react-icons/fi"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import useWebSocket from "../../hooks/useWebSocket"
-import cn from 'classnames'
 
 dayjs.extend(weekday)
 
