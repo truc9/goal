@@ -1,7 +1,8 @@
 package booking
 
 import (
-	"errors"
+	"fmt"
+	"log"
 	"time"
 
 	"github.com/samber/lo"
@@ -31,13 +32,15 @@ func (s PeriodService) GetNextPeriod() (p *BookingPeriod, err error) {
 
 func (s PeriodService) CreateNextPeriod() (*BookingPeriod, error) {
 	period := CreateNextPeriod(time.Now())
+	log.Printf("next period is %v", period.From)
 	entity := &BookingPeriod{}
 	r := s.db.Where("\"from\" = ?", period.From).First(&entity)
 	if r.RowsAffected != 0 {
-		return nil, errors.New("duplicated")
+		return nil, fmt.Errorf("period found duplicated %v", entity.From)
 	}
 
 	res := s.db.Create(period)
+	log.Printf("period %v created", period.From)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -56,12 +59,16 @@ func (s PeriodService) GetPeriods() ([]PeriodModel, error) {
 	now := time.Date(x.Year(), x.Month(), x.Day(), 0, 0, 0, 0, time.UTC)
 	todayNextWeek := timeutil.GetTodayNextWeek(now)
 
+	log.Printf("today next week is %v", todayNextWeek)
+
 	periods := lo.Map(entities, func(item BookingPeriod, index int) PeriodModel {
 		return PeriodModel{
-			Id:              item.Id,
-			From:            item.From, //Time with timezone
-			To:              item.To,   //Time with timezone
-			IsCurrentPeriod: (item.From.Before(todayNextWeek) && item.To.After(todayNextWeek)) || isSameDate(todayNextWeek, item.To),
+			Id:   item.Id,
+			From: item.From, //Time with timezone
+			To:   item.To,   //Time with timezone
+			IsCurrentPeriod: (item.From.Before(todayNextWeek) && item.To.After(todayNextWeek)) ||
+				isSameDate(todayNextWeek, item.To) ||
+				isSameDate(todayNextWeek, item.From),
 		}
 	})
 
