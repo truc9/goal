@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { FiGrid, FiCheckCircle, FiCalendar, FiBarChart2, FiLogOut } from 'react-icons/fi'
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
+import { Tooltip } from '@mui/material'
 
 const iconSize = 22
 
@@ -19,20 +20,28 @@ const Layout: React.FC = () => {
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
             <nav className='tw-w-14 tw-bg-blue-700 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
-                <NavLink to='/' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
-                    <FiGrid size={iconSize} />
-                </NavLink>
-                <NavLink to='/my-booking' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
-                    <FiCheckCircle size={iconSize} />
-                </NavLink>
+                <Tooltip title="Dashboard & Modules" placement='right'>
+                    <NavLink to='/' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
+                        <FiGrid size={iconSize} />
+                    </NavLink>
+                </Tooltip>
+                <Tooltip title="My Bookings" placement='right'>
+                    <NavLink to='/my-booking' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
+                        <FiCheckCircle size={iconSize} />
+                    </NavLink>
+                </Tooltip>
                 {user.role == 'admin' && (
                     <>
-                        <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
-                            <FiBarChart2 size={iconSize} />
-                        </NavLink>
-                        <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
-                            <FiCalendar size={iconSize} />
-                        </NavLink>
+                        <Tooltip title="Booking Dashboard" placement='right'>
+                            <NavLink to='/booking-dashboard' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
+                                <FiBarChart2 size={iconSize} />
+                            </NavLink>
+                        </Tooltip>
+                        <Tooltip title="Booking Periods" placement='right'>
+                            <NavLink to='/booking-periods' className='tw-p-3 hover:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
+                                <FiCalendar size={iconSize} />
+                            </NavLink>
+                        </Tooltip>
                     </>
                 )}
             </nav>
@@ -43,7 +52,9 @@ const Layout: React.FC = () => {
                     </div>
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
-                        <button className='tw-bg-orange-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-rounded tw-p-1 tw-text-white' onClick={handleSignOut}><FiLogOut size={20} /></button>
+                        <Tooltip placement="bottom" title="Signout">
+                            <button className='tw-bg-orange-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-rounded tw-p-1 tw-text-white' onClick={handleSignOut}><FiLogOut size={20} /></button>
+                        </Tooltip>
                     </div>
                 </div>
                 <div className='tw-p-5'>
