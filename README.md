@@ -19,8 +19,6 @@ Simple Office Management System
 
 ## Screenshots
 
-![demo-1](art/assets/demo-1.gif)
-
 ![0](art/assets/goal-00.png)
 
 ![3](art/assets/goal-04.png)
