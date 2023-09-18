@@ -4,7 +4,7 @@ import { PageContainer } from "../../components/PageContainer"
 import { useEffect, useState } from "react"
 import bookingService from "../../services/bookingService"
 import { BookingPeriod, UserBooking } from "../../models/booking"
-import { IoCheckmarkCircle, IoCheckmarkCircleOutline } from "react-icons/io5"
+import { IoCheckmarkCircle } from "react-icons/io5"
 
 const BookingDashboard: React.FC = () => {
     const [userBookings, setUserBookings] = useState<UserBooking[]>([])
@@ -37,16 +37,16 @@ const BookingDashboard: React.FC = () => {
 
     return (
         <PageContainer icon={<FiBarChart2 size="26" />} title="Booking Dashboard">
-            <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-2xl tw-justify-center tw-mb-5">
-                <h3>{dayjs(nextPeriod?.from).format('ddd DD MMM YYYY')} - {dayjs(nextPeriod?.to).format('ddd DD MMM YYYY')}</h3>
+            <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-xl tw-font-bold tw-text-emerald-500 tw-justify-center tw-mb-5">
+                <h3>{dayjs(nextPeriod?.from).format('DD MMM YYYY')} - {dayjs(nextPeriod?.to).format('DD MMM YYYY')}</h3>
             </div>
-            <table className='tw-w-full tw-table tw-border'>
+            <table className='tw-w-full tw-table'>
                 <thead>
                     <tr>
-                        <th className="tw-bg-slate-100 tw-w-[200px]"></th>
+                        <th className="tw-w-[200px]">Employee</th>
                         {dates.map((d, i) => {
                             return (
-                                <th key={i} className="tw-w-[130px] tw-h-10 tw-bg-slate-100 tw-justify-center tw-items-center">{dayjs(d).format('ddd')}</th>
+                                <th key={i} className="tw-w-[130px] tw-h-10 tw-justify-center tw-items-center">{dayjs(d).format('ddd')}</th>
                             )
                         })}
                     </tr>
@@ -54,21 +54,21 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row hover:tw-bg-emerald-50 tw-border" key={idx}>
+                            <tr className="tw-table-row odd:tw-bg-slate-100" key={idx}>
                                 <td>
-                                    <span className="tw-justify-start tw-px-5 tw-items-center tw-flex tw-font-bold">{ub.userDisplayName}</span>
+                                    <span className="tw-justify-start tw-px-5 tw-items-center tw-flex">{ub.userDisplayName}</span>
                                 </td>
                                 {dates.map((date, i) => {
                                     const booking = ub.bookings.find(bd => dayjs(bd.bookingDate).date() == dayjs(date).date())
                                     return (
-                                        <td key={i} className="tw-p-2">
+                                        <td key={i} className="tw-p-1">
                                             {booking ? (
                                                 <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
                                                     <IoCheckmarkCircle size="30" />
                                                 </span>
                                             ) : (
-                                                <span className="tw-text-orange-200 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircleOutline size="30" />
+                                                <span className="tw-text-slate-200 tw-justify-center tw-items-center tw-flex">
+                                                    <IoCheckmarkCircle size="30" />
                                                 </span>
                                             )}
                                         </td>

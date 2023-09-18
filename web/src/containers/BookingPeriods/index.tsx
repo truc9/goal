@@ -6,13 +6,14 @@ import dayjs from 'dayjs'
 import { PageContainer } from '../../components/PageContainer'
 import { FiCalendar } from 'react-icons/fi'
 import { IoCheckmarkCircle } from 'react-icons/io5'
+import _ from "lodash"
 
 const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
     { field: 'to', headerName: 'To', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
     {
         field: 'isCurrentPeriod',
-        headerName: 'Current Period ?',
+        headerName: 'Current',
         width: 400,
         renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-emerald-500" /> : null
     },
@@ -27,8 +28,8 @@ const BookingPeriods: React.FC = () => {
     }, [])
 
     const load = async () => {
-        const res = await officeBookingService.getPeriods()
-        setPeriods(res)
+        const data = await officeBookingService.getPeriods()
+        setPeriods(_.orderBy(data, (item) => item.from, "desc"))
     }
 
     const loadNextPeriod = async () => {
@@ -47,10 +48,9 @@ const BookingPeriods: React.FC = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
+                        paginationModel: { page: 0, pageSize: 100 },
                     },
                 }}
-                pageSizeOptions={[5, 10]}
             />
         </PageContainer>
     )

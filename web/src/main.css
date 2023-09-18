@@ -1,18 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-size: 11pt;
 }
 
 @layer components {
   .btn-primary {
-    @apply tw-bg-emerald-500 tw-text-white tw-px-4 tw-py-2 tw-rounded tw-ring-emerald-400 tw-ring-2 hover:tw-bg-emerald-400 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+    @apply tw-bg-blue-700 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
   }
 
   .btn-secondary {
-    @apply tw-bg-slate-500 tw-text-white tw-px-4 tw-py-2 tw-rounded tw-ring-slate-400 tw-ring-2 hover:tw-bg-slate-400 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+    @apply tw-bg-slate-400 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-slate-300 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
   }
 }

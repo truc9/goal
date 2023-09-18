@@ -23,6 +23,9 @@ dependencies:
   '@mui/x-data-grid':
     specifier: ^6.10.2
     version: 6.10.2(@mui/material@5.14.1)(@mui/system@5.14.1)(react-dom@18.2.0)(react@18.2.0)
+  '@types/lodash':
+    specifier: ^4.14.198
+    version: 4.14.198
   axios:
     specifier: ^1.4.0
     version: 1.4.0
@@ -38,6 +41,9 @@ dependencies:
   localforage:
     specifier: ^1.10.0
     version: 1.10.0
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   match-sorter:
     specifier: ^6.3.1
     version: 6.3.1
@@ -2466,6 +2472,10 @@ packages:
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
     dev: true
+
+  /@types/lodash@4.14.198:
+    resolution: {integrity: sha512-trNJ/vtMZYMLhfN45uLq4ShQSw0/S7xCTLLVM+WM1rmFpba/VS42jVUgaO3w/NOLiWR/09lnYk0yMaA/atdIsg==}
+    dev: false
 
   /@types/node@20.5.8:
     resolution: {integrity: sha512-eajsR9aeljqNhK028VG0Wuw+OaY5LLxYmxeoXynIoE6jannr9/Ucd1LL0hSSoafk5LTYG+FfqsyGt81Q6Zkybw==}

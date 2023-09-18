@@ -19,8 +19,8 @@ const Home = () => {
             const payload = data.payload
             setTotalEmployee(payload.total)
             setStats([
-                { name: 'Booked', value: payload.booked, fill: "#f43f5e" },
-                { name: 'Unbooked', value: payload.unbooked, fill: "#3b82f6" },
+                { name: 'Booked', value: payload.booked, fill: "#a3e635" },
+                { name: 'Unbooked', value: payload.unbooked, fill: "#818cf8" },
             ])
         }
     })
@@ -33,8 +33,8 @@ const Home = () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
         setTotalEmployee(total)
         setStats([
-            { name: 'Booked', value: booked, fill: "#f43f5e" },
-            { name: 'Unbooked', value: unbooked, fill: "#3b82f6" },
+            { name: 'Booked', value: booked, fill: "#a3e635" },
+            { name: 'Unbooked', value: unbooked, fill: "#818cf8" },
         ])
     }
 
