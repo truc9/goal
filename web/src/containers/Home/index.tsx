@@ -7,6 +7,7 @@ import { PieChart, Pie, Tooltip, Legend } from 'recharts'
 import httpService from "../../services/httpClient"
 import useLocalAuth from "../../hooks/useLocalAuth"
 import useWebSocket from "../../hooks/useWebSocket"
+import { NotificationEvents } from "../../constant"
 
 const Home = () => {
     const [totalEmployee, setTotalEmployee] = useState(0)
@@ -15,9 +16,9 @@ const Home = () => {
     const { user } = useLocalAuth()
     const socket = useWebSocket()
 
-    socket.handleEvent("booking_updated", (data) => {
+    socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
         console.log(`${new Date()} dashboard updated with data ${JSON.stringify(data)}`)
-        const { total, booked, unbooked } = data.payload
+        const { total, booked, unbooked } = data.payload.stat
         setData({ total, booked, unbooked })
     })
 

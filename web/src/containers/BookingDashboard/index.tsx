@@ -5,12 +5,18 @@ import { useEffect, useState } from "react"
 import bookingService from "../../services/bookingService"
 import { BookingPeriod, UserBooking } from "../../models/booking"
 import { IoCheckmarkCircle } from "react-icons/io5"
+import useWebSocket from "../../hooks/useWebSocket"
+import { NotificationEvents } from "../../constant"
 
 const BookingDashboard: React.FC = () => {
     const [userBookings, setUserBookings] = useState<UserBooking[]>([])
     const [dates, setDates] = useState<Date[]>([])
     const [nextPeriod, setNextPeriod] = useState<BookingPeriod>()
+    const socket = useWebSocket()
 
+    socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
+        setUserBookings(data.payload.bookings)
+    })
 
     useEffect(() => {
         handleNextPeriod()

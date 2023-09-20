@@ -60,11 +60,20 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 
 	switch notification.Event {
 	case ws.BookingUpdated:
-		log.Println("booking updated ack")
-		payload, _ := ctrl.stats.GetBookingOverallStats()
+		type dto struct {
+			Stat     stats.BookingModel            `json:"stat"`
+			Bookings []booking.GrouppedUserBooking `json:"bookings"`
+		}
+
+		stat, _ := ctrl.stats.GetBookingOverallStats()
+		bookings := ctrl.bookings.GetBookingsByPeriod(stat.PeriodId)
+
 		hub.AddNotification(&ws.Notification{
-			Event:   ws.BookingUpdated,
-			Payload: payload,
+			Event: ws.BookingUpdated,
+			Payload: dto{
+				Stat:     stat,
+				Bookings: bookings,
+			},
 		})
 	default:
 		log.Println("unhandled")
