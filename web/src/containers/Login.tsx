@@ -5,7 +5,7 @@ import { SkeletonLoading } from '../components/SkeletonLoading'
 import useLocalAuth from '../hooks/useLocalAuth'
 import dayjs from 'dayjs'
 
-const backgroundImage = 'https://images.unsplash.com/photo-1587702068694-a909ef4aa346?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4374&q=80'
+const backgroundImage = 'login-splash.jpg'
 
 const Login = () => {
     const location = useLocation()

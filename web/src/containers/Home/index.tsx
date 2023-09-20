@@ -11,17 +11,14 @@ import useWebSocket from "../../hooks/useWebSocket"
 const Home = () => {
     const [totalEmployee, setTotalEmployee] = useState(0)
     const [stats, setStats] = useState<any[]>([])
+    const [data, setData] = useState<{ total: number, booked: number, unbooked: number }>({ total: 0, unbooked: 0, booked: 0 })
     const { user } = useLocalAuth()
     const ws = useWebSocket()
 
     ws.onMessage((data) => {
         if (data.event === "booking_updated") {
-            const payload = data.payload
-            setTotalEmployee(payload.total)
-            setStats([
-                { name: 'Booked', value: payload.booked, fill: "#a3e635" },
-                { name: 'Unbooked', value: payload.unbooked, fill: "#818cf8" },
-            ])
+            const { total, booked, unbooked } = data.payload
+            setData({ total, booked, unbooked })
         }
     })
 
@@ -29,13 +26,17 @@ const Home = () => {
         handleLoad()
     }, [])
 
+    useEffect(() => {
+        setTotalEmployee(data.total)
+        setStats([
+            { name: 'Booked', value: data.booked, fill: "#a3e635" },
+            { name: 'Unbooked', value: data.unbooked, fill: "#818cf8" },
+        ])
+    }, [data])
+
     const handleLoad = async () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
-        setTotalEmployee(total)
-        setStats([
-            { name: 'Booked', value: booked, fill: "#a3e635" },
-            { name: 'Unbooked', value: unbooked, fill: "#818cf8" },
-        ])
+        setData({ total, booked, unbooked })
     }
 
     return (
