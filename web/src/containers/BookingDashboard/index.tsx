@@ -11,6 +11,7 @@ const BookingDashboard: React.FC = () => {
     const [dates, setDates] = useState<Date[]>([])
     const [nextPeriod, setNextPeriod] = useState<BookingPeriod>()
 
+
     useEffect(() => {
         handleNextPeriod()
     }, [])

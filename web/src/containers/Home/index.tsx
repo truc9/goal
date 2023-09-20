@@ -13,13 +13,12 @@ const Home = () => {
     const [stats, setStats] = useState<any[]>([])
     const [data, setData] = useState<{ total: number, booked: number, unbooked: number }>({ total: 0, unbooked: 0, booked: 0 })
     const { user } = useLocalAuth()
-    const ws = useWebSocket()
+    const socket = useWebSocket()
 
-    ws.onMessage((data) => {
-        if (data.event === "booking_updated") {
-            const { total, booked, unbooked } = data.payload
-            setData({ total, booked, unbooked })
-        }
+    socket.handleEvent("booking_updated", (data) => {
+        console.log(`${new Date()} dashboard updated with data ${JSON.stringify(data)}`)
+        const { total, booked, unbooked } = data.payload
+        setData({ total, booked, unbooked })
     })
 
     useEffect(() => {

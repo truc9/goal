@@ -7,7 +7,7 @@ interface BroadcastData {
 
 interface WebSocketContextValue {
     socket: WebSocket
-    onMessage: (callback: (data: BroadcastData) => void) => void
+    handleEvent: (event: string, callback: (data: BroadcastData) => void) => void
     send: (event: string, data?: any) => void
 }
 
@@ -35,13 +35,15 @@ export const WebSocketProvider: FC<{
         setSocket(socket)
     }
 
-    const onMessage = (callback: (data: BroadcastData) => void) => {
+    const handleEvent = (event: string, callback: (data: BroadcastData) => void) => {
         socket.addEventListener("message", (message: MessageEvent<any>) => {
             const parsedData = JSON.parse(message.data)
-            callback({
-                event: parsedData.event,
-                payload: parsedData.payload
-            })
+            if (parsedData.event && parsedData.event.toLowerCase() === event.toLowerCase()) {
+                callback({
+                    event: parsedData.event,
+                    payload: parsedData.payload
+                })
+            }
         })
     }
 
@@ -53,7 +55,7 @@ export const WebSocketProvider: FC<{
     }
 
     return (
-        <WebSocketContext.Provider value={{ socket, onMessage, send }}>
+        <WebSocketContext.Provider value={{ socket, handleEvent, send }}>
             {children}
         </WebSocketContext.Provider>
     )
