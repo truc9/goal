@@ -28,7 +28,6 @@ import (
 
 // @BasePath /api
 func main() {
-
 	app := echo.New()
 	app.Logger.SetLevel(log.INFO)
 

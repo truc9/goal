@@ -8,12 +8,6 @@ import (
 	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
-type BookingPeriod struct {
-	Id   uuid.UUID `gorm:"primaryKey" json:"id"`
-	From time.Time `json:"from"`
-	To   time.Time `json:"to"`
-}
-
 type Booking struct {
 	Id              uuid.UUID `gorm:"primaryKey" json:"id"`
 	BookingPeriodId uuid.UUID `json:"bookingPeriodId"`

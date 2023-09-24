@@ -52,6 +52,16 @@ air
 make run
 ```
 
+### Create Migration
+```
+migrate create -ext sql -dir "./migrations" -seq create_users_table
+```
+
+### Run Migration
+```
+migrate -database "postgres://postgres:admin@localhost:5432/goal?sslmode=disable" -path "./migrations" up
+```
+
 ### Start web
 ```
 cd ./web && pnpm dev

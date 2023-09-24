@@ -7,10 +7,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var Secret string
+var (
+	Secret           string
+	ConnectionString string
+)
 
 const (
-	secretKey = "SECRET_KEY"
+	SECRET_KEY = "SECRET_KEY"
+	DATABASE   = "DATABASE"
 )
 
 func init() {
@@ -20,7 +24,9 @@ func init() {
 		log.Println("Environment .env does not exist. env variables getting from pipeline")
 	}
 
-	Secret = os.Getenv(secretKey)
+	Secret = os.Getenv(SECRET_KEY)
+	ConnectionString = os.Getenv(DATABASE)
 
 	log.Printf("Found secret %s\n", Secret)
+	log.Printf("Found connection string %s\n", ConnectionString)
 }

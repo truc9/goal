@@ -1,7 +1,6 @@
 package iam
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -26,14 +25,15 @@ const (
 )
 
 type User struct {
-	Id           uuid.UUID `gorm:"primaryKey" json:"id"`
-	FirstName    string    `json:"firstName"`
-	LastName     string    `json:"lastName"`
-	Email        string    `json:"email"`
-	UserName     string    `json:"username"`
-	HashPassword string    `json:"hashPassword"`
-	RoleId       int       `json:"roleId"`
-	Role         Role      `gorm:"foreignKey:RoleId" json:"role"`
+	Id             uuid.UUID `gorm:"primaryKey" json:"id"`
+	FirstName      string    `json:"firstName"`
+	LastName       string    `json:"lastName"`
+	Email          string    `json:"email"`
+	UserName       string    `json:"username"`
+	HashPassword   string    `json:"hashPassword"`
+	RoleId         int       `json:"roleId"`
+	Role           Role      `gorm:"foreignKey:RoleId" json:"role"`
+	EmployeeNumber string    `json:"employeeNumber"`
 }
 
 func (u *User) SetPassword(password string) {
@@ -70,24 +70,4 @@ func CreateUser(firstName, lastName, email string, userName string) (*User, erro
 func hashPassword(pw string) (hash string) {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(pw), 14)
 	return string(bytes)
-}
-
-type Role struct {
-	Id          int    `gorm:"primaryKey" json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-}
-
-func CreateNewRole(roleType RoleType, name, description string) (role *Role, err error) {
-	if len(name) == 0 {
-		return nil, errors.New("name is required")
-	}
-
-	res := &Role{
-		Id:          int(roleType),
-		Name:        name,
-		Description: description,
-	}
-
-	return res, nil
 }
