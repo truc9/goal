@@ -1,16 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inclusive+Sans&family=Inter:wght@300;400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inclusive Sans", "Inter", sans-serif;
   font-size: 11pt;
 }
 
 @layer components {
   .btn-primary {
-    @apply tw-bg-blue-700 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+    @apply tw-bg-blue-900 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
   }
 
   .btn-secondary {

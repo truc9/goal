@@ -29,8 +29,8 @@ const Home = () => {
     useEffect(() => {
         setTotalEmployee(data.total)
         setStats([
-            { name: 'Booked', value: data.booked, fill: "#a3e635" },
-            { name: 'Unbooked', value: data.unbooked, fill: "#818cf8" },
+            { name: 'Booked', value: data.booked, fill: "#2dd4bf" },
+            { name: 'Unbooked', value: data.unbooked, fill: "#fb7185" },
         ])
     }, [data])
 
