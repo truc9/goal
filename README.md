@@ -21,7 +21,7 @@ Simple Office Management System
 
 ![0](art/assets/goal-00.png)
 
-![3](art/assets/goal-04.png)
+![3](art/assets/goal-01.png)
 
 ![2](art/assets/goal-02.png)
 
