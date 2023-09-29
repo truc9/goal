@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SkeletonLoading } from '../components/SkeletonLoading'
 import useLocalAuth from '../hooks/useLocalAuth'
-import dayjs from 'dayjs'
 
 const backgroundImage = 'login-splash.jpg'
 
@@ -64,7 +63,7 @@ const Login = () => {
                         </div>
                     )}
                 </div>
-                <span className='tw-p-5'>Copyright © GOAL {dayjs(new Date()).format('DD-MMM-YYYY')}</span>
+                <span className='tw-p-5'>Copyright © GOAL {new Date().getFullYear()}</span>
             </div>
         </div >
     )
