@@ -10,6 +10,7 @@ const BookingPeriods = lazy(() => import('./containers/BookingPeriods'))
 const Home = lazy(() => import("./containers/Home"))
 const Login = lazy(() => import('./containers/Login'))
 const Register = lazy(() => import('./containers/Register'))
+const HSE = lazy(() => import('./containers/HSE'))
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='my-booking' element={<MyBooking />} />
         <Route path='booking-periods' element={<BookingPeriods />} />
         <Route path='booking-dashboard' element={<BookingDashboard />} />
+        <Route path='hse' element={<HSE />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
       <Route path='/login' element={<Login />}></Route>
