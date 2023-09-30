@@ -51,8 +51,8 @@ func (s IamService) GetAll() []UserModel {
 	return result
 }
 
-func (s IamService) RegisterUser(r *RegisterModel) (*User, error) {
-	dup := s.db.Where("email = ?", r.Email, r.UserName).First(&User{})
+func (sv IamService) RegisterUser(r *RegisterModel) (*User, error) {
+	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&User{})
 	if dup.RowsAffected != 0 {
 		return nil, errors.New("email already in use")
 	}
@@ -65,7 +65,7 @@ func (s IamService) RegisterUser(r *RegisterModel) (*User, error) {
 
 	user.SetPassword(r.Password)
 
-	res := s.db.Create(&user)
+	res := sv.db.Create(&user)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -74,9 +74,9 @@ func (s IamService) RegisterUser(r *RegisterModel) (*User, error) {
 	return user, nil
 }
 
-func (s IamService) Login(req LoginModel) (*LoginResult, error) {
+func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 	user := User{}
-	res := s.db.Joins("Role").First(&user, "email=?", req.Email)
+	res := sv.db.Joins("Role").First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
 		return nil, errors.New("User does not exist")
@@ -115,20 +115,20 @@ func (s IamService) Login(req LoginModel) (*LoginResult, error) {
 	}, nil
 }
 
-func (s IamService) AssignRole(userId uuid.UUID, ra RoleAssignmentModel) (err error) {
+func (sv IamService) AssignRole(userId uuid.UUID, ra RoleAssignmentModel) (err error) {
 	user := User{}
-	if res := s.db.Find(&user, userId); res.RowsAffected == 0 {
+	if res := sv.db.Find(&user, userId); res.RowsAffected == 0 {
 		return errors.New("User not found")
 	}
 
 	role := Role{}
-	if res := s.db.Find(&role, ra.RoleId); res.RowsAffected == 0 {
+	if res := sv.db.Find(&role, ra.RoleId); res.RowsAffected == 0 {
 		return errors.New("Role not found")
 	}
 
 	user.SetRole(RoleType(ra.RoleId))
 
-	s.db.Save(&user)
+	sv.db.Save(&user)
 
 	return nil
 }

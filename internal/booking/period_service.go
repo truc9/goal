@@ -20,26 +20,26 @@ func NewPeriodService(db *gorm.DB) PeriodService {
 	}
 }
 
-func (s PeriodService) GetNextPeriod() (p *BookingPeriod, err error) {
+func (sv PeriodService) GetNextPeriod() (p *BookingPeriod, err error) {
 	period := &BookingPeriod{}
 	todayNextWeek := timeutil.GetTodayNextWeek(time.Now())
-	res := s.db.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
+	res := sv.db.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
 	if res.Error != nil {
 		return nil, res.Error
 	}
 	return period, nil
 }
 
-func (s PeriodService) CreateNextPeriod() (*BookingPeriod, error) {
+func (sv PeriodService) CreateNextPeriod() (*BookingPeriod, error) {
 	period := CreateNextPeriod(time.Now())
 	log.Printf("next period is %v", period.From)
 	entity := &BookingPeriod{}
-	r := s.db.Where("\"from\" = ?", period.From).First(&entity)
+	r := sv.db.Where("\"from\" = ?", period.From).First(&entity)
 	if r.RowsAffected != 0 {
 		return nil, fmt.Errorf("period found duplicated %v", entity.From)
 	}
 
-	res := s.db.Create(period)
+	res := sv.db.Create(period)
 	log.Printf("period %v created", period.From)
 
 	if res.Error != nil {
@@ -48,9 +48,9 @@ func (s PeriodService) CreateNextPeriod() (*BookingPeriod, error) {
 	return period, nil
 }
 
-func (s PeriodService) GetPeriods() ([]PeriodModel, error) {
+func (sv PeriodService) GetPeriods() ([]PeriodModel, error) {
 	var entities []BookingPeriod
-	res := s.db.Find(&entities)
+	res := sv.db.Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -58,8 +58,6 @@ func (s PeriodService) GetPeriods() ([]PeriodModel, error) {
 	x := time.Now()
 	now := time.Date(x.Year(), x.Month(), x.Day(), 0, 0, 0, 0, time.UTC)
 	todayNextWeek := timeutil.GetTodayNextWeek(now)
-
-	log.Printf("today next week is %v", todayNextWeek)
 
 	periods := lo.Map(entities, func(item BookingPeriod, index int) PeriodModel {
 		return PeriodModel{

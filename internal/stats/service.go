@@ -7,24 +7,24 @@ import (
 )
 
 type StatsService struct {
-	db            *gorm.DB
-	periodService booking.PeriodService
+	db       *gorm.DB
+	periodSv booking.PeriodService
 }
 
-func NewStatService(db *gorm.DB, periodService booking.PeriodService) StatsService {
+func NewStatService(db *gorm.DB, periodSv booking.PeriodService) StatsService {
 	return StatsService{
-		db:            db,
-		periodService: periodService,
+		db:       db,
+		periodSv: periodSv,
 	}
 }
 
-func (s *StatsService) GetBookingOverallStats() (model BookingModel, err error) {
+func (sv *StatsService) GetBookingOverallStats() (model BookingModel, err error) {
 	var userCount int64
 	var bookedCount int64
-	s.db.Model(&iam.User{}).Count(&userCount)
-	nextPeriod, _ := s.periodService.GetNextPeriod()
+	sv.db.Model(&iam.User{}).Count(&userCount)
+	nextPeriod, _ := sv.periodSv.GetNextPeriod()
 
-	s.db.
+	sv.db.
 		Where("booking_period_id = ?", nextPeriod.Id).
 		Distinct("user_id").
 		Find(&booking.Booking{}).

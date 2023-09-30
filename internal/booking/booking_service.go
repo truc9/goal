@@ -16,7 +16,7 @@ func NewBookingService(db *gorm.DB) BookingService {
 	}
 }
 
-func (h BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Booking, error) {
+func (sv BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Booking, error) {
 	booking := &Booking{
 		Id:              uuid.New(),
 		UserId:          userId,
@@ -24,7 +24,7 @@ func (h BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Bookin
 		Date:            model.Date,
 	}
 
-	res := h.db.Create(booking)
+	res := sv.db.Create(booking)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -33,17 +33,17 @@ func (h BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Bookin
 	return booking, nil
 }
 
-func (h BookingService) DeleteBooking(bookingId uuid.UUID) error {
+func (sv BookingService) DeleteBooking(bookingId uuid.UUID) error {
 	entity := &Booking{}
-	res := h.db.Where("id = ?", bookingId).First(entity)
+	res := sv.db.Where("id = ?", bookingId).First(entity)
 	if res.Error != nil {
 		return res.Error
 	}
-	h.db.Delete(entity)
+	sv.db.Delete(entity)
 	return nil
 }
 
-func (h BookingService) GetBookingsByPeriod(periodId uuid.UUID) []GrouppedUserBooking {
+func (sv BookingService) GetBookingsByPeriod(periodId uuid.UUID) []GrouppedUserBooking {
 	var userBookingItems []UserBookingItem
 
 	// Split select fields to multiple row for readability
@@ -54,7 +54,7 @@ func (h BookingService) GetBookingsByPeriod(periodId uuid.UUID) []GrouppedUserBo
 		"bookings.date as booking_date"
 
 	// Query statement
-	h.db.Debug().
+	sv.db.Debug().
 		Table("users").
 		Order("users.first_name asc").
 		Select(columns).
@@ -78,8 +78,8 @@ func (h BookingService) GetBookingsByPeriod(periodId uuid.UUID) []GrouppedUserBo
 	return groupedResult
 }
 
-func (h BookingService) GetMyBookings(userId, bookingPeriodId uuid.UUID) []*Booking {
+func (sv BookingService) GetMyBookings(userId, bookingPeriodId uuid.UUID) []*Booking {
 	bookings := []*Booking{}
-	h.db.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(&bookings)
+	sv.db.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(&bookings)
 	return bookings
 }
