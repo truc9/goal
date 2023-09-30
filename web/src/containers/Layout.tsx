@@ -51,7 +51,7 @@ const Layout: React.FC = () => {
                     </>
                 )}
             </nav>
-            <main className='tw-flex-1 tw-bg-slate-50'>
+            <main className='tw-flex-1 tw-bg-slate-100'>
                 <div className='tw-h-14 tw-flex tw-items-center tw-px-5 tw-bg-white tw-shadow'>
                     <div className='tw-w-60'>
                         <input type="text" className='tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-broder-emerald-500 tw-w-[300px]' placeholder='Search...' />
@@ -59,7 +59,7 @@ const Layout: React.FC = () => {
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
                         <Tooltip placement="bottom" title="Signout">
-                            <button className='tw-bg-gradient-to-r tw-from-rose-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-rounded tw-p-2 tw-text-white' onClick={handleSignOut}><FiLogOut size={20} /></button>
+                            <button className='tw-bg-gradient-to-r tw-from-orange-500 tw-to-orange-600 active:tw-translate-x-1 active:tw-translate-y-1 tw-rounded tw-p-2 tw-text-white' onClick={handleSignOut}><FiLogOut size={20} /></button>
                         </Tooltip>
                     </div>
                 </div>

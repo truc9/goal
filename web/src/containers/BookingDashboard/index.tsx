@@ -1,12 +1,20 @@
-import { FiBarChart2 } from "react-icons/fi"
-import dayjs from "dayjs"
-import { PageContainer } from "../../components/PageContainer"
-import { useEffect, useState } from "react"
-import bookingService from "../../services/bookingService"
-import { BookingPeriod, UserBooking } from "../../models/booking"
-import { IoCheckmarkCircle } from "react-icons/io5"
-import useWebSocket from "../../hooks/useWebSocket"
-import { NotificationEvents } from "../../constant"
+import {
+    useEffect,
+    useState,
+} from 'react'
+
+import dayjs from 'dayjs'
+import { FiBarChart2 } from 'react-icons/fi'
+import { IoCheckmarkCircle } from 'react-icons/io5'
+
+import { PageContainer } from '../../components/PageContainer'
+import { NotificationEvents } from '../../constant'
+import useWebSocket from '../../hooks/useWebSocket'
+import {
+    BookingPeriod,
+    UserBooking,
+} from '../../models/booking'
+import bookingService from '../../services/bookingService'
 
 const BookingDashboard: React.FC = () => {
     const [userBookings, setUserBookings] = useState<UserBooking[]>([])
@@ -43,7 +51,7 @@ const BookingDashboard: React.FC = () => {
     }
 
     return (
-        <PageContainer icon={<FiBarChart2 size="26" />} title="Booking Dashboard">
+        <PageContainer icon={<FiBarChart2 />} title="Booking Dashboard">
             <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-xl tw-font-bold tw-text-emerald-500 tw-justify-center tw-mb-5">
                 <h3>{dayjs(nextPeriod?.from).format('DD MMM YYYY')} - {dayjs(nextPeriod?.to).format('DD MMM YYYY')}</h3>
             </div>

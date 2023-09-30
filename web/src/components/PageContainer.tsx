@@ -11,11 +11,10 @@ export const PageContainer: React.FC<Props> = ({
     icon,
     children
 }) => {
-
     return (
-        <div className="tw-flex tw-flex-col tw-gap-5 tw-bg-white tw-p-5 tw-rounded tw-border">
+        <div className="tw-flex tw-flex-col tw-gap-5 tw-bg-white tw-p-5 tw-rounded-xl tw-border">
             <div className="tw-flex tw-items-center tw-gap-3 tw-text-slate-500">
-                {icon}
+                <span className="tw-text-2xl">{icon}</span>
                 <h3 className="tw-text-lg tw-uppercase">{title}</h3>
             </div>
             <div className="tw-flex tw-flex-col tw-gap-3">

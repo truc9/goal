@@ -8,6 +8,12 @@ body {
   font-size: 11pt;
 }
 
+@layer base {
+  input[type="text"] {
+    @apply tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-w-[300px];
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply tw-bg-blue-900 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;

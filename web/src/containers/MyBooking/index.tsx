@@ -91,7 +91,7 @@ const MyBooking: React.FC = () => {
     }
 
     return (
-        <PageContainer icon={<IoBookOutline size={26} />} title="My Booking">
+        <PageContainer icon={<IoBookOutline />} title="My Booking">
             <div className="tw-flex tw-flex-col tw-gap-5">
                 <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                     <div className="tw-flex tw-items-center tw-gap-1 tw-px-1 tw-py-1 tw-rounded tw-bg-emerald-50 tw-border-emerald-100 tw-border">

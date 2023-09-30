@@ -40,7 +40,7 @@ const Home = () => {
     }
 
     return (
-        <PageContainer icon={<FiGrid size={26} />} title="Apps">
+        <PageContainer icon={<FiGrid />} title="Apps">
             <div className="tw-grid tw-grid-cols-3 tw-gap-5">
                 <ClickableCard title="My Booking" subTitle="Booking Office Visit" icon={<FiCheckCircle size={30} />} link="/my-booking" />
                 <ClickableCard disabled={user.role !== 'admin'} title="Booking Dashboard" subTitle="Manage Employee Bookings" icon={<FiBarChart2 size={30} />} link="/booking-dashboard" />

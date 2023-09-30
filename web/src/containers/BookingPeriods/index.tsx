@@ -38,7 +38,7 @@ const BookingPeriods: React.FC = () => {
     }
 
     return (
-        <PageContainer icon={<FiCalendar size={26} />} title='Office Booking Periods'>
+        <PageContainer icon={<FiCalendar />} title='Office Booking Periods'>
             <div className='tw-flex'>
                 <button className='btn-primary' onClick={loadNextPeriod}>Create Period</button>
             </div>
