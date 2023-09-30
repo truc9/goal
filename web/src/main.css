@@ -9,8 +9,9 @@ body {
 }
 
 @layer base {
-  input[type="text"] {
-    @apply tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-w-[300px];
+  input[type="text"],
+  textarea {
+    @apply tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-w-full;
   }
 }
 

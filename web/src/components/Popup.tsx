@@ -1,7 +1,25 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, PaperProps, Slide } from "@mui/material"
-import { TransitionProps } from "@mui/material/transitions"
-import React, { FC, ReactNode } from "react"
+import React, {
+    FC,
+    ReactNode,
+} from 'react'
+
 import Draggable from 'react-draggable'
+import {
+    FiSend,
+    FiX,
+} from 'react-icons/fi'
+
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Paper,
+    PaperProps,
+    Slide,
+} from '@mui/material'
+import { TransitionProps } from '@mui/material/transitions'
 
 const PaperComponent: FC<PaperProps> = (props) => {
     return (
@@ -69,9 +87,12 @@ export const Popup: FC<Props> = ({
             <DialogContent>
                 {children}
             </DialogContent>
-            <DialogActions>
-                <Button variant="contained" color="error" disableElevation onClick={handleClose}>Close</Button>
-                <Button variant="contained" color="primary" disableElevation onClick={handleSubmit}>Submit</Button>
+            <DialogActions sx={{
+                px: "25px",
+                pb: "25px"
+            }}>
+                <Button startIcon={<FiX />} variant="outlined" color="error" disableElevation onClick={handleClose}>Close</Button>
+                <Button startIcon={<FiSend />} variant="contained" color="primary" disableElevation onClick={handleSubmit}>Submit</Button>
             </DialogActions>
         </Dialog>
     )

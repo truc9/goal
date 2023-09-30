@@ -1,7 +1,21 @@
-import { FC, ReactNode, useState } from "react"
-import { FiPlus, FiTriangle } from "react-icons/fi"
-import { Popup } from "../../components/Popup"
-import { PageContainer } from "../../components/PageContainer"
+import {
+    FC,
+    ReactNode,
+    useState,
+} from 'react'
+
+import {
+    FiPlus,
+    FiTriangle,
+} from 'react-icons/fi'
+
+import {
+    FormGroup,
+    FormLabel,
+} from '@mui/material'
+
+import { PageContainer } from '../../components/PageContainer'
+import { Popup } from '../../components/Popup'
 
 interface AssessmentProps {
     name: string
@@ -60,7 +74,16 @@ const HSE: FC = () => {
                 <Assessment id="1" name="Office HSE Checklist" />
                 <Assessment id="1" name="Office HSE Checklist" />
                 <Popup title="Create Assessment" isOpen={isOpen} onCloseClicked={() => setIsOpen(false)}>
-                    hellow
+                    <div className='tw-flex tw-flex-col tw-items-center tw-gap-3'>
+                        <FormGroup sx={{ width: "100%" }}>
+                            <FormLabel>Name</FormLabel>
+                            <input type="text" name="name" id="name" />
+                        </FormGroup>
+                        <FormGroup sx={{ width: "100%" }}>
+                            <FormLabel>Description</FormLabel>
+                            <textarea name='description' id='description' rows={5}></textarea>
+                        </FormGroup>
+                    </div>
                 </Popup>
             </div>
         </PageContainer>
