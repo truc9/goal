@@ -5,12 +5,11 @@ import React, {
 
 import Draggable from 'react-draggable'
 import {
-    FiSend,
-    FiX,
+    FiSave,
+    FiXCircle,
 } from 'react-icons/fi'
 
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -41,9 +40,9 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="down" ref={ref} {...props} />
 })
 
-
 interface Props {
     isOpen?: boolean
+    icon?: ReactNode
     title: string
     children?: ReactNode
     onCloseClicked: () => void
@@ -51,6 +50,7 @@ interface Props {
 }
 
 export const Popup: FC<Props> = ({
+    icon,
     title,
     isOpen,
     onCloseClicked,
@@ -81,8 +81,13 @@ export const Popup: FC<Props> = ({
             onClose={handleClose}
             PaperComponent={PaperComponent}
         >
-            <DialogTitle style={{ cursor: 'move' }} id="draggable-header">
-                {title}
+            <DialogTitle style={{
+                cursor: 'move',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+            }} id="draggable-header">
+                <span>{icon}</span>{title}
             </DialogTitle>
             <DialogContent>
                 {children}
@@ -91,8 +96,8 @@ export const Popup: FC<Props> = ({
                 px: "25px",
                 pb: "25px"
             }}>
-                <Button startIcon={<FiX />} variant="outlined" color="error" disableElevation onClick={handleClose}>Close</Button>
-                <Button startIcon={<FiSend />} variant="contained" color="primary" disableElevation onClick={handleSubmit}>Submit</Button>
+                <button className='btn-secondary' onClick={handleClose}><FiXCircle /> Close</button>
+                <button className='btn-primary' onClick={handleSubmit}><FiSave />Submit</button>
             </DialogActions>
         </Dialog>
     )

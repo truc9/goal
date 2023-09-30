@@ -1,8 +1,11 @@
-import { Button, TextField } from "@mui/material"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import authService from "../services/authService"
-import { SkeletonLoading } from "../components/SkeletonLoading"
+import { useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import { TextField } from '@mui/material'
+
+import { SkeletonLoading } from '../components/SkeletonLoading'
+import authService from '../services/authService'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -35,7 +38,7 @@ const Register = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex tw-flex-col tw-items-center tw-py-60 tw-gap-10'>
-            <h3 className='tw-text-4xl'>Create An Account</h3>
+            <h3 className='tw-text-4xl'>Create Account</h3>
             {loading ? (
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
                     <SkeletonLoading number={5} />
@@ -46,8 +49,8 @@ const Register = () => {
                     <TextField variant='outlined' name='firstName' onChange={handleChange} placeholder='First Name' />
                     <TextField variant='outlined' name='lastName' onChange={handleChange} placeholder='Last Name' />
                     <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />
-                    <Button variant='outlined' size='large' onClick={handleRegister}>Register</Button>
-                    <Button variant='outlined' size='large' onClick={() => navigate('/login')}>Go back Login</Button>
+                    <button className='btn-primary' onClick={handleRegister}>Register</button>
+                    <button className='btn-secondary' onClick={() => navigate('/login')}>Already have account ?</button>
                 </div>
             )}
         </div>

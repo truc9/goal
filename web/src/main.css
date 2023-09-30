@@ -10,17 +10,20 @@ body {
 
 @layer base {
   input[type="text"],
+  input[type="password"],
   textarea {
-    @apply tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-w-full;
+    @apply tw-px-3 tw-py-3 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-w-full;
   }
-}
 
-@layer components {
   .btn-primary {
-    @apply tw-bg-blue-900 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-blue-500 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-blue-700 tw-text-white tw-px-4 tw-py-3 tw-rounded hover:tw-bg-blue-500 active:tw-ring-blue-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 
   .btn-secondary {
-    @apply tw-bg-slate-400 tw-text-white tw-px-4 tw-py-2 tw-rounded hover:tw-bg-slate-300 active:tw-translate-x-1 active:tw-translate-y-1 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-500 tw-text-white tw-px-4 tw-py-3 tw-rounded hover:tw-bg-slate-400 active:tw-ring-slate-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+  }
+
+  .btn-danger {
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-rose-500 tw-text-white tw-px-4 tw-py-3 tw-rounded hover:tw-bg-rose-400 active:tw-ring-rose-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 }

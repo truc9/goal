@@ -1,9 +1,27 @@
-import React, { FC, ReactNode, Suspense } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { FiGrid, FiCheckCircle, FiCalendar, FiBarChart2, FiLogOut, FiTriangle } from 'react-icons/fi'
+import React, {
+    FC,
+    ReactNode,
+    Suspense,
+} from 'react'
+
+import {
+    FiBarChart2,
+    FiCalendar,
+    FiCheckCircle,
+    FiGrid,
+    FiLogOut,
+    FiTriangle,
+} from 'react-icons/fi'
+import {
+    NavLink,
+    Outlet,
+    useNavigate,
+} from 'react-router-dom'
+
+import { Tooltip } from '@mui/material'
+
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
-import { Tooltip } from '@mui/material'
 
 const iconSize = 22
 
@@ -21,7 +39,7 @@ const PageMenu: FC<PageMenuData> = ({
 }) => {
     return (
         <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-gradient-to-r [&.active]:tw-bg-gradient-to-r tw-from-rose-500 hover:tw-text-white tw-rounded'>
+            <NavLink to={path} className='tw-p-3 hover:tw-bg-blue-500 [&.active]:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
                 {icon}
             </NavLink>
         </Tooltip>
@@ -40,7 +58,7 @@ const Layout: React.FC = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
-            <nav className='tw-w-14 tw-bg-blue-900 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
+            <nav className='tw-w-14 tw-bg-blue-700 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
                 <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
                 <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
                 {user.role == 'admin' && (
@@ -59,7 +77,7 @@ const Layout: React.FC = () => {
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
                         <Tooltip placement="bottom" title="Signout">
-                            <button className='tw-bg-gradient-to-r tw-from-orange-500 tw-to-orange-600 active:tw-translate-x-1 active:tw-translate-y-1 tw-rounded tw-p-2 tw-text-white' onClick={handleSignOut}><FiLogOut size={20} /></button>
+                            <button className='btn-danger' onClick={handleSignOut}><FiLogOut /></button>
                         </Tooltip>
                     </div>
                 </div>
