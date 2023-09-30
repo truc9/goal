@@ -40,7 +40,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/booking.GrouppedUserBooking"
+                                "$ref": "#/definitions/entity.GrouppedUserBooking"
                             }
                         }
                     }
@@ -64,7 +64,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/booking.Booking"
+                            "$ref": "#/definitions/entity.Booking"
                         }
                     }
                 ],
@@ -72,7 +72,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/booking.Booking"
+                            "$ref": "#/definitions/entity.Booking"
                         }
                     }
                 }
@@ -133,7 +133,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/booking.Booking"
+                                "$ref": "#/definitions/entity.Booking"
                             }
                         }
                     }
@@ -142,7 +142,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "booking.Booking": {
+        "entity.Booking": {
             "type": "object",
             "properties": {
                 "bookingPeriodId": {
@@ -155,20 +155,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/iam.User"
+                    "$ref": "#/definitions/entity.User"
                 },
                 "userId": {
                     "type": "string"
                 }
             }
         },
-        "booking.GrouppedUserBooking": {
+        "entity.GrouppedUserBooking": {
             "type": "object",
             "properties": {
                 "bookings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/booking.UserBookingItem"
+                        "$ref": "#/definitions/entity.UserBookingItem"
                     }
                 },
                 "userDisplayName": {
@@ -176,7 +176,7 @@ const docTemplate = `{
                 }
             }
         },
-        "booking.UserBookingItem": {
+        "entity.UserBookingItem": {
             "type": "object",
             "properties": {
                 "bookingDate": {
@@ -193,7 +193,7 @@ const docTemplate = `{
                 }
             }
         },
-        "iam.Role": {
+        "entity.Role": {
             "type": "object",
             "properties": {
                 "description": {
@@ -207,7 +207,7 @@ const docTemplate = `{
                 }
             }
         },
-        "iam.User": {
+        "entity.User": {
             "type": "object",
             "properties": {
                 "email": {
@@ -226,7 +226,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/iam.Role"
+                    "$ref": "#/definitions/entity.Role"
                 },
                 "roleId": {
                     "type": "integer"

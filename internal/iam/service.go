@@ -10,6 +10,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/config"
+	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
 )
 
@@ -33,13 +34,13 @@ func NewIamService(db *gorm.DB) IamService {
 }
 
 func (s IamService) GetAll() []UserModel {
-	var users []User
+	var users []entity.User
 	res := s.db.Find(&users)
 	if res.Error != nil {
 		return nil
 	}
 
-	result := lo.Map(users, func(u User, _ int) UserModel {
+	result := lo.Map(users, func(u entity.User, _ int) UserModel {
 		return UserModel{
 			FirstName: u.FirstName,
 			LastName:  u.LastName,
@@ -51,13 +52,13 @@ func (s IamService) GetAll() []UserModel {
 	return result
 }
 
-func (sv IamService) RegisterUser(r *RegisterModel) (*User, error) {
-	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&User{})
+func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
+	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
 	if dup.RowsAffected != 0 {
 		return nil, errors.New("email already in use")
 	}
 
-	user, err := CreateUser(r.FirstName, r.LastName, r.Email, r.UserName)
+	user, err := entity.NewUser(r.FirstName, r.LastName, r.Email, r.UserName)
 
 	if err != nil {
 		return nil, err
@@ -75,7 +76,7 @@ func (sv IamService) RegisterUser(r *RegisterModel) (*User, error) {
 }
 
 func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
-	user := User{}
+	user := entity.User{}
 	res := sv.db.Joins("Role").First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
@@ -116,17 +117,17 @@ func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 }
 
 func (sv IamService) AssignRole(userId uuid.UUID, ra RoleAssignmentModel) (err error) {
-	user := User{}
+	user := entity.User{}
 	if res := sv.db.Find(&user, userId); res.RowsAffected == 0 {
 		return errors.New("User not found")
 	}
 
-	role := Role{}
+	role := entity.Role{}
 	if res := sv.db.Find(&role, ra.RoleId); res.RowsAffected == 0 {
 		return errors.New("Role not found")
 	}
 
-	user.SetRole(RoleType(ra.RoleId))
+	user.SetRole(entity.RoleType(ra.RoleId))
 
 	sv.db.Save(&user)
 

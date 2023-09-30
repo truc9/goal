@@ -1,8 +1,11 @@
 package booking
 
 import (
+	"log"
+
 	"github.com/google/uuid"
 	"github.com/samber/lo"
+	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
 )
 
@@ -16,8 +19,8 @@ func NewBookingService(db *gorm.DB) BookingService {
 	}
 }
 
-func (sv BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Booking, error) {
-	booking := &Booking{
+func (sv BookingService) CreateBooking(userId uuid.UUID, model *entity.Booking) (*entity.Booking, error) {
+	booking := &entity.Booking{
 		Id:              uuid.New(),
 		UserId:          userId,
 		BookingPeriodId: model.BookingPeriodId,
@@ -34,8 +37,9 @@ func (sv BookingService) CreateBooking(userId uuid.UUID, model *Booking) (*Booki
 }
 
 func (sv BookingService) DeleteBooking(bookingId uuid.UUID) error {
-	entity := &Booking{}
+	entity := &entity.Booking{}
 	res := sv.db.Where("id = ?", bookingId).First(entity)
+	log.Println(entity)
 	if res.Error != nil {
 		return res.Error
 	}
@@ -78,8 +82,8 @@ func (sv BookingService) GetBookingsByPeriod(periodId uuid.UUID) []GrouppedUserB
 	return groupedResult
 }
 
-func (sv BookingService) GetMyBookings(userId, bookingPeriodId uuid.UUID) []*Booking {
-	bookings := []*Booking{}
+func (sv BookingService) GetMyBookings(userId, bookingPeriodId uuid.UUID) []*entity.Booking {
+	bookings := []*entity.Booking{}
 	sv.db.Where("user_id = ? AND booking_period_id = ?", userId, bookingPeriodId).Find(&bookings)
 	return bookings
 }

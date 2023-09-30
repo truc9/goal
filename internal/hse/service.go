@@ -3,7 +3,7 @@ package hse
 import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
-	"github.com/truc9/goal/internal/hse/core"
+	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
 )
 
@@ -17,8 +17,8 @@ func NewAssessmentService(db *gorm.DB) AssessmentService {
 	}
 }
 
-func (sv AssessmentService) CreateAssessment(model *AssessmentModel) (uuid.UUID, error) {
-	assessment, err := core.NewAssessment(model.Name, model.Description)
+func (sv AssessmentService) CreateAssessment(userId uuid.UUID, model *AssessmentModel) (uuid.UUID, error) {
+	assessment, err := entity.NewAssessment(userId, model.Name, model.Description)
 	if err != nil {
 		return uuid.Nil, err
 	}
@@ -31,13 +31,13 @@ func (sv AssessmentService) CreateAssessment(model *AssessmentModel) (uuid.UUID,
 }
 
 func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
-	var entities []core.Assessment
+	var entities []entity.Assessment
 	res := sv.db.Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
 
-	assessments := lo.Map(entities, func(item core.Assessment, index int) AssessmentModel {
+	assessments := lo.Map(entities, func(item entity.Assessment, index int) AssessmentModel {
 		return AssessmentModel{
 			Id:          item.Id,
 			Name:        item.Name,

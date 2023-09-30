@@ -1,233 +1,209 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "This is a simple office management REST API.",
-        "title": "GOAL Swagger API",
-        "contact": {
-            "name": "Support",
-            "email": "truchjkl@gmail.com"
-        },
-        "license": {
-            "name": "MIT License",
-            "url": "http://github.com/truc9/goal/LICENSE"
-        },
-        "version": "1.0"
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple office management REST API.",
+    "title": "GOAL Swagger API",
+    "contact": {
+      "name": "Support",
+      "email": "truchjkl@gmail.com"
     },
-    "basePath": "/api",
-    "paths": {
-        "/api/bookings": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bookings"
-                ],
-                "summary": "Get all bookings",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/booking.GrouppedUserBooking"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bookings"
-                ],
-                "summary": "Submit booking",
-                "parameters": [
-                    {
-                        "description": "Submit Booking",
-                        "name": "model",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/booking.Booking"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/booking.Booking"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/bookings/{bookingId}": {
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bookings"
-                ],
-                "summary": "Delete booking",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Booking ID",
-                        "name": "bookingId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/api/bookings/{bookingPeriodId}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bookings"
-                ],
-                "summary": "Get all bookings by Period ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Booking Period ID",
-                        "name": "bookingPeriodId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/booking.Booking"
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    "license": {
+      "name": "MIT License",
+      "url": "http://github.com/truc9/goal/LICENSE"
     },
-    "definitions": {
-        "booking.Booking": {
-            "type": "object",
-            "properties": {
-                "bookingPeriodId": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/iam.User"
-                },
-                "userId": {
-                    "type": "string"
-                }
+    "version": "1.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/api/bookings": {
+      "get": {
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["bookings"],
+        "summary": "Get all bookings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.GrouppedUserBooking"
+              }
             }
-        },
-        "booking.GrouppedUserBooking": {
-            "type": "object",
-            "properties": {
-                "bookings": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/booking.UserBookingItem"
-                    }
-                },
-                "userDisplayName": {
-                    "type": "string"
-                }
-            }
-        },
-        "booking.UserBookingItem": {
-            "type": "object",
-            "properties": {
-                "bookingDate": {
-                    "type": "string"
-                },
-                "bookingId": {
-                    "type": "string"
-                },
-                "bookingPeriodId": {
-                    "type": "string"
-                },
-                "userDisplayName": {
-                    "type": "string"
-                }
-            }
-        },
-        "iam.Role": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "iam.User": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "firstName": {
-                    "type": "string"
-                },
-                "hashPassword": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "role": {
-                    "$ref": "#/definitions/iam.Role"
-                },
-                "roleId": {
-                    "type": "integer"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
+          }
         }
+      },
+      "post": {
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["bookings"],
+        "summary": "Submit booking",
+        "parameters": [
+          {
+            "description": "Submit Booking",
+            "name": "model",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/entity.Booking"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/entity.Booking"
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/{bookingId}": {
+      "delete": {
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["bookings"],
+        "summary": "Delete booking",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Booking ID",
+            "name": "bookingId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/bookings/{bookingPeriodId}": {
+      "get": {
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["bookings"],
+        "summary": "Get all bookings by Period ID",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Booking Period ID",
+            "name": "bookingPeriodId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity.Booking"
+              }
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "entity.Booking": {
+      "type": "object",
+      "properties": {
+        "bookingPeriodId": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/entity.User"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "entity.GrouppedUserBooking": {
+      "type": "object",
+      "properties": {
+        "bookings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entity.UserBookingItem"
+          }
+        },
+        "userDisplayName": {
+          "type": "string"
+        }
+      }
+    },
+    "entity.UserBookingItem": {
+      "type": "object",
+      "properties": {
+        "bookingDate": {
+          "type": "string"
+        },
+        "bookingId": {
+          "type": "string"
+        },
+        "bookingPeriodId": {
+          "type": "string"
+        },
+        "userDisplayName": {
+          "type": "string"
+        }
+      }
+    },
+    "entity.Role": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "entity.User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "hashPassword": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/entity.Role"
+        },
+        "roleId": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }

@@ -1,4 +1,10 @@
-import { FC, ReactNode, createContext, useEffect, useState } from "react"
+import {
+    createContext,
+    FC,
+    ReactNode,
+    useEffect,
+    useState,
+} from 'react'
 
 interface BroadcastData {
     event: string
@@ -26,6 +32,7 @@ export const WebSocketProvider: FC<{
         if (socket) {
             socket.onclose = () => {
                 createWebSocket()
+                console.warn(`${new Date()} Socket has been closed, re-establed connection.`)
             }
         }
     }, [socket])

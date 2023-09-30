@@ -11,7 +11,7 @@ import (
 	_ "github.com/truc9/goal/docs"
 	"github.com/truc9/goal/internal/config"
 	"github.com/truc9/goal/internal/di"
-	"github.com/truc9/goal/internal/iam"
+	"github.com/truc9/goal/internal/entity"
 	"github.com/truc9/goal/internal/utils/authz"
 	"github.com/truc9/goal/internal/ws"
 )
@@ -43,12 +43,12 @@ func main() {
 	app.GET("/swagger/*", sg.WrapHandler)
 	// app.GET("/metrics", echoprometheus.NewHandler())
 
-	scheduler := di.GetScheduler()
-	iamCtrl := di.GetIAMController()
-	periodCtrl := di.GetPeriodController()
-	bookingCtrl := di.GetBookingController()
-	statCtrl := di.GetStatController()
-	wsCtrl := di.GetWSController()
+	scheduler := di.InitScheduler()
+	iamCtrl := di.InitIamController()
+	periodCtrl := di.InitPeriodController()
+	bookingCtrl := di.InitBookingController()
+	statCtrl := di.InitStatController()
+	wsCtrl := di.InitWsController()
 
 	// init & run hub in a different go routine
 	hub := ws.NewHub()
@@ -73,13 +73,13 @@ func main() {
 		r.Use(jwt.JWT([]byte(config.Secret)))
 
 		// periods
-		r.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(iam.RoleAdmin))
-		r.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(iam.RoleAdmin, iam.RoleUser))
+		r.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(entity.RoleAdmin))
+		r.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
 		r.GET("/periods/next", periodCtrl.GetNextPeriod)
 		r.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
 
 		// Get booking info of all users
-		r.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(iam.RoleAdmin))
+		r.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(entity.RoleAdmin))
 
 		// bookings
 		r.POST("/bookings", bookingCtrl.SubmitBooking)

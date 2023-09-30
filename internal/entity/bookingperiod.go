@@ -1,19 +1,16 @@
-package booking
+package entity
 
 import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/utils/timeutil"
 )
 
-type Booking struct {
-	Id              uuid.UUID `gorm:"primaryKey" json:"id"`
-	BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
-	UserId          uuid.UUID `json:"userId"`
-	User            iam.User  `json:"user" gorm:"foreignKey:UserId"`
-	Date            time.Time `json:"date"`
+type BookingPeriod struct {
+	Id   uuid.UUID `gorm:"primaryKey" json:"id"`
+	From time.Time `json:"from"`
+	To   time.Time `json:"to"`
 }
 
 func CreateNextPeriod(current time.Time) (period *BookingPeriod) {

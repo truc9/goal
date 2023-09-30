@@ -17,28 +17,28 @@ import (
 
 // Injectors from wire.go:
 
-func GetBookingController() controller.BookingController {
+func InitBookingController() controller.BookingController {
 	gormDB := db.New()
 	bookingService := booking.NewBookingService(gormDB)
 	bookingController := controller.NewBookingController(bookingService)
 	return bookingController
 }
 
-func GetPeriodController() controller.PeriodController {
+func InitPeriodController() controller.PeriodController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	periodController := controller.NewPeriodController(periodService)
 	return periodController
 }
 
-func GetIAMController() controller.IamController {
+func InitIamController() controller.IamController {
 	gormDB := db.New()
 	iamService := iam.NewIamService(gormDB)
 	iamController := controller.NewIamController(iamService)
 	return iamController
 }
 
-func GetStatController() controller.StatController {
+func InitStatController() controller.StatController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
@@ -46,18 +46,18 @@ func GetStatController() controller.StatController {
 	return statController
 }
 
-func GetScheduler() scheduler.DailyScheduler {
+func InitScheduler() scheduler.DailyScheduler {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	dailyScheduler := scheduler.NewDailyScheduler(periodService)
 	return dailyScheduler
 }
 
-func GetWSController() controller.WebSocketController {
+func InitWsController() controller.WebSocketController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
 	bookingService := booking.NewBookingService(gormDB)
-	wsController := controller.NewWebSocketController(statsService, bookingService)
-	return wsController
+	webSocketController := controller.NewWebSocketController(statsService, bookingService)
+	return webSocketController
 }

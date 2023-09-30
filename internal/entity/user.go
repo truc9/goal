@@ -1,4 +1,4 @@
-package iam
+package entity
 
 import (
 	"fmt"
@@ -50,7 +50,7 @@ func (u User) VerifyPassword(password string) bool {
 	return err == nil
 }
 
-func CreateUser(firstName, lastName, email string, userName string) (*User, error) {
+func NewUser(firstName, lastName, email string, userName string) (*User, error) {
 	if strings.TrimSpace(email) == "" && strings.TrimSpace(userName) == "" {
 		return nil, fmt.Errorf("email or username must be provided")
 	}

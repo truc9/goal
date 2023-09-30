@@ -36,7 +36,7 @@ func InitScheduler() scheduler.DailyScheduler {
 	return scheduler.DailyScheduler{}
 }
 
-func InitWsController() controller.WsController {
+func InitWsController() controller.WebSocketController {
 	wire.Build(WsSet)
-	return controller.WsController{}
+	return controller.WebSocketController{}
 }

@@ -41,8 +41,6 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 		log.Fatalf("Failed ws with %v\n", err)
 	}
 
-	defer conn.Close()
-
 	client := ws.NewClient(conn)
 	hub.ClientConnect(client)
 

@@ -4,10 +4,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/config"
-	hse "github.com/truc9/goal/internal/hse/core"
-	"github.com/truc9/goal/internal/iam"
+	"github.com/truc9/goal/internal/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -26,13 +24,13 @@ func createSingleInstanceDb() *gorm.DB {
 		}
 
 		dbCtx.AutoMigrate(
-			&iam.User{},
-			&iam.Role{},
-			&booking.Booking{},
-			&booking.BookingPeriod{},
-			&hse.Assessment{},
-			&hse.AssessmentVersion{},
-			&hse.Question{},
+			&entity.User{},
+			&entity.Role{},
+			&entity.Booking{},
+			&entity.BookingPeriod{},
+			&entity.Assessment{},
+			&entity.AssessmentVersion{},
+			&entity.Question{},
 		)
 
 		seeder := &Seeder{

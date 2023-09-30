@@ -1,13 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, {
+    useEffect,
+    useState,
+} from 'react'
+
+import cn from 'classnames'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
-import { IoBookOutline, IoCheckmarkCircle, IoLockClosedSharp } from "react-icons/io5"
-import { PageContainer } from "../../components/PageContainer"
-import bookingService from "../../services/bookingService"
-import { BookingPeriod } from "../../models/booking"
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
-import useWebSocket from "../../hooks/useWebSocket"
-import cn from "classnames"
+import {
+    FiChevronLeft,
+    FiChevronRight,
+} from 'react-icons/fi'
+import {
+    IoBookOutline,
+    IoCheckmarkCircle,
+    IoLockClosedSharp,
+} from 'react-icons/io5'
+
+import { PageContainer } from '../../components/PageContainer'
+import useWebSocket from '../../hooks/useWebSocket'
+import { BookingPeriod } from '../../models/booking'
+import bookingService from '../../services/bookingService'
 
 dayjs.extend(weekday)
 

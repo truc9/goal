@@ -1,6 +1,6 @@
 basePath: /api
 definitions:
-  booking.Booking:
+  entity.Booking:
     properties:
       bookingPeriodId:
         type: string
@@ -9,20 +9,20 @@ definitions:
       id:
         type: string
       user:
-        $ref: '#/definitions/iam.User'
+        $ref: "#/definitions/entity.User"
       userId:
         type: string
     type: object
-  booking.GrouppedUserBooking:
+  entity.GrouppedUserBooking:
     properties:
       bookings:
         items:
-          $ref: '#/definitions/booking.UserBookingItem'
+          $ref: "#/definitions/entity.UserBookingItem"
         type: array
       userDisplayName:
         type: string
     type: object
-  booking.UserBookingItem:
+  entity.UserBookingItem:
     properties:
       bookingDate:
         type: string
@@ -33,7 +33,7 @@ definitions:
       userDisplayName:
         type: string
     type: object
-  iam.Role:
+  entity.Role:
     properties:
       description:
         type: string
@@ -42,7 +42,7 @@ definitions:
       name:
         type: string
     type: object
-  iam.User:
+  entity.User:
     properties:
       email:
         type: string
@@ -55,7 +55,7 @@ definitions:
       lastName:
         type: string
       role:
-        $ref: '#/definitions/iam.Role'
+        $ref: "#/definitions/entity.Role"
       roleId:
         type: integer
       username:
@@ -75,77 +75,77 @@ paths:
   /api/bookings:
     get:
       consumes:
-      - application/json
+        - application/json
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/booking.GrouppedUserBooking'
+              $ref: "#/definitions/entity.GrouppedUserBooking"
             type: array
       summary: Get all bookings
       tags:
-      - bookings
+        - bookings
     post:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: Submit Booking
-        in: body
-        name: model
-        required: true
-        schema:
-          $ref: '#/definitions/booking.Booking'
+        - description: Submit Booking
+          in: body
+          name: model
+          required: true
+          schema:
+            $ref: "#/definitions/entity.Booking"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/booking.Booking'
+            $ref: "#/definitions/entity.Booking"
       summary: Submit booking
       tags:
-      - bookings
+        - bookings
   /api/bookings/{bookingId}:
     delete:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: Booking ID
-        in: path
-        name: bookingId
-        required: true
-        type: integer
+        - description: Booking ID
+          in: path
+          name: bookingId
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
       summary: Delete booking
       tags:
-      - bookings
+        - bookings
   /api/bookings/{bookingPeriodId}:
     get:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: Booking Period ID
-        in: path
-        name: bookingPeriodId
-        required: true
-        type: integer
+        - description: Booking Period ID
+          in: path
+          name: bookingPeriodId
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/booking.Booking'
+              $ref: "#/definitions/entity.Booking"
             type: array
       summary: Get all bookings by Period ID
       tags:
-      - bookings
+        - bookings
 swagger: "2.0"
