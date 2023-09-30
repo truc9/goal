@@ -1,8 +1,6 @@
 package booking
 
 import (
-	"log"
-
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
@@ -39,7 +37,6 @@ func (sv BookingService) CreateBooking(userId uuid.UUID, model *entity.Booking) 
 func (sv BookingService) DeleteBooking(bookingId uuid.UUID) error {
 	entity := &entity.Booking{}
 	res := sv.db.Where("id = ?", bookingId).First(entity)
-	log.Println(entity)
 	if res.Error != nil {
 		return res.Error
 	}

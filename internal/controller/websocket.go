@@ -41,6 +41,8 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 		log.Fatalf("Failed ws with %v\n", err)
 	}
 
+	defer conn.Close()
+
 	client := ws.NewClient(conn)
 	hub.ClientConnect(client)
 
@@ -58,6 +60,7 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 
 	switch notification.Event {
 	case ws.BookingUpdated:
+		log.Println("client updated booking")
 		type dto struct {
 			Stat     stats.BookingModel            `json:"stat"`
 			Bookings []booking.GrouppedUserBooking `json:"bookings"`
