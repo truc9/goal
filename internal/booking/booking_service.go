@@ -1,9 +1,6 @@
 package booking
 
 import (
-	"log"
-	"strconv"
-
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
@@ -19,14 +16,12 @@ func NewBookingService(tx *gorm.DB) BookingService {
 	}
 }
 
-func (sv BookingService) CreateBooking(userId int, model *entity.Booking) (*entity.Booking, error) {
+func (sv BookingService) CreateBooking(userId int64, model *entity.Booking) (*entity.Booking, error) {
 	booking := &entity.Booking{
 		UserId:          userId,
 		BookingPeriodId: model.BookingPeriodId,
 		Date:            model.Date,
 	}
-
-	log.Printf("Booking %v", booking)
 
 	res := sv.tx.Debug().Create(booking)
 
@@ -37,7 +32,7 @@ func (sv BookingService) CreateBooking(userId int, model *entity.Booking) (*enti
 	return booking, nil
 }
 
-func (sv BookingService) DeleteBooking(bookingId int) error {
+func (sv BookingService) DeleteBooking(bookingId int64) error {
 	entity := &entity.Booking{}
 	res := sv.tx.Where("id = ?", bookingId).First(entity)
 	if res.Error != nil {
@@ -47,7 +42,7 @@ func (sv BookingService) DeleteBooking(bookingId int) error {
 	return nil
 }
 
-func (sv BookingService) GetBookingsByPeriod(periodId int) []GrouppedUserBooking {
+func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooking {
 	var userBookingItems []UserBookingItem
 
 	// Split select fields to multiple row for readability
@@ -62,7 +57,7 @@ func (sv BookingService) GetBookingsByPeriod(periodId int) []GrouppedUserBooking
 		Table("users").
 		Order("users.first_name asc").
 		Select(columns).
-		Joins("LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_period_id = ?", strconv.Itoa(periodId)).
+		Joins("LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_period_id = ?", periodId).
 		Scan(&userBookingItems)
 
 	// Process dataset to groupped dataset using samber/lo (lodash-alike)
@@ -82,17 +77,12 @@ func (sv BookingService) GetBookingsByPeriod(periodId int) []GrouppedUserBooking
 	return groupedResult
 }
 
-func (sv BookingService) GetMyBookings(userId, periodId int) []*entity.Booking {
+func (sv BookingService) GetMyBookings(userId, periodId int64) []*entity.Booking {
 	bookings := []*entity.Booking{}
-	res := sv.tx.
+	sv.tx.
 		Debug().
 		Where("user_id = ? AND booking_period_id = ?", userId, periodId).
 		Find(&bookings)
-
-	if res.Error != nil {
-		log.Println("shit happen!")
-		panic(res.Error)
-	}
 
 	return bookings
 }

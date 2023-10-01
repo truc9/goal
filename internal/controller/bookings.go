@@ -51,7 +51,7 @@ func (ctrl *BookingController) SubmitBooking(c echo.Context) (err error) {
 //	@Success		200
 //	@Router			/api/bookings/{bookingId} [delete]
 func (ctrl BookingController) DeleteBooking(c echo.Context) (err error) {
-	bookingId, _ := strconv.Atoi(c.Param("bookingId"))
+	bookingId, _ := strconv.ParseInt(c.Param("bookingId"), 10, 64)
 	ctrl.bookingSv.DeleteBooking(bookingId)
 	return c.JSON(http.StatusOK, nil)
 }
@@ -65,7 +65,7 @@ func (ctrl BookingController) DeleteBooking(c echo.Context) (err error) {
 //	@Success		200	{array}	entity.GrouppedUserBooking
 //	@Router			/api/bookings [get]
 func (ctrl BookingController) GetAllBookings(c echo.Context) (err error) {
-	periodId, _ := strconv.Atoi(c.Param("bookingPeriodId"))
+	periodId, _ := strconv.ParseInt(c.Param("bookingPeriodId"), 10, 64)
 	bookings := ctrl.bookingSv.GetBookingsByPeriod(periodId)
 	return c.JSON(http.StatusOK, bookings)
 }
@@ -81,7 +81,7 @@ func (ctrl BookingController) GetAllBookings(c echo.Context) (err error) {
 //	@Router			/api/bookings/{bookingPeriodId} [get]
 func (h BookingController) GetMyBookings(c echo.Context) (err error) {
 	userId := httpcontext.GetUserId(c)
-	periodId, _ := strconv.Atoi(c.Param("bookingPeriodId"))
+	periodId, _ := strconv.ParseInt(c.Param("bookingPeriodId"), 10, 64)
 	bookings := h.bookingSv.GetMyBookings(userId, periodId)
 	return c.JSON(http.StatusOK, bookings)
 }

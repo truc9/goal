@@ -1,8 +1,13 @@
 import { lazy } from 'react'
-import { Routes, Route } from "react-router-dom"
+
+import {
+  Route,
+  Routes,
+} from 'react-router-dom'
+
+import RequireAuth from './components/RequireAuth'
 import Layout from './containers/Layout'
 import PageNotFound from './containers/PageNotFound'
-import RequireAuth from './components/RequireAuth'
 
 const MyBooking = lazy(() => import('./containers/MyBooking'))
 const BookingDashboard = lazy(() => import('./containers/BookingDashboard'))
@@ -10,7 +15,8 @@ const BookingPeriods = lazy(() => import('./containers/BookingPeriods'))
 const Home = lazy(() => import("./containers/Home"))
 const Login = lazy(() => import('./containers/Login'))
 const Register = lazy(() => import('./containers/Register'))
-const HSE = lazy(() => import('./containers/HSE'))
+const Hse = lazy(() => import('./containers/HSE'))
+const HseDetails = lazy(() => import('./containers/HSE/HseDetails'))
 
 function App() {
   return (
@@ -24,7 +30,8 @@ function App() {
         <Route path='my-booking' element={<MyBooking />} />
         <Route path='booking-periods' element={<BookingPeriods />} />
         <Route path='booking-dashboard' element={<BookingDashboard />} />
-        <Route path='hse' element={<HSE />} />
+        <Route path='hse' element={<Hse />} />
+        <Route path='hse/:id' element={<HseDetails />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
       <Route path='/login' element={<Login />}></Route>

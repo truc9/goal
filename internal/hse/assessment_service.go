@@ -16,22 +16,24 @@ func NewAssessmentService(tx *gorm.DB) AssessmentService {
 	}
 }
 
-func (sv AssessmentService) CreateAssessment(userID int, model *AssessmentModel) (int, error) {
+func (sv AssessmentService) CreateAssessment(userID int64, model *AssessmentModel) (int64, error) {
 	assessment, err := entity.NewAssessment(userID, model.Name, model.Description)
 	if err != nil {
 		return 0, err
 	}
 
-	res := sv.tx.Create(assessment)
+	res := sv.tx.Debug().Create(assessment)
+
 	if res.Error != nil {
 		return 0, res.Error
 	}
+
 	return assessment.Id, nil
 }
 
 func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
 	var entities []entity.Assessment
-	res := sv.tx.Find(&entities)
+	res := sv.tx.Debug().Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}

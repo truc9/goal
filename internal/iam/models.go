@@ -10,7 +10,7 @@ type (
 	}
 
 	RoleAssignmentModel struct {
-		RoleId int `json:"roleId"`
+		RoleId int64 `json:"roleId"`
 	}
 
 	LoginModel struct {
@@ -19,7 +19,7 @@ type (
 	}
 
 	LoginResult struct {
-		Id     int    `json:"id"`
+		Id     int64  `json:"id"`
 		Email  string `json:"email"`
 		Name   string `json:"name"`
 		Role   string `json:"role"`
@@ -28,7 +28,7 @@ type (
 	}
 
 	UserModel struct {
-		Id        int    `json:"id"`
+		Id        int64  `json:"id"`
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
 		Email     string `json:"email"`

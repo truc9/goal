@@ -7,11 +7,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetUserId(c echo.Context) (id int) {
+func GetUserId(c echo.Context) (id int64) {
 	token := c.Get("user").(*jwt.Token)
 	claims, _ := token.Claims.(jwt.MapClaims)
 	userId := claims["jti"].(string)
-	result, _ := strconv.Atoi(userId)
+	result, _ := strconv.ParseInt(userId, 10, 64)
 	return result
 }
 

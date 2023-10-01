@@ -29,7 +29,7 @@ import (
 // @BasePath /api
 func main() {
 	app := echo.New()
-	app.Logger.SetLevel(log.INFO)
+	app.Logger.SetLevel(log.ERROR)
 
 	// app.Use(echoprometheus.NewMiddleware("monitoring"))
 	app.Use(middleware.Secure())
@@ -43,12 +43,13 @@ func main() {
 	app.GET("/swagger/*", sg.WrapHandler)
 	// app.GET("/metrics", echoprometheus.NewHandler())
 
-	scheduler := di.InitScheduler()
-	iamCtrl := di.InitIamController()
-	periodCtrl := di.InitPeriodController()
-	bookingCtrl := di.InitBookingController()
-	statCtrl := di.InitStatController()
-	wsCtrl := di.InitWsController()
+	scheduler := di.GetScheduler()
+	iamCtrl := di.GetIAMCtrl()
+	periodCtrl := di.GetPeriodCtrl()
+	bookingCtrl := di.GetBookingCtrl()
+	statCtrl := di.GetStatCtrl()
+	websocketCtrl := di.GetWebsocketCtrl()
+	assessmentCtrl := di.GetAssessmentCtrl()
 
 	// init & run hub in a different go routine
 	hub := ws.NewHub()
@@ -58,36 +59,38 @@ func main() {
 	go scheduler.Run()
 
 	app.GET("/ws", func(c echo.Context) error {
-		wsCtrl.ServeWS(c, hub)
+		log.Print("websocket connected")
+		websocketCtrl.ServeWS(c, hub)
 		return nil
 	})
 
-	a := app.Group("api")
+	anonymous := app.Group("api")
 	{
-		a.POST("/register", iamCtrl.RegisterUser)
-		a.POST("/login", iamCtrl.Login)
+		anonymous.POST("/register", iamCtrl.RegisterUser)
+		anonymous.POST("/login", iamCtrl.Login)
 	}
 
-	r := app.Group("api")
+	api := app.Group("api")
 	{
-		r.Use(jwt.JWT([]byte(config.Secret)))
+		api.Use(jwt.JWT([]byte(config.Secret)))
 
-		// periods
-		r.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(entity.RoleAdmin))
-		r.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
-		r.GET("/periods/next", periodCtrl.GetNextPeriod)
-		r.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
+		// Booking Periods
+		api.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(entity.RoleAdmin))
+		api.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
+		api.GET("/periods/next", periodCtrl.GetNextPeriod)
+		api.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
+		api.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(entity.RoleAdmin))
 
-		// Get booking info of all users
-		r.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(entity.RoleAdmin))
+		// Bookings
+		api.POST("/bookings", bookingCtrl.SubmitBooking)
+		api.DELETE("/bookings/:bookingId", bookingCtrl.DeleteBooking)
 
-		// bookings
-		r.POST("/bookings", bookingCtrl.SubmitBooking)
-		r.DELETE("/bookings/:bookingId", bookingCtrl.DeleteBooking)
+		// Stats & Analytics
+		api.GET("/stats/booking-overall", statCtrl.GetBookingOverallStats)
 
-		// stats
-		r.GET("/stats/booking-overall", statCtrl.GetBookingOverallStats)
-
+		// HSE Assessments
+		api.GET("/assessments", assessmentCtrl.GetAssessments)
+		api.POST("/assessments", assessmentCtrl.CreateAssessment)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

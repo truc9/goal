@@ -11,32 +11,37 @@ import (
 	"github.com/truc9/goal/internal/scheduler"
 )
 
-func InitBookingController() controller.BookingController {
+func GetBookingCtrl() controller.BookingController {
 	wire.Build(BookingSet)
 	return controller.BookingController{}
 }
 
-func InitPeriodController() controller.PeriodController {
+func GetPeriodCtrl() controller.PeriodController {
 	wire.Build(PeriodSet)
 	return controller.PeriodController{}
 }
 
-func InitIamController() controller.IamController {
+func GetIAMCtrl() controller.IamController {
 	wire.Build(IamSet)
 	return controller.IamController{}
 }
 
-func InitStatController() controller.StatController {
+func GetStatCtrl() controller.StatController {
 	wire.Build(StatSet)
 	return controller.StatController{}
 }
 
-func InitScheduler() scheduler.DailyScheduler {
+func GetScheduler() scheduler.DailyScheduler {
 	wire.Build(scheduler.NewDailyScheduler, booking.NewPeriodService, db.New)
 	return scheduler.DailyScheduler{}
 }
 
-func InitWsController() controller.WebSocketController {
+func GetWebsocketCtrl() controller.WebSocketController {
 	wire.Build(WsSet)
 	return controller.WebSocketController{}
+}
+
+func GetAssessmentCtrl() controller.AssessmentController {
+	wire.Build(AssessmentSet)
+	return controller.AssessmentController{}
 }

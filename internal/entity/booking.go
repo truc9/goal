@@ -6,8 +6,8 @@ import (
 
 type Booking struct {
 	Base
-	BookingPeriodId int       `json:"bookingPeriodId"`
-	UserId          int       `json:"userId"`
+	BookingPeriodId int64     `json:"bookingPeriodId"`
+	UserId          int64     `json:"userId"`
 	User            User      `json:"user" gorm:"foreignKey:UserId"`
 	Date            time.Time `json:"date"`
 }

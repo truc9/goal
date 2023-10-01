@@ -10,6 +10,7 @@ import (
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/controller"
 	"github.com/truc9/goal/internal/db"
+	"github.com/truc9/goal/internal/hse"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/scheduler"
 	"github.com/truc9/goal/internal/stats"
@@ -17,28 +18,28 @@ import (
 
 // Injectors from wire.go:
 
-func InitBookingController() controller.BookingController {
+func GetBookingCtrl() controller.BookingController {
 	gormDB := db.New()
 	bookingService := booking.NewBookingService(gormDB)
 	bookingController := controller.NewBookingController(bookingService)
 	return bookingController
 }
 
-func InitPeriodController() controller.PeriodController {
+func GetPeriodCtrl() controller.PeriodController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	periodController := controller.NewPeriodController(periodService)
 	return periodController
 }
 
-func InitIamController() controller.IamController {
+func GetIAMCtrl() controller.IamController {
 	gormDB := db.New()
 	iamService := iam.NewIamService(gormDB)
 	iamController := controller.NewIamController(iamService)
 	return iamController
 }
 
-func InitStatController() controller.StatController {
+func GetStatCtrl() controller.StatController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
@@ -46,18 +47,25 @@ func InitStatController() controller.StatController {
 	return statController
 }
 
-func InitScheduler() scheduler.DailyScheduler {
+func GetScheduler() scheduler.DailyScheduler {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	dailyScheduler := scheduler.NewDailyScheduler(periodService)
 	return dailyScheduler
 }
 
-func InitWsController() controller.WebSocketController {
+func GetWebsocketCtrl() controller.WebSocketController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
 	bookingService := booking.NewBookingService(gormDB)
 	webSocketController := controller.NewWebSocketController(statsService, bookingService)
 	return webSocketController
+}
+
+func GetAssessmentCtrl() controller.AssessmentController {
+	gormDB := db.New()
+	assessmentService := hse.NewAssessmentService(gormDB)
+	assessmentController := controller.NewAssessmentController(assessmentService)
+	return assessmentController
 }

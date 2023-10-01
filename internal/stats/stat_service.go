@@ -34,6 +34,6 @@ func (sv *StatsService) GetBookingOverallStats() (model BookingModel, err error)
 		Booked:   int(bookedCount),
 		Unbooked: int(userCount) - int(bookedCount),
 		Total:    int(userCount),
-		PeriodId: int(nextPeriod.Id),
+		PeriodId: int64(nextPeriod.Id),
 	}, nil
 }
