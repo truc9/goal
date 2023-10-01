@@ -8,17 +8,17 @@ import (
 )
 
 type StatController struct {
-	stats stats.StatsService
+	statSv stats.StatsService
 }
 
-func NewStatController(stats stats.StatsService) StatController {
+func NewStatController(statSv stats.StatsService) StatController {
 	return StatController{
-		stats: stats,
+		statSv: statSv,
 	}
 }
 
-func (s *StatController) GetBookingOverallStats(c echo.Context) (err error) {
-	result, err := s.stats.GetBookingOverallStats()
+func (ctrl *StatController) GetBookingOverallStats(c echo.Context) (err error) {
+	result, err := ctrl.statSv.GetBookingOverallStats()
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, nil)

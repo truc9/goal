@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type RoleType int
+type RoleTypeId int
 
 const (
-	RoleAdminId   RoleType = 1
-	RoleManagerId RoleType = 2
-	RoleUserId    RoleType = 3
+	RoleAdminId   RoleTypeId = 1
+	RoleManagerId RoleTypeId = 2
+	RoleUserId    RoleTypeId = 3
 )
 
 type RoleNameType string
@@ -25,15 +24,15 @@ const (
 )
 
 type User struct {
-	Id             uuid.UUID `gorm:"primaryKey" json:"id"`
-	FirstName      string    `json:"firstName"`
-	LastName       string    `json:"lastName"`
-	Email          string    `json:"email"`
-	UserName       string    `json:"username"`
-	HashPassword   string    `json:"hashPassword"`
-	RoleId         int       `json:"roleId"`
-	Role           Role      `gorm:"foreignKey:RoleId" json:"role"`
-	EmployeeNumber string    `json:"employeeNumber"`
+	Base
+	FirstName      string `json:"firstName"`
+	LastName       string `json:"lastName"`
+	EmployeeNumber string `json:"employeeNumber"`
+	Email          string `json:"email"`
+	UserName       string `json:"username"`
+	HashPassword   string `json:"hashPassword"`
+	RoleId         int    `json:"roleId"`
+	Role           Role   `gorm:"foreignKey:RoleId" json:"role"`
 }
 
 func (u *User) SetPassword(password string) {
@@ -41,7 +40,7 @@ func (u *User) SetPassword(password string) {
 	u.HashPassword = hash
 }
 
-func (u *User) SetRole(roleId RoleType) {
+func (u *User) SetRole(roleId RoleTypeId) {
 	u.RoleId = int(roleId)
 }
 
@@ -56,7 +55,6 @@ func NewUser(firstName, lastName, email string, userName string) (*User, error) 
 	}
 
 	user := &User{
-		Id:        uuid.New(),
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,

@@ -2,7 +2,6 @@ package booking
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/samber/lo"
@@ -12,19 +11,19 @@ import (
 )
 
 type PeriodService struct {
-	db *gorm.DB
+	tx *gorm.DB
 }
 
-func NewPeriodService(db *gorm.DB) PeriodService {
+func NewPeriodService(tx *gorm.DB) PeriodService {
 	return PeriodService{
-		db: db,
+		tx: tx,
 	}
 }
 
 func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 	period := &entity.BookingPeriod{}
 	todayNextWeek := timeutil.GetTodayNextWeek(time.Now())
-	res := sv.db.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
+	res := sv.tx.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -33,15 +32,13 @@ func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 
 func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 	period := entity.CreateNextPeriod(time.Now())
-	log.Printf("next period is %v", period.From)
 	entity := &entity.BookingPeriod{}
-	r := sv.db.Where("\"from\" = ?", period.From).First(&entity)
+	r := sv.tx.Where("\"from\" = ?", period.From).First(&entity)
 	if r.RowsAffected != 0 {
 		return nil, fmt.Errorf("period found duplicated %v", entity.From)
 	}
 
-	res := sv.db.Create(period)
-	log.Printf("period %v created", period.From)
+	res := sv.tx.Create(period)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -51,7 +48,7 @@ func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 
 func (sv PeriodService) GetPeriods() ([]PeriodModel, error) {
 	var entities []entity.BookingPeriod
-	res := sv.db.Find(&entities)
+	res := sv.tx.Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -62,7 +59,7 @@ func (sv PeriodService) GetPeriods() ([]PeriodModel, error) {
 
 	periods := lo.Map(entities, func(item entity.BookingPeriod, index int) PeriodModel {
 		return PeriodModel{
-			Id:   item.Id,
+			Id:   int(item.Id),
 			From: item.From, //Time with timezone
 			To:   item.To,   //Time with timezone
 			IsCurrentPeriod: (item.From.Before(todayNextWeek) && item.To.After(todayNextWeek)) ||

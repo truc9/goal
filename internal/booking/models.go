@@ -2,22 +2,20 @@ package booking
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type (
 	BookingModel struct {
-		Id              uuid.UUID `json:"id"`
-		BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
+		Id              int       `json:"id"`
+		BookingPeriodId int       `json:"bookingPeriodId"`
 		Date            time.Time `json:"date"`
 	}
 
 	UserBookingItem struct {
-		BookingId       uuid.UUID `json:"bookingId"`
-		BookingPeriodId uuid.UUID `json:"bookingPeriodId"`
-		UserDisplayName string    `json:"userDisplayName"`
-		BookingDate     string    `json:"bookingDate"`
+		BookingId       int    `json:"bookingId"`
+		BookingPeriodId int    `json:"bookingPeriodId"`
+		UserDisplayName string `json:"userDisplayName"`
+		BookingDate     string `json:"bookingDate"`
 	}
 
 	GrouppedUserBooking struct {
@@ -26,7 +24,7 @@ type (
 	}
 
 	PeriodModel struct {
-		Id              uuid.UUID `json:"id"`
+		Id              int       `json:"id"`
 		From            time.Time `json:"from"`
 		To              time.Time `json:"to"`
 		IsCurrentPeriod bool      `json:"isCurrentPeriod"`

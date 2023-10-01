@@ -1,9 +1,7 @@
 package hse
 
-import "github.com/google/uuid"
-
 type AssessmentModel struct {
-	Id          uuid.UUID
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }

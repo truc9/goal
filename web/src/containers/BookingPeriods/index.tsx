@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import officeBookingService from '../../services/bookingService'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { BookingPeriod } from '../../models/booking'
+import React, {
+    useEffect,
+    useState,
+} from 'react'
+
 import dayjs from 'dayjs'
-import { PageContainer } from '../../components/PageContainer'
+import _ from 'lodash'
 import { FiCalendar } from 'react-icons/fi'
 import { IoCheckmarkCircle } from 'react-icons/io5'
-import _ from "lodash"
+
+import {
+    DataGrid,
+    GridColDef,
+} from '@mui/x-data-grid'
+
+import { PageContainer } from '../../components/PageContainer'
+import { BookingPeriod } from '../../models/booking'
+import officeBookingService from '../../services/bookingService'
 
 const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },

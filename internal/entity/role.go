@@ -10,13 +10,13 @@ type Role struct {
 	Description string `json:"description"`
 }
 
-func CreateNewRole(roleType RoleType, name, description string) (role *Role, err error) {
+func CreateNewRole(roleTypeId RoleTypeId, name, description string) (role *Role, err error) {
 	if len(name) == 0 {
 		return nil, errors.New("name is required")
 	}
 
 	res := &Role{
-		Id:          int(roleType),
+		Id:          int(roleTypeId),
 		Name:        name,
 		Description: description,
 	}

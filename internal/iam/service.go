@@ -3,10 +3,10 @@ package iam
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/config"
@@ -15,7 +15,7 @@ import (
 )
 
 type IamService struct {
-	db *gorm.DB
+	tx *gorm.DB
 }
 
 type (
@@ -27,15 +27,15 @@ type (
 	}
 )
 
-func NewIamService(db *gorm.DB) IamService {
+func NewIamService(tx *gorm.DB) IamService {
 	return IamService{
-		db: db,
+		tx: tx,
 	}
 }
 
 func (s IamService) GetAll() []UserModel {
 	var users []entity.User
-	res := s.db.Find(&users)
+	res := s.tx.Find(&users)
 	if res.Error != nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func (s IamService) GetAll() []UserModel {
 }
 
 func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
-	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
+	dup := sv.tx.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
 	if dup.RowsAffected != 0 {
 		return nil, errors.New("email already in use")
 	}
@@ -66,7 +66,7 @@ func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
 
 	user.SetPassword(r.Password)
 
-	res := sv.db.Create(&user)
+	res := sv.tx.Create(&user)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -77,25 +77,26 @@ func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
 
 func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 	user := entity.User{}
-	res := sv.db.Joins("Role").First(&user, "email=?", req.Email)
+	res := sv.tx.Joins("Role").First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
-		return nil, errors.New("User does not exist")
+		return nil, errors.New("user does not exist")
 	}
 
 	if !user.VerifyPassword(req.Password) {
 		return nil, errors.New("invalid password")
 	}
 
-	expiry := jwt.NewNumericDate(time.Now().Add(time.Hour * 3))
+	claimExpiry := jwt.NewNumericDate(time.Now().Add(time.Hour * 3))
+	claimId := strconv.FormatUint(uint64(user.Id), 10)
 
 	claims := &CustomJwtClaims{
 		fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		user.Email,
 		user.Role.Name,
 		jwt.RegisteredClaims{
-			ID:        user.Id.String(),
-			ExpiresAt: expiry,
+			ID:        claimId,
+			ExpiresAt: claimExpiry,
 		},
 	}
 
@@ -111,25 +112,25 @@ func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 		Email:  user.Email,
 		Name:   fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		Role:   user.Role.Name,
-		Expire: expiry.UnixMilli(),
+		Expire: claimExpiry.UnixMilli(),
 		Token:  signedToken,
 	}, nil
 }
 
-func (sv IamService) AssignRole(userId uuid.UUID, ra RoleAssignmentModel) (err error) {
+func (sv IamService) AssignRole(userId int, ra RoleAssignmentModel) (err error) {
 	user := entity.User{}
-	if res := sv.db.Find(&user, userId); res.RowsAffected == 0 {
-		return errors.New("User not found")
+	if res := sv.tx.Find(&user, userId); res.RowsAffected == 0 {
+		return errors.New("user not found")
 	}
 
 	role := entity.Role{}
-	if res := sv.db.Find(&role, ra.RoleId); res.RowsAffected == 0 {
-		return errors.New("Role not found")
+	if res := sv.tx.Find(&role, ra.RoleId); res.RowsAffected == 0 {
+		return errors.New("role not found")
 	}
 
-	user.SetRole(entity.RoleType(ra.RoleId))
+	user.SetRole(entity.RoleTypeId(ra.RoleId))
 
-	sv.db.Save(&user)
+	sv.tx.Save(&user)
 
 	return nil
 }

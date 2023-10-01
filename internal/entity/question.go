@@ -1,7 +1,5 @@
 package entity
 
-import "github.com/google/uuid"
-
 type QuestionType int
 
 const (
@@ -16,8 +14,8 @@ const (
 )
 
 type Question struct {
-	Id                  uuid.UUID    `gorm:"primaryKey" json:"id"`
+	Base
 	Description         string       `json:"description"`
 	QuestionType        QuestionType `json:"questionType"`
-	AssessmentVersionId uuid.UUID    `json:"assessmentVersionId"`
+	AssessmentVersionId int          `json:"assessmentVersionId"`
 }

@@ -24,7 +24,7 @@ import bookingService from '../../services/bookingService'
 dayjs.extend(weekday)
 
 interface BookingDate {
-    bookingId: string
+    bookingId: number
     date: number
 }
 
@@ -72,21 +72,21 @@ const MyBooking: React.FC = () => {
         setIndex(index)
     }
 
-    const loadMyBookings = async (bookingPeriodId: string) => {
-        const bookings = await bookingService.getMyBookings(bookingPeriodId)
+    const loadMyBookings = async (periodId: number) => {
+        const bookings = await bookingService.getMyBookings(periodId)
         const dates = bookings.map(booking => ({ date: dayjs(booking.date).date(), bookingId: booking.id }))
         setBookingDates(dates)
     }
 
-    const createBooking = async (bookingPeriodId: string, d: Date) => {
-        await bookingService.createBooking(bookingPeriodId, d)
-        loadMyBookings(bookingPeriodId)
+    const createBooking = async (periodId: number, d: Date) => {
+        await bookingService.createBooking(periodId, d)
+        loadMyBookings(periodId)
         ws.send("booking_updated")
     }
 
-    const cancelBooking = async (bookingPeriodId: string, bookingId: string) => {
+    const cancelBooking = async (periodId: number, bookingId: number) => {
         await bookingService.deleteBooking(bookingId)
-        loadMyBookings(bookingPeriodId)
+        loadMyBookings(periodId)
         ws.send("booking_updated")
     }
 

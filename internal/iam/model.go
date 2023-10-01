@@ -1,9 +1,5 @@
 package iam
 
-import (
-	"github.com/google/uuid"
-)
-
 type (
 	RegisterModel struct {
 		FirstName string `json:"firstName"`
@@ -23,16 +19,16 @@ type (
 	}
 
 	LoginResult struct {
-		Id     uuid.UUID `json:"id"`
-		Email  string    `json:"email"`
-		Name   string    `json:"name"`
-		Role   string    `json:"role"`
-		Expire int64     `json:"expire"`
-		Token  string    `json:"token"`
+		Id     int    `json:"id"`
+		Email  string `json:"email"`
+		Name   string `json:"name"`
+		Role   string `json:"role"`
+		Expire int64  `json:"expire"`
+		Token  string `json:"token"`
 	}
 
 	UserModel struct {
-		Id        uuid.UUID
+		Id        int    `json:"id"`
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
 		Email     string `json:"email"`

@@ -1,19 +1,19 @@
 export interface BookingPeriod {
-    id: string
+    id: number
     from: Date
     to: Date
     isCurrentPeriod: boolean
 }
 
 export interface Booking {
-    id: string
+    id: number
     userId: string
     date: Date
 }
 
 export interface UserBookingItem {
-    bookingId: string
-    bookingPeriodId: string
+    bookingId: number
+    bookingPeriodId: number
     userDisplayName: string
     bookingDate: string
 }

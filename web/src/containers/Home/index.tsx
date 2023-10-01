@@ -1,13 +1,28 @@
-import { FiBarChart2, FiCalendar, FiCheckCircle, FiGrid } from "react-icons/fi"
-import { PageContainer } from "../../components/PageContainer"
-import { ClickableCard } from "../../components/ClickableCard"
-import { Card } from "../../components/Card"
-import { useEffect, useState } from "react"
-import { PieChart, Pie, Tooltip, Legend } from 'recharts'
-import httpService from "../../services/httpClient"
-import useLocalAuth from "../../hooks/useLocalAuth"
-import useWebSocket from "../../hooks/useWebSocket"
-import { NotificationEvents } from "../../constant"
+import {
+    useEffect,
+    useState,
+} from 'react'
+
+import {
+    FiBarChart2,
+    FiCalendar,
+    FiCheckCircle,
+    FiGrid,
+} from 'react-icons/fi'
+import {
+    Legend,
+    Pie,
+    PieChart,
+    Tooltip,
+} from 'recharts'
+
+import { Card } from '../../components/Card'
+import { ClickableCard } from '../../components/ClickableCard'
+import { PageContainer } from '../../components/PageContainer'
+import { NotificationEvents } from '../../constant'
+import useLocalAuth from '../../hooks/useLocalAuth'
+import useWebSocket from '../../hooks/useWebSocket'
+import httpService from '../../services/httpClient'
 
 const Home = () => {
     const [totalEmployee, setTotalEmployee] = useState(0)

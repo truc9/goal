@@ -8,37 +8,35 @@ import (
 )
 
 type PeriodController struct {
-	s b.PeriodService
+	periodSv b.PeriodService
 }
 
-func NewPeriodController(s b.PeriodService) PeriodController {
+func NewPeriodController(periodSv b.PeriodService) PeriodController {
 	return PeriodController{
-		s: s,
+		periodSv: periodSv,
 	}
 }
 
-func (h PeriodController) CreateNextPeriod(c echo.Context) (err error) {
-	period, err := h.s.CreateNextPeriod()
+func (ctrl PeriodController) CreateNextPeriod(c echo.Context) (err error) {
+	period, err := ctrl.periodSv.CreateNextPeriod()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, period)
 }
 
-func (h PeriodController) GetNextPeriod(c echo.Context) (err error) {
-	period, err := h.s.GetNextPeriod()
+func (ctrl PeriodController) GetNextPeriod(c echo.Context) (err error) {
+	period, err := ctrl.periodSv.GetNextPeriod()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, period)
 }
 
-func (h PeriodController) GetPeriods(c echo.Context) (err error) {
-	periods, err := h.s.GetPeriods()
-
+func (ctrl PeriodController) GetPeriods(c echo.Context) (err error) {
+	periods, err := ctrl.periodSv.GetPeriods()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
-
 	return c.JSON(http.StatusOK, periods)
 }
