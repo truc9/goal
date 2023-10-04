@@ -16,18 +16,18 @@ body {
   }
 
   .btn {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-text-slate-900 tw-px-3 tw-py-[10px] tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-px-4 tw-py-3 tw-text-slate-900 tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 
   .btn-secondary {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-text-slate-900 tw-px-3 tw-py-[10px] tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-px-4 tw-py-3 tw-text-slate-900 tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 
   .btn-primary {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-blue-700 tw-text-white tw-px-3 tw-py-[10px] tw-rounded hover:tw-bg-blue-500 active:tw-ring-blue-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-blue-700 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-blue-500 active:tw-ring-blue-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 
   .btn-danger {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-rose-500 tw-text-white tw-px-3 tw-py-[10px] tw-rounded hover:tw-bg-rose-400 active:tw-ring-rose-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-rose-500 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-rose-400 active:tw-ring-rose-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 }
