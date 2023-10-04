@@ -1,21 +1,24 @@
 import React, {
-    useEffect,
-    useState,
-} from 'react'
+  useEffect,
+  useState,
+} from 'react';
 
-import dayjs from 'dayjs'
-import _ from 'lodash'
-import { FiCalendar } from 'react-icons/fi'
-import { IoCheckmarkCircle } from 'react-icons/io5'
+import dayjs from 'dayjs';
+import _ from 'lodash';
+import {
+  FiCalendar,
+  FiRefreshCw,
+} from 'react-icons/fi';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
 import {
-    DataGrid,
-    GridColDef,
-} from '@mui/x-data-grid'
+  DataGrid,
+  GridColDef,
+} from '@mui/x-data-grid';
 
-import { PageContainer } from '../../components/PageContainer'
-import { BookingPeriod } from '../../models/booking'
-import officeBookingService from '../../services/bookingService'
+import { PageContainer } from '../../components/PageContainer';
+import { BookingPeriod } from '../../models/booking';
+import officeBookingService from '../../services/bookingService';
 
 const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
@@ -48,8 +51,8 @@ const BookingPeriods: React.FC = () => {
 
     return (
         <PageContainer icon={<FiCalendar />} title='Office Booking Periods'>
-            <div className='tw-flex'>
-                <button className='btn-primary' onClick={loadNextPeriod}>Create Period</button>
+            <div className='tw-flex tw-justify-end'>
+                <button className='btn-secondary' onClick={loadNextPeriod}><FiRefreshCw className="tw-animate-spin" /><span>Refresh</span></button>
             </div>
             <DataGrid
                 autoHeight

@@ -7,12 +7,12 @@ import (
 )
 
 type BookingService struct {
-	tx *gorm.DB
+	db *gorm.DB
 }
 
-func NewBookingService(tx *gorm.DB) BookingService {
+func NewBookingService(db *gorm.DB) BookingService {
 	return BookingService{
-		tx: tx,
+		db: db,
 	}
 }
 
@@ -23,7 +23,7 @@ func (sv BookingService) CreateBooking(userId int64, model *entity.Booking) (*en
 		Date:            model.Date,
 	}
 
-	res := sv.tx.Debug().Create(booking)
+	res := sv.db.Debug().Create(booking)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -34,11 +34,11 @@ func (sv BookingService) CreateBooking(userId int64, model *entity.Booking) (*en
 
 func (sv BookingService) DeleteBooking(bookingId int64) error {
 	entity := &entity.Booking{}
-	res := sv.tx.Where("id = ?", bookingId).First(entity)
+	res := sv.db.Where("id = ?", bookingId).First(entity)
 	if res.Error != nil {
 		return res.Error
 	}
-	sv.tx.Delete(entity)
+	sv.db.Delete(entity)
 	return nil
 }
 
@@ -53,7 +53,7 @@ func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooki
 		"bookings.date as booking_date"
 
 	// Query statement
-	sv.tx.Debug().
+	sv.db.Debug().
 		Table("users").
 		Order("users.first_name asc").
 		Select(columns).
@@ -79,7 +79,7 @@ func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooki
 
 func (sv BookingService) GetMyBookings(userId, periodId int64) []*entity.Booking {
 	bookings := []*entity.Booking{}
-	sv.tx.
+	sv.db.
 		Debug().
 		Where("user_id = ? AND booking_period_id = ?", userId, periodId).
 		Find(&bookings)

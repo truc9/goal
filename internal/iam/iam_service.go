@@ -15,7 +15,7 @@ import (
 )
 
 type IamService struct {
-	tx *gorm.DB
+	db *gorm.DB
 }
 
 type (
@@ -27,15 +27,15 @@ type (
 	}
 )
 
-func NewIamService(tx *gorm.DB) IamService {
+func NewIamService(db *gorm.DB) IamService {
 	return IamService{
-		tx: tx,
+		db: db,
 	}
 }
 
 func (s IamService) GetAll() []UserModel {
 	var users []entity.User
-	res := s.tx.Find(&users)
+	res := s.db.Find(&users)
 	if res.Error != nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func (s IamService) GetAll() []UserModel {
 }
 
 func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
-	dup := sv.tx.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
+	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
 	if dup.RowsAffected != 0 {
 		return nil, errors.New("email already in use")
 	}
@@ -66,7 +66,7 @@ func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
 
 	user.SetPassword(r.Password)
 
-	res := sv.tx.Create(&user)
+	res := sv.db.Create(&user)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -77,7 +77,7 @@ func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
 
 func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 	user := entity.User{}
-	res := sv.tx.Joins("Role").First(&user, "email=?", req.Email)
+	res := sv.db.Joins("Role").First(&user, "email=?", req.Email)
 
 	if res.Error != nil {
 		return nil, errors.New("user does not exist")
@@ -119,18 +119,18 @@ func (sv IamService) Login(req LoginModel) (*LoginResult, error) {
 
 func (sv IamService) AssignRole(userId int, ra RoleAssignmentModel) (err error) {
 	user := entity.User{}
-	if res := sv.tx.Find(&user, userId); res.RowsAffected == 0 {
+	if res := sv.db.Find(&user, userId); res.RowsAffected == 0 {
 		return errors.New("user not found")
 	}
 
 	role := entity.Role{}
-	if res := sv.tx.Find(&role, ra.RoleId); res.RowsAffected == 0 {
+	if res := sv.db.Find(&role, ra.RoleId); res.RowsAffected == 0 {
 		return errors.New("role not found")
 	}
 
 	user.SetRole(entity.RoleTypeId(ra.RoleId))
 
-	sv.tx.Save(&user)
+	sv.db.Save(&user)
 
 	return nil
 }

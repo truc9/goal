@@ -36,5 +36,5 @@ const remove = async <T = any>(resource: string) => {
 export default {
     get,
     post,
-    remove
+    remove,
 }

@@ -79,18 +79,19 @@ func main() {
 		api.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
 		api.GET("/periods/next", periodCtrl.GetNextPeriod)
 		api.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
-		api.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetAllBookings, authz.RequireRoles(entity.RoleAdmin))
+		api.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetBookings, authz.RequireRoles(entity.RoleAdmin))
 
 		// Bookings
-		api.POST("/bookings", bookingCtrl.SubmitBooking)
-		api.DELETE("/bookings/:bookingId", bookingCtrl.DeleteBooking)
+		api.POST("/bookings", bookingCtrl.Submit)
+		api.DELETE("/bookings/:bookingId", bookingCtrl.Delete)
 
 		// Stats & Analytics
-		api.GET("/stats/booking-overall", statCtrl.GetBookingOverallStats)
+		api.GET("/stats/booking-overall", statCtrl.GetBookingStats)
 
 		// HSE Assessments
-		api.GET("/assessments", assessmentCtrl.GetAssessments)
-		api.POST("/assessments", assessmentCtrl.CreateAssessment)
+		api.GET("/assessments", assessmentCtrl.GetAll)
+		api.POST("/assessments", assessmentCtrl.Create)
+		api.DELETE("/assessments/:assessmentId", assessmentCtrl.Delete)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

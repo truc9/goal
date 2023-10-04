@@ -17,7 +17,7 @@ func NewStatController(statSv stats.StatsService) StatController {
 	}
 }
 
-func (ctrl *StatController) GetBookingOverallStats(c echo.Context) (err error) {
+func (ctrl *StatController) GetBookingStats(c echo.Context) (err error) {
 	result, err := ctrl.statSv.GetBookingOverallStats()
 
 	if err != nil {

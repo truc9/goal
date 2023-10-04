@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 interface Props {
     title: string
-    rightTitle?: React.ReactNode
+    action?: React.ReactNode
     children?: React.ReactNode
     icon?: React.ReactNode
     showGoBack?: boolean
@@ -13,7 +13,7 @@ interface Props {
 
 export const PageContainer: React.FC<Props> = ({
     title,
-    rightTitle,
+    action,
     icon,
     showGoBack,
     children,
@@ -33,7 +33,7 @@ export const PageContainer: React.FC<Props> = ({
                     {icon && <span className="tw-text-2xl">{icon}</span>}
                     <h3 className="tw-text-lg tw-uppercase">{title}</h3>
                 </div>
-                {rightTitle}
+                {action}
             </div>
             <div className="tw-flex tw-flex-col tw-gap-3">
                 {children}

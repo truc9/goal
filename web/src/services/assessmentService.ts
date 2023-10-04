@@ -1,4 +1,4 @@
-import { AssessmentModel } from '../models/assessment'
+import AssessmentModel from '../containers/HSE/models/AssessmentModel'
 import httpClient from './httpClient'
 
 async function create(name: string, description: string) {
@@ -13,7 +13,12 @@ async function get(): Promise<AssessmentModel[]> {
     return result
 }
 
+async function deleteById(id: number): Promise<void> {
+    await httpClient.remove(`assessments/${id}`)
+}
+
 export default {
     get,
-    create
+    create,
+    deleteById
 }

@@ -11,19 +11,19 @@ import (
 )
 
 type PeriodService struct {
-	tx *gorm.DB
+	db *gorm.DB
 }
 
-func NewPeriodService(tx *gorm.DB) PeriodService {
+func NewPeriodService(db *gorm.DB) PeriodService {
 	return PeriodService{
-		tx: tx,
+		db: db,
 	}
 }
 
 func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 	period := &entity.BookingPeriod{}
 	todayNextWeek := timeutil.GetTodayNextWeek(time.Now())
-	res := sv.tx.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
+	res := sv.db.Where("\"from\" <= ? AND \"to\" >= ?", todayNextWeek, todayNextWeek).First(period)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -33,12 +33,12 @@ func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 	period := entity.CreateNextPeriod(time.Now())
 	entity := &entity.BookingPeriod{}
-	r := sv.tx.Where("\"from\" = ?", period.From).First(&entity)
+	r := sv.db.Where("\"from\" = ?", period.From).First(&entity)
 	if r.RowsAffected != 0 {
 		return nil, fmt.Errorf("period found duplicated %v", entity.From)
 	}
 
-	res := sv.tx.Create(period)
+	res := sv.db.Create(period)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -48,7 +48,7 @@ func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 
 func (sv PeriodService) GetPeriods() ([]PeriodModel, error) {
 	var entities []entity.BookingPeriod
-	res := sv.tx.Find(&entities)
+	res := sv.db.Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
