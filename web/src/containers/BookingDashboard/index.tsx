@@ -76,14 +76,14 @@ const BookingDashboard: React.FC = () => {
                                 {dates.map((date, i) => {
                                     const booking = ub.bookings.find(bd => dayjs(bd.bookingDate).date() == dayjs(date).date())
                                     return (
-                                        <td key={i} className="tw-p-1">
+                                        <td key={i} className="tw-p-2">
                                             {booking ? (
                                                 <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="30" />
+                                                    <IoCheckmarkCircle size="40" />
                                                 </span>
                                             ) : (
                                                 <span className="tw-text-slate-200 tw-justify-center tw-items-center tw-flex">
-                                                    <IoCheckmarkCircle size="30" />
+                                                    <IoCheckmarkCircle size="40" />
                                                 </span>
                                             )}
                                         </td>

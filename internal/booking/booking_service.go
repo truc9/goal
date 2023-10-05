@@ -23,7 +23,7 @@ func (sv BookingService) CreateBooking(userId int64, model *entity.Booking) (*en
 		Date:            model.Date,
 	}
 
-	res := sv.db.Debug().Create(booking)
+	res := sv.db.Create(booking)
 
 	if res.Error != nil {
 		return nil, res.Error
@@ -53,7 +53,7 @@ func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooki
 		"bookings.date as booking_date"
 
 	// Query statement
-	sv.db.Debug().
+	sv.db.
 		Table("users").
 		Order("users.first_name asc").
 		Select(columns).
@@ -80,7 +80,6 @@ func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooki
 func (sv BookingService) GetMyBookings(userId, periodId int64) []*entity.Booking {
 	bookings := []*entity.Booking{}
 	sv.db.
-		Debug().
 		Where("user_id = ? AND booking_period_id = ?", userId, periodId).
 		Find(&bookings)
 

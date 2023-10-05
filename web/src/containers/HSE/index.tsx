@@ -6,11 +6,11 @@ import {
 } from 'react'
 
 import {
-    FiAlertTriangle,
     FiPlus,
     FiTriangle,
     FiXCircle,
 } from 'react-icons/fi'
+import { IoCheckmarkCircle } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
 import {
@@ -32,7 +32,7 @@ interface AssessmentProps {
     onClick?: (e: any) => void
     onDeleteClick?: (e: any) => void
 }
-const Assessment: FC<AssessmentProps> = ({
+const AssessmentContainer: FC<AssessmentProps> = ({
     id,
     name,
     icon,
@@ -53,14 +53,12 @@ const Assessment: FC<AssessmentProps> = ({
     }
 
     return (
-        <div className="tw-relative tw-z-0 tw-bg-emerald-50 tw-flex tw-text-center tw-gap-3 tw-flex-col tw-justify-center tw-items-center tw-h-36 hover:tw-cursor-pointer tw-rounded-xl tw-p-2 tw-transition-all">
+        <div className="tw-relative tw-z-0 tw-bg-slate-100 tw-flex tw-text-center tw-gap-3 tw-flex-col tw-items-center tw-h-36 hover:tw-cursor-pointer tw-rounded tw-p-2 tw-transition-all tw-border">
             <button className='tw-transition-all tw-z-10 tw-bg-rose-500 active:tw-bg-rose-400 tw-text-white tw-p-1 hover:tw-ring-offset-2 tw-ring-2 tw-ring-rose-500 hover:tw-ring-rose-400 tw-rounded-full tw-absolute -tw-right-2 -tw-top-2' onClick={handleDeleteClick} > <FiXCircle /></button >
-            <button onClick={handleClick} className='tw-transition-all tw-rounded tw-ring-2 tw-ring-white hover:tw-ring-emerald-500 hover:tw-ring-offset-2 active:tw-ring-offset-4 tw-w-full tw-h-full'>
-                <div className='tw-h-8 tw-items-center tw-w-full tw-justify-center tw-flex'>
-                    <span className="tw-text-3xl">{icon}</span>
-                </div>
-                <div className="tw-flex-1 tw-flex tw-w-full tw-h-full tw-justify-center tw-items-center">
-                    <h3>{name}</h3>
+            <button onClick={handleClick} className='tw-flex tw-h-full tw-w-full tw-flex-col tw-p-2 tw-items-center tw-justify-around tw-transition-all tw-rounded'>
+                {icon && <span className='tw-text-3xl'>{icon}</span>}
+                <div className="tw-flex-1 tw-flex tw-w-full tw-justify-center tw-items-center">
+                    <h3 className='tw-uppercase'>{name}</h3>
                 </div>
             </button>
         </div >
@@ -130,10 +128,10 @@ const Hse: FC = () => {
             <div className="tw-grid-cols-2 tw-grid md:tw-grid-cols-4 lg:tw-grid-cols-6 tw-gap-4">
                 {assessments.map((item: AssessmentModel, index: number) => {
                     return (
-                        <Assessment
+                        <AssessmentContainer
                             id={item.id!}
                             key={index}
-                            icon={<FiAlertTriangle />}
+                            icon={<IoCheckmarkCircle className="tw-text-emerald-500" size={40} />}
                             name={item.name}
                             onClick={handleClick}
                             onDeleteClick={handleDeleteClick}

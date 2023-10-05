@@ -18,15 +18,15 @@ func NewAssessmentService(db *gorm.DB) AssessmentService {
 	}
 }
 
-func (sv AssessmentService) CreateAssessment(userID int64, model *AssessmentModel) (int64, error) {
+func (sv AssessmentService) CreateAssessment(userId int64, model *AssessmentModel) (int64, error) {
 	var result int64
 	err := sv.db.Transaction(func(tx *gorm.DB) error {
-		assessment, err := entity.NewAssessment(userID, model.Name, model.Description)
+		assessment, err := entity.NewAssessment(userId, model.Name, model.Description)
 		if err != nil {
 			return err
 		}
 
-		res := tx.Debug().Create(assessment)
+		res := tx.Create(assessment)
 
 		if res.Error != nil {
 			return res.Error
@@ -42,7 +42,7 @@ func (sv AssessmentService) CreateAssessment(userID int64, model *AssessmentMode
 				Version:      1,
 				Assessment:   assessment,
 			}
-			res = tx.Debug().Create(version)
+			res = tx.Create(version)
 
 			if res.Error != nil {
 				return res.Error
@@ -61,7 +61,7 @@ func (sv AssessmentService) CreateAssessment(userID int64, model *AssessmentMode
 
 func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
 	var entities []entity.Assessment
-	res := sv.db.Debug().Find(&entities)
+	res := sv.db.Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -77,12 +77,48 @@ func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
 	return assessments, nil
 }
 
-func (sv AssessmentService) DeleteAssessment(id int64) error {
+func (sv AssessmentService) DeleteAssessment(assessmentId int64) error {
 	a := &entity.Assessment{}
-	res := sv.db.First(a, id)
+	res := sv.db.First(a, assessmentId)
 	if res.Error != nil {
 		return res.Error
 	}
-	res = sv.db.Debug().Delete(a)
-	return res.Error
+
+	v := &entity.AssessmentVersion{}
+	res = sv.db.Where("assessment_id = ?", a.Id).First(v)
+	if res.Error != nil {
+		return res.Error
+	}
+
+	return sv.db.Transaction(func(tx *gorm.DB) error {
+		res = tx.Delete(v)
+		if res.Error != nil {
+			return res.Error
+		}
+
+		res = tx.Delete(a)
+		return res.Error
+	})
+}
+
+func (sv AssessmentService) GetAssessmentVersions(assessmentId int64) ([]AssessmentVersionModel, error) {
+	entities := []entity.AssessmentVersion{}
+
+	res := sv.db.
+		Where("assessment_id = ?", assessmentId).
+		Select("id", "version").
+		Find(&entities)
+
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	result := lo.Map(entities, func(item entity.AssessmentVersion, index int) AssessmentVersionModel {
+		return AssessmentVersionModel{
+			Id:      item.Id,
+			Version: item.Version,
+		}
+	})
+
+	return result, nil
 }

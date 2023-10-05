@@ -4,7 +4,8 @@
 @tailwind utilities;
 
 body {
-  font-family: "Inclusive Sans", "Inter", sans-serif;
+  /* "Inclusive Sans" */
+  font-family: "Inter", sans-serif;
   font-size: 11pt;
 }
 

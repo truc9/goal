@@ -73,3 +73,15 @@ func (ctrl AssessmentController) Delete(c echo.Context) (err error) {
 	}
 	return c.JSON(http.StatusOK, assessmentId)
 }
+
+// Get verions by assessment id
+//
+//	@Summary		Get versions
+//	@Produce		json
+//	@Success		200	{object}	[]hse.AssessmentVersionModel
+//	@Router			/api/asessments/:assessmentId/versions [get]
+func (ctrl AssessmentController) GetVersions(c echo.Context) (err error) {
+	assessmentId, _ := strconv.ParseInt(c.Param("assessmentId"), 10, 64)
+	versions, _ := ctrl.assessmentSv.GetAssessmentVersions(assessmentId)
+	return c.JSON(http.StatusOK, versions)
+}
