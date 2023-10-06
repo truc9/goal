@@ -1,24 +1,24 @@
 import React, {
-  useEffect,
-  useState,
-} from 'react';
+    useEffect,
+    useState,
+} from 'react'
 
-import dayjs from 'dayjs';
-import _ from 'lodash';
+import dayjs from 'dayjs'
+import _ from 'lodash'
 import {
-  FiCalendar,
-  FiRefreshCw,
-} from 'react-icons/fi';
-import { IoCheckmarkCircle } from 'react-icons/io5';
+    FiCalendar,
+    FiRefreshCw,
+} from 'react-icons/fi'
+import { IoCheckmarkCircle } from 'react-icons/io5'
 
 import {
-  DataGrid,
-  GridColDef,
-} from '@mui/x-data-grid';
+    DataGrid,
+    GridColDef,
+} from '@mui/x-data-grid'
 
-import { PageContainer } from '../../components/PageContainer';
-import { BookingPeriod } from '../../models/booking';
-import officeBookingService from '../../services/bookingService';
+import { PageContainer } from '../../components/PageContainer'
+import { BookingPeriod } from '../../models/booking'
+import officeBookingService from '../../services/bookingService'
 
 const columns: GridColDef[] = [
     { field: 'from', headerName: 'From', width: 300, valueFormatter: params => dayjs(params?.value).format('ddd DD/MM/YYYY') },
@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
         field: 'isCurrentPeriod',
         headerName: 'Current',
         width: 400,
-        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-emerald-500" /> : null
+        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-pink-500" /> : null
     },
 ]
 

@@ -52,7 +52,7 @@ const BookingDashboard: React.FC = () => {
 
     return (
         <PageContainer icon={<FiBarChart2 />} title="Booking Dashboard">
-            <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-xl tw-font-bold tw-text-emerald-500 tw-justify-center tw-mb-5">
+            <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-xl tw-font-bold tw-text-pink-500 tw-justify-center tw-mb-5">
                 <h3>{dayjs(nextPeriod?.from).format('DD MMM YYYY')} - {dayjs(nextPeriod?.to).format('DD MMM YYYY')}</h3>
             </div>
             <table className='tw-w-full tw-table'>
@@ -78,7 +78,7 @@ const BookingDashboard: React.FC = () => {
                                     return (
                                         <td key={i} className="tw-p-2">
                                             {booking ? (
-                                                <span className="tw-text-emerald-500 tw-justify-center tw-items-center tw-flex">
+                                                <span className="tw-text-pink-500 tw-justify-center tw-items-center tw-flex">
                                                     <IoCheckmarkCircle size="40" />
                                                 </span>
                                             ) : (

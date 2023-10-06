@@ -39,7 +39,7 @@ const PageMenu: FC<PageMenuData> = ({
 }) => {
     return (
         <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-blue-500 [&.active]:tw-bg-blue-500 hover:tw-text-white tw-rounded'>
+            <NavLink to={path} className='tw-p-3 hover:tw-bg-pink-500 [&.active]:tw-bg-pink-500 hover:tw-text-white tw-rounded'>
                 {icon}
             </NavLink>
         </Tooltip>
@@ -58,7 +58,7 @@ const Layout: React.FC = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
-            <nav className='tw-w-14 tw-bg-blue-700 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
+            <nav className='tw-w-14 tw-bg-pink-600 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
                 <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
                 <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
                 {user.role == 'admin' && (
@@ -70,14 +70,14 @@ const Layout: React.FC = () => {
                 )}
             </nav>
             <main className='tw-flex-1 tw-bg-slate-100'>
-                <div className='tw-h-14 tw-flex tw-items-center tw-px-5 tw-bg-white tw-shadow'>
+                <div className='tw-h-16 tw-flex tw-items-center tw-px-5 tw-bg-white tw-shadow'>
                     <div className='tw-w-60'>
-                        <input type="text" className='tw-px-3 tw-py-2 tw-text-sm tw-border active:tw-outline-none tw-rounded tw-broder-emerald-500 tw-w-[300px]' placeholder='Search...' />
+                        <input type="text" className='tw-w-[300px]' placeholder='Search...' />
                     </div>
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
                         <Tooltip placement="bottom" title="Signout">
-                            <button className='btn-danger' onClick={handleSignOut}><FiLogOut /></button>
+                            <button className='btn-secondary' onClick={handleSignOut}><FiLogOut /></button>
                         </Tooltip>
                     </div>
                 </div>
@@ -89,8 +89,6 @@ const Layout: React.FC = () => {
             </main>
         </div >
     )
-
 }
-
 
 export default Layout

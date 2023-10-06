@@ -54,7 +54,7 @@ const AssessmentContainer: FC<AssessmentProps> = ({
 
     return (
         <div className="tw-relative tw-z-0 tw-bg-slate-100 tw-flex tw-text-center tw-gap-3 tw-flex-col tw-items-center tw-h-36 hover:tw-cursor-pointer tw-rounded tw-p-2 tw-transition-all tw-border">
-            <button className='tw-transition-all tw-z-10 tw-bg-rose-500 active:tw-bg-rose-400 tw-text-white tw-p-1 hover:tw-ring-offset-2 tw-ring-2 tw-ring-rose-500 hover:tw-ring-rose-400 tw-rounded-full tw-absolute -tw-right-2 -tw-top-2' onClick={handleDeleteClick} > <FiXCircle /></button >
+            <button className='tw-transition-all tw-z-10 tw-bg-pink-500 active:tw-bg-pink-400 tw-text-white tw-p-1 hover:tw-ring-offset-2 tw-ring-2 tw-ring-pink-500 hover:tw-ring-pink-400 tw-rounded-full tw-absolute -tw-right-2 -tw-top-2' onClick={handleDeleteClick} > <FiXCircle /></button >
             <button onClick={handleClick} className='tw-flex tw-h-full tw-w-full tw-flex-col tw-p-2 tw-items-center tw-justify-around tw-transition-all tw-rounded'>
                 {icon && <span className='tw-text-3xl'>{icon}</span>}
                 <div className="tw-flex-1 tw-flex tw-w-full tw-justify-center tw-items-center">
@@ -131,7 +131,7 @@ const Hse: FC = () => {
                         <AssessmentContainer
                             id={item.id!}
                             key={index}
-                            icon={<IoCheckmarkCircle className="tw-text-emerald-500" size={40} />}
+                            icon={<IoCheckmarkCircle className="tw-text-pink-500" size={40} />}
                             name={item.name}
                             onClick={handleClick}
                             onDeleteClick={handleDeleteClick}

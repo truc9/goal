@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Inclusive+Sans&family=Inter:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  /* "Inclusive Sans" */
   font-family: "Inter", sans-serif;
   font-size: 11pt;
 }
@@ -25,10 +24,10 @@ body {
   }
 
   .btn-primary {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-blue-700 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-blue-500 active:tw-ring-blue-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-pink-500 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-pink-500 active:tw-ring-pink-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 
   .btn-danger {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-rose-500 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-rose-400 active:tw-ring-rose-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-pink-500 tw-px-4 tw-py-3 tw-text-white tw-rounded hover:tw-bg-pink-400 active:tw-ring-pink-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 }
