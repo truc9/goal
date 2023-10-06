@@ -45,6 +45,9 @@ interface Props {
     icon?: ReactNode
     title: string
     children?: ReactNode
+    submitLabel?: string
+    cancelLabel?: string
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     onCloseClicked: () => void
     onSubmitClicked?: () => void
 }
@@ -53,6 +56,9 @@ export const Popup: FC<Props> = ({
     icon,
     title,
     isOpen,
+    submitLabel,
+    cancelLabel,
+    size,
     onCloseClicked,
     onSubmitClicked,
     children,
@@ -74,20 +80,23 @@ export const Popup: FC<Props> = ({
     return (
         <Dialog
             keepMounted
-            maxWidth="sm"
+            maxWidth={size || 'md'}
             fullWidth={true}
             open={isOpen ?? false}
             TransitionComponent={Transition}
             onClose={handleClose}
             PaperComponent={PaperComponent}
         >
-            <DialogTitle style={{
-                cursor: 'move',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-            }} id="draggable-header">
-                <span>{icon}</span>{title}
+            <DialogTitle
+                style={{
+                    cursor: 'move',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                }}
+                id="draggable-header"
+            >
+                {icon && <span>{icon}</span>}<span>{title}</span>
             </DialogTitle>
             <DialogContent>
                 {children}
@@ -96,8 +105,8 @@ export const Popup: FC<Props> = ({
                 px: "25px",
                 pb: "25px"
             }}>
-                <button className='btn-secondary' onClick={handleClose}><FiXCircle /> Close</button>
-                <button className='btn-primary' onClick={handleSubmit}><FiSave />Submit</button>
+                <button className='btn-secondary' onClick={handleClose}><FiXCircle /> {cancelLabel || 'Cancel'}</button>
+                <button className='btn-primary' onClick={handleSubmit}><FiSave />{submitLabel || 'Submit'}</button>
             </DialogActions>
         </Dialog>
     )

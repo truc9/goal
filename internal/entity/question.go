@@ -8,7 +8,6 @@ const (
 	YesNoNa
 	Confirmation
 	Photo
-	Selection
 	SingleChoice
 	MultipleChoice
 )

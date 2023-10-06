@@ -78,7 +78,7 @@ const BookingDashboard: React.FC = () => {
                                     return (
                                         <td key={i} className="tw-p-2">
                                             {booking ? (
-                                                <span className="tw-text-pink-500 tw-justify-center tw-items-center tw-flex">
+                                                <span className="tw-text-green-500/50 tw-justify-center tw-items-center tw-flex">
                                                     <IoCheckmarkCircle size="40" />
                                                 </span>
                                             ) : (

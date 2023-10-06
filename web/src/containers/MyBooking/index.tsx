@@ -142,12 +142,12 @@ const MyBooking: React.FC = () => {
                                                 <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
                                                     {booking
                                                         ? (
-                                                            <button onClick={() => cancelBooking(period.id, booking.bookingId)} className="tw-text-pink-500 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                            <button onClick={() => cancelBooking(period.id, booking.bookingId)} className="tw-text-green-500 hover:tw-cursor-pointer hover:tw-ring-2 active:tw-ring-offset-2 tw-ring-green-500 tw-rounded-full tw-transition-all">
                                                                 <IoCheckmarkCircle size={40} />
                                                             </button>
                                                         )
                                                         : (
-                                                            <button onClick={() => createBooking(period.id, date)} className="tw-text-slate-200 hover:tw-cursor-pointer active:tw-translate-x-1 active:tw-translate-y-1">
+                                                            <button onClick={() => createBooking(period.id, date)} className="tw-text-slate-200 hover:tw-cursor-pointer hover:tw-ring-2 active:tw-ring-offset-2 tw-ring-slate-200 tw-rounded-full tw-transition-all">
                                                                 <IoCheckmarkCircle size={40} />
                                                             </button>
                                                         )

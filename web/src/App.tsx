@@ -16,8 +16,8 @@ const Home = lazy(() => import("./containers/Home"))
 const Login = lazy(() => import('./containers/Login'))
 const Register = lazy(() => import('./containers/Register'))
 const Hse = lazy(() => import('./containers/HSE'))
-const AssessmentDetails = lazy(() => import('./containers/HSE/AssessmentDetails'))
-const AssessmentVersionDetails = lazy(() => import('./containers/HSE/AssessmentVersionDetails'))
+const AssessmentVersions = lazy(() => import('./containers/HSE/AssessmentVersions'))
+const AssessmentQuestionSetup = lazy(() => import('./containers/HSE/AssessmentQuestionSetup'))
 
 function App() {
   return (
@@ -32,8 +32,8 @@ function App() {
         <Route path='booking-periods' element={<BookingPeriods />} />
         <Route path='booking-dashboard' element={<BookingDashboard />} />
         <Route path='hse' element={<Hse />} />
-        <Route path='hse/:id' element={<AssessmentDetails />} />
-        <Route path='hse/:id/versions/:versionId' element={<AssessmentVersionDetails />} />
+        <Route path='hse/:id' element={<AssessmentVersions />} />
+        <Route path='hse/:id/versions/:versionId' element={<AssessmentQuestionSetup />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
       <Route path='/login' element={<Login />}></Route>

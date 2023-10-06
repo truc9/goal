@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import httpClient from '../../services/httpClient'
 import { AssessmentVersionModel } from './models/AssessmentVersionModel'
 
-const AssessmentDetails = () => {
+const AssessmentVersions = () => {
     const { id } = useParams()
     const [versions, setVersions] = useState<AssessmentVersionModel[]>([])
 
@@ -37,4 +37,4 @@ const AssessmentDetails = () => {
     )
 }
 
-export default AssessmentDetails
+export default AssessmentVersions
