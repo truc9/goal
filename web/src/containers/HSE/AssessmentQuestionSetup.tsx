@@ -9,6 +9,7 @@ import { FiDownload, FiPlus, FiPlusSquare, FiXCircle } from "react-icons/fi"
 import { PageContainer } from "../../components/PageContainer"
 import { Popup } from "../../components/Popup"
 import questionService from "../../services/questionService"
+import { QuestionTypeDict } from "../../constant"
 
 interface TabPanelProps {
     children?: React.ReactNode
@@ -35,15 +36,18 @@ function TabContent(props: TabPanelProps) {
     )
 }
 
+
 const AssessmentQuestionSetup = () => {
     const { versionId } = useParams()
-    // main model to submit
-    const [question, setQuestion] = useState<QuestionModel>({
+    const initQuestion = {
         description: '',
         type: QuestionType.FreeText,
         choices: [],
         assessmentVersionId: +versionId!
-    })
+    }
+
+    // main model to submit
+    const [question, setQuestion] = useState<QuestionModel>(initQuestion)
     const [questions, setQuestions] = useState<QuestionModel[]>([])
     const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
     const [openChoicePopup, setOpenChoicePopup] = useState(false)
@@ -69,21 +73,44 @@ const AssessmentQuestionSetup = () => {
             headerName: '',
             sortable: false,
             filterable: false,
-            renderCell: () => {
+            renderCell: (e) => {
                 return (
-                    <IconButton>
+                    <IconButton onClick={() => handleDeleteChoice(e.value)}>
                         <FiXCircle className="tw-text-red-500" />
                     </IconButton>
                 )
             }
         }
     ]
+    const handleDeleteChoice = (e: any) => {
+        console.log(e)
+    }
 
     const questionColDefs: GridColDef[] = [
-        { field: "id", headerName: "ID", width: 100 },
         { field: "description", headerName: "Question", width: 600 },
-        { field: "type", headerName: "Type", width: 200 },
+        {
+            field: "type",
+            headerName: "Type",
+            width: 200,
+            valueGetter: (params) => QuestionTypeDict[params.value]
+        },
+        {
+            field: "id",
+            headerName: "Delete",
+            width: 100,
+            renderCell: (e) => {
+                return (
+                    <IconButton onClick={() => handleDeleteQuestion(e.value)}>
+                        <FiXCircle className="tw-text-red-500" />
+                    </IconButton>
+                )
+            }
+        },
     ]
+    const handleDeleteQuestion = async (questionId: number) => {
+        await questionService.remove(questionId)
+        await loadQuestions()
+    }
 
     const showQuestionPopup = () => {
         setOpenQuestionPopup(true)
@@ -136,6 +163,7 @@ const AssessmentQuestionSetup = () => {
     const loadQuestions = async () => {
         const questions = await questionService.getByAssessmentVersion(+versionId!)
         setQuestions(questions)
+        setQuestion(initQuestion)
     }
 
     return (

@@ -98,6 +98,7 @@ func main() {
 		// Question Setup
 		api.GET("/assessments/versions/:assessmentVersionId/questions", questionCtrl.GetByVersion)
 		api.POST("/assessments/questions", questionCtrl.Create)
+		api.DELETE("/assessments/questions/:id", questionCtrl.Delete)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

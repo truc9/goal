@@ -57,7 +57,23 @@ func (sv QuestionService) Create(model *QuestionModel) (int64, error) {
 }
 
 func (sv QuestionService) Delete(id int64) error {
-	question := &entity.Question{}
-	res := sv.db.Delete(question, id)
-	return res.Error
+	err := sv.db.Transaction(func(tx *gorm.DB) error {
+		question := &entity.Question{}
+		findErr := sv.db.Find(question, id).Error
+		if findErr != nil {
+			return findErr
+		}
+
+		choices := []entity.ChoiceAnswer{}
+		sv.db.Where("question_id = ?", question.Id).Find(&choices)
+
+		delChoiceErr := sv.db.Delete(choices).Error
+		if delChoiceErr != nil {
+			return delChoiceErr
+		}
+
+		res := sv.db.Delete(question)
+		return res.Error
+	})
+	return err
 }
