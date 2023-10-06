@@ -14,7 +14,35 @@ const (
 
 type Question struct {
 	Base
-	Description         string       `json:"description"`
-	QuestionType        QuestionType `json:"questionType"`
-	AssessmentVersionId int          `json:"assessmentVersionId"`
+	Ordinal             int64             `json:"ordinal"`
+	Description         string            `json:"description"`
+	QuestionType        QuestionType      `json:"questionType"`
+	AssessmentVersionId int64             `json:"assessmentVersionId"`
+	AssessmentVersion   AssessmentVersion `json:"assessmentVersion"`
+	Choices             []ChoiceAnswer    `json:"choices"`
+}
+
+type ChoiceAnswer struct {
+	Base
+	Description       string   `json:"description"`
+	QuestionId        int64    `json:"questionId"`
+	Question          Question `gorm:"foreignKey:QuestionId" json:"question"`
+	TriggerQuestionId int64    `json:"triggerQuestionId"`
+}
+
+func NewQuestion(description string, questionType QuestionType, assessmentVersionId int64) *Question {
+	return &Question{
+		Description:         description,
+		QuestionType:        questionType,
+		AssessmentVersionId: assessmentVersionId,
+		Choices:             make([]ChoiceAnswer, 0),
+	}
+}
+
+func (q *Question) AddChoice(description string, triggerQuestionId int64) {
+	q.Choices = append(q.Choices, ChoiceAnswer{
+		QuestionId:        q.Id,
+		Description:       description,
+		TriggerQuestionId: triggerQuestionId,
+	})
 }

@@ -12,22 +12,22 @@ import (
 )
 
 func GetBookingCtrl() controller.BookingController {
-	wire.Build(BookingSet)
+	wire.Build(bookingSet)
 	return controller.BookingController{}
 }
 
 func GetPeriodCtrl() controller.PeriodController {
-	wire.Build(PeriodSet)
+	wire.Build(periodSet)
 	return controller.PeriodController{}
 }
 
 func GetIAMCtrl() controller.IamController {
-	wire.Build(IamSet)
+	wire.Build(iamSet)
 	return controller.IamController{}
 }
 
 func GetStatCtrl() controller.StatController {
-	wire.Build(StatSet)
+	wire.Build(statSet)
 	return controller.StatController{}
 }
 
@@ -37,11 +37,16 @@ func GetScheduler() scheduler.DailyScheduler {
 }
 
 func GetWebsocketCtrl() controller.WebSocketController {
-	wire.Build(WsSet)
+	wire.Build(websocketSet)
 	return controller.WebSocketController{}
 }
 
 func GetAssessmentCtrl() controller.AssessmentController {
-	wire.Build(AssessmentSet)
+	wire.Build(assessmentSet)
 	return controller.AssessmentController{}
+}
+
+func GetQuestionController() controller.QuestionController {
+	wire.Build(questionSet)
+	return controller.QuestionController{}
 }

@@ -3,7 +3,7 @@ package entity
 import (
 	"time"
 
-	"github.com/truc9/goal/internal/utils/timeutil"
+	timeutil "github.com/truc9/goal/internal/utils/time_util"
 )
 
 type BookingPeriod struct {

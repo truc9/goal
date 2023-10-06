@@ -6,7 +6,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
-	"github.com/truc9/goal/internal/utils/timeutil"
+	timeutil "github.com/truc9/goal/internal/utils/time_util"
 	"gorm.io/gorm"
 )
 

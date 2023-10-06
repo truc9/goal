@@ -1,12 +1,14 @@
-import { FiDownload, FiPlus, FiPlusSquare, FiXCircle } from "react-icons/fi"
-import { PageContainer } from "../../components/PageContainer"
-import { Popup } from "../../components/Popup"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { useParams } from "react-router-dom"
 import { Box, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Radio, RadioGroup, Tab, Tabs, TextareaAutosize, Typography } from "@mui/material"
 import { IoSettings } from "react-icons/io5"
 import { QuestionModel, QuestionType } from "./models/QuestionModel"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
 import { v4 as uuid_v4 } from 'uuid'
+import { FiDownload, FiPlus, FiPlusSquare, FiXCircle } from "react-icons/fi"
+import { PageContainer } from "../../components/PageContainer"
+import { Popup } from "../../components/Popup"
+import questionService from "../../services/questionService"
 
 interface TabPanelProps {
     children?: React.ReactNode
@@ -34,18 +36,32 @@ function TabContent(props: TabPanelProps) {
 }
 
 const AssessmentQuestionSetup = () => {
+    const { versionId } = useParams()
     // main model to submit
     const [question, setQuestion] = useState<QuestionModel>({
         description: '',
         type: QuestionType.FreeText,
-        choices: []
+        choices: [],
+        assessmentVersionId: +versionId!
     })
-
+    const [questions, setQuestions] = useState<QuestionModel[]>([])
     const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
     const [openChoicePopup, setOpenChoicePopup] = useState(false)
-    const [currentTab, setCurrentTab] = useState(0)
-    const [answerSetupEnable, setAnswerSetupEnable] = useState(false)
-    const [customChoice, setCustomChoice] = useState('')
+    const [tabIndex, setTabIndex] = useState(0)
+    const [tabAnswerEnable, setTabAnswerEnable] = useState(false)
+    const [choiceText, setChoiceText] = useState('')
+
+    useEffect(() => {
+        (async () => {
+            await loadQuestions()
+        })()
+    }, [])
+
+    const isChoiceQuestion = useMemo(() => {
+        return (+question.type === QuestionType.SingleChoice || +question.type === QuestionType.MultipleChoice)
+    }, [question.type])
+
+
     const choiceColDefs: GridColDef[] = [
         { field: 'description', headerName: 'Description', width: 400 },
         {
@@ -63,9 +79,11 @@ const AssessmentQuestionSetup = () => {
         }
     ]
 
-    const isChoiceQuestion = useMemo(() => {
-        return (+question.type === QuestionType.SingleChoice || +question.type === QuestionType.MultipleChoice)
-    }, [question.type])
+    const questionColDefs: GridColDef[] = [
+        { field: "id", headerName: "ID", width: 100 },
+        { field: "description", headerName: "Question", width: 600 },
+        { field: "type", headerName: "Type", width: 200 },
+    ]
 
     const showQuestionPopup = () => {
         setOpenQuestionPopup(true)
@@ -76,7 +94,7 @@ const AssessmentQuestionSetup = () => {
     }
 
     const handleTabChange = (_: any, tabIndex: number) => {
-        setCurrentTab(tabIndex)
+        setTabIndex(tabIndex)
     }
 
     const handleQuestionChange = (e: any) => setQuestion({ ...question, description: e.target.value })
@@ -91,11 +109,11 @@ const AssessmentQuestionSetup = () => {
         ].includes(+id)
 
         setQuestion({ ...question, type: +id })
-        setAnswerSetupEnable(isAnswerEnabled)
+        setTabAnswerEnable(isAnswerEnabled)
     }
 
     const handleCustomChoiceChange = (e: any) => {
-        setCustomChoice(e.target.value)
+        setChoiceText(e.target.value)
     }
 
     const handleAddChoiceAnswer = () => {
@@ -103,15 +121,21 @@ const AssessmentQuestionSetup = () => {
             ...question,
             choices: [
                 ...question!.choices!,
-                { description: customChoice }
+                { description: choiceText }
             ]
         })
-        setCustomChoice('')
+        setChoiceText('')
         setOpenChoicePopup(false)
     }
 
-    const handleSubmitQuestion = () => {
-        console.log(question)
+    const handleSubmitQuestion = async () => {
+        await questionService.create(question)
+        await loadQuestions()
+    }
+
+    const loadQuestions = async () => {
+        const questions = await questionService.getByAssessmentVersion(+versionId!)
+        setQuestions(questions)
     }
 
     return (
@@ -126,6 +150,21 @@ const AssessmentQuestionSetup = () => {
                 )}
                 showGoBack
             >
+                <DataGrid
+                    sx={{ width: '100%' }}
+                    getRowId={() => uuid_v4()}
+                    rows={questions}
+                    columns={questionColDefs}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {
+                                pageSize: 5,
+                            },
+                        },
+                    }}
+                    pageSizeOptions={[5]}
+                    disableRowSelectionOnClick
+                />
             </PageContainer>
 
             <Popup
@@ -137,12 +176,12 @@ const AssessmentQuestionSetup = () => {
                 onSubmitClicked={handleSubmitQuestion}
             >
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={currentTab} onChange={handleTabChange} aria-label="Question Answer Setup Tabs">
+                    <Tabs value={tabIndex} onChange={handleTabChange} aria-label="Question Answer Setup Tabs">
                         <Tab label="Question Setup" />
-                        <Tab disabled={!answerSetupEnable} label="Answer Setup" />
+                        <Tab disabled={!tabAnswerEnable} label="Answer Setup" />
                     </Tabs>
                 </Box>
-                <TabContent value={currentTab} index={0}>
+                <TabContent value={tabIndex} index={0}>
                     <div className="tw-flex tw-flex-col tw-gap-3">
                         <FormGroup>
                             <FormLabel id="question-label" sx={{ fontWeight: 'bold' }}>Question</FormLabel>
@@ -176,7 +215,7 @@ const AssessmentQuestionSetup = () => {
                         </FormControl>
                     </div>
                 </TabContent>
-                <TabContent value={currentTab} index={1}>
+                <TabContent value={tabIndex} index={1}>
                     <Box sx={{
                         height: 400,
                         width: '100%',
@@ -239,7 +278,7 @@ const AssessmentQuestionSetup = () => {
             >
                 <FormGroup>
                     <FormLabel>Description</FormLabel>
-                    <textarea value={customChoice} rows={5} onChange={handleCustomChoiceChange} />
+                    <textarea value={choiceText} rows={5} onChange={handleCustomChoiceChange} />
                 </FormGroup>
             </Popup>
         </>

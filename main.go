@@ -50,6 +50,7 @@ func main() {
 	statCtrl := di.GetStatCtrl()
 	websocketCtrl := di.GetWebsocketCtrl()
 	assessmentCtrl := di.GetAssessmentCtrl()
+	questionCtrl := di.GetQuestionController()
 
 	// init & run hub in a different go routine
 	hub := ws.NewHub()
@@ -93,6 +94,10 @@ func main() {
 		api.POST("/assessments", assessmentCtrl.Create)
 		api.DELETE("/assessments/:assessmentId", assessmentCtrl.Delete)
 		api.GET("/assessments/:assessmentId/versions", assessmentCtrl.GetVersions)
+
+		// Question Setup
+		api.GET("/assessments/versions/:assessmentVersionId/questions", questionCtrl.GetByVersion)
+		api.POST("/assessments/questions", questionCtrl.Create)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

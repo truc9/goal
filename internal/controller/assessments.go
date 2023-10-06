@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/hse"
-	"github.com/truc9/goal/internal/utils/httpcontext"
+	"github.com/truc9/goal/internal/utils/http_context"
 )
 
 type AssessmentController struct {
@@ -28,7 +28,7 @@ func NewAssessmentController(assessmentSv hse.AssessmentService) AssessmentContr
 //	@Success		200	{object}	uuid.UUID
 //	@Router			/api/assessments [post]
 func (ctrl AssessmentController) Create(c echo.Context) (err error) {
-	userId := httpcontext.GetUserId(c)
+	userId := http_context.GetUserId(c)
 	model := &hse.AssessmentModel{}
 	if err := c.Bind(model); err != nil {
 		return c.JSON(http.StatusBadRequest, err)

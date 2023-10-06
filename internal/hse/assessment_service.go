@@ -106,7 +106,10 @@ func (sv AssessmentService) GetAssessmentVersions(assessmentId int64) ([]Assessm
 
 	res := sv.db.
 		Where("assessment_id = ?", assessmentId).
-		Select("id", "version").
+		Select(
+			"id",
+			"version",
+		).
 		Find(&entities)
 
 	if res.Error != nil {

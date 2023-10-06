@@ -13,8 +13,10 @@ export interface QuestionModel {
     description: string
     type: QuestionType
     choices?: ChoiceAnswer[]
+    assessmentVersionId: number
 }
 
 export interface ChoiceAnswer {
+    id?: number
     description: string
 }

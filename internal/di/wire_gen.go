@@ -69,3 +69,10 @@ func GetAssessmentCtrl() controller.AssessmentController {
 	assessmentController := controller.NewAssessmentController(assessmentService)
 	return assessmentController
 }
+
+func GetQuestionController() controller.QuestionController {
+	gormDB := db.New()
+	questionService := hse.NewQuestionService(gormDB)
+	questionController := controller.NewQuestionController(questionService)
+	return questionController
+}

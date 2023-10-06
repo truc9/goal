@@ -26,7 +26,7 @@ const AssessmentVersions = () => {
             <div className='tw-flex tw-items-center tw-justify-center'>
                 {versions.map((v, i) => {
                     return (
-                        <Link to={`versions/${v.version}`} key={i} className='tw-transition-all tw-h-14 hover:tw-bg-slate-200 lg:tw-w-1/2 tw-w-full tw-rounded tw-px-5 tw-items-center tw-flex tw-bg-slate-100 tw-justify-between tw-border'>
+                        <Link to={`versions/${v.id}`} key={i} className='tw-transition-all tw-h-14 hover:tw-bg-slate-200 lg:tw-w-1/2 tw-w-full tw-rounded tw-px-5 tw-items-center tw-flex tw-bg-slate-100 tw-justify-between tw-border'>
                             <span className='tw-flex tw-items-center tw-gap-2'><FiList /> Version {v.version}</span>
                             <FiArrowRightCircle size={26} />
                         </Link>
