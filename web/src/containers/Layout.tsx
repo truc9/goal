@@ -8,9 +8,9 @@ import {
     FiBarChart2,
     FiCalendar,
     FiCheckCircle,
+    FiFile,
     FiGrid,
     FiLogOut,
-    FiTriangle,
 } from 'react-icons/fi'
 import {
     NavLink,
@@ -39,7 +39,7 @@ const PageMenu: FC<PageMenuData> = ({
 }) => {
     return (
         <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-pink-500 [&.active]:tw-bg-pink-500 hover:tw-text-white tw-rounded'>
+            <NavLink to={path} className='tw-p-3 hover:tw-bg-orange-400 [&.active]:tw-bg-orange-400 hover:tw-text-white tw-rounded'>
                 {icon}
             </NavLink>
         </Tooltip>
@@ -58,18 +58,19 @@ const Layout: React.FC = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
-            <nav className='tw-w-14 tw-bg-pink-600 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
+            <nav className='tw-w-14 tw-bg-gradient-to-r tw-from-orange-500 tw-to-orange-600 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
                 <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
                 <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
                 {user.role == 'admin' && (
                     <>
                         <PageMenu tooltip='Booking Dashboard' icon={<FiBarChart2 size={iconSize} />} path='/booking-dashboard' />
                         <PageMenu tooltip='Booking Periods' icon={<FiCalendar size={iconSize} />} path='/booking-periods' />
-                        <PageMenu tooltip='HSE' icon={<FiTriangle size={iconSize} />} path='/hse' />
+                        {/* <PageMenu tooltip='HSE' icon={<FiTriangle size={iconSize} />} path='/hse' /> */}
+                        <PageMenu tooltip='Assessment Setup' icon={<FiFile size={iconSize} />} path='/assessments' />
                     </>
                 )}
             </nav>
-            <main className='tw-flex-1 tw-bg-slate-100'>
+            <main className='tw-flex-1 tw-flex tw-flex-col tw-bg-slate-100'>
                 <div className='tw-h-16 tw-flex tw-items-center tw-px-5 tw-bg-white tw-shadow'>
                     <div className='tw-w-60'>
                         <input type="text" className='tw-w-[300px]' placeholder='Search...' />
@@ -81,7 +82,7 @@ const Layout: React.FC = () => {
                         </Tooltip>
                     </div>
                 </div>
-                <div className='tw-p-5'>
+                <div className='tw-flex-1'>
                     <Suspense fallback={<Loading />}>
                         <Outlet />
                     </Suspense>

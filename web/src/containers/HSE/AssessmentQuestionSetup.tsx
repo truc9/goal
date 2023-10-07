@@ -46,7 +46,6 @@ const AssessmentQuestionSetup = () => {
         assessmentVersionId: +versionId!
     }
 
-    // main model to submit
     const [question, setQuestion] = useState<QuestionModel>(initQuestion)
     const [questions, setQuestions] = useState<QuestionModel[]>([])
     const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
@@ -56,15 +55,12 @@ const AssessmentQuestionSetup = () => {
     const [choiceText, setChoiceText] = useState('')
 
     useEffect(() => {
-        (async () => {
-            await loadQuestions()
-        })()
+        loadQuestions()
     }, [])
 
     const isChoiceQuestion = useMemo(() => {
         return (+question.type === QuestionType.SingleChoice || +question.type === QuestionType.MultipleChoice)
     }, [question.type])
-
 
     const choiceColDefs: GridColDef[] = [
         { field: 'description', headerName: 'Description', width: 400 },

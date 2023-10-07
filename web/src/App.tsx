@@ -18,6 +18,9 @@ const Register = lazy(() => import('./containers/Register'))
 const Hse = lazy(() => import('./containers/HSE'))
 const AssessmentVersions = lazy(() => import('./containers/HSE/AssessmentVersions'))
 const AssessmentQuestionSetup = lazy(() => import('./containers/HSE/AssessmentQuestionSetup'))
+const AssessmentSetup = lazy(() => import('./containers/AssessmentSetup'))
+const ASVersions = lazy(() => import("./containers/AssessmentSetup/Versions"))
+const ASQuestions = lazy(() => import("./containers/AssessmentSetup/Questions"))
 
 function App() {
   return (
@@ -34,6 +37,13 @@ function App() {
         <Route path='hse' element={<Hse />} />
         <Route path='hse/:id' element={<AssessmentVersions />} />
         <Route path='hse/:id/versions/:versionId' element={<AssessmentQuestionSetup />} />
+        <Route path='assessments' element={<AssessmentSetup />}>
+          <Route path=':assessmentId' element={<ASVersions />}>
+            <Route path='versions' element={<ASQuestions />}>
+              <Route path=':versionId' element={<ASQuestions />} />
+            </Route>
+          </Route>
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>
       <Route path='/login' element={<Login />}></Route>

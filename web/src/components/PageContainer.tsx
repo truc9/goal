@@ -20,7 +20,7 @@ export const PageContainer: React.FC<Props> = ({
     const navigate = useNavigate()
 
     return (
-        <div className="tw-flex tw-flex-col tw-gap-5 tw-bg-white tw-p-5 tw-rounded tw-border tw-shadow">
+        <div className="tw-flex tw-flex-col tw-gap-5 tw-bg-white tw-p-5 tw-m-2 tw-rounded tw-border tw-shadow">
             <div className='tw-flex tw-items-center tw-justify-between'>
                 {showGoBack && <button className='tw-flex tw-items-center tw-gap-2 tw-p-2 tw-rounded hover:tw-bg-slate-100 tw-transition-all active:-tw-translate-x-2'
                     onClick={() => navigate(-1)}

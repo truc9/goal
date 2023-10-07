@@ -87,7 +87,7 @@ const Hse: FC = () => {
     }
 
     const loadAssessments = async () => {
-        const assessments = await assessmentService.get()
+        const assessments = await assessmentService.getAll()
         setAssessments(assessments)
     }
 
