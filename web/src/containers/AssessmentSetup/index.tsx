@@ -86,12 +86,11 @@ const AssessmentSetup = () => {
                                 <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
                                     <span><FiFile size={16} /></span>
                                     <span className="tw-font-bold">
-                                        {item.description}
+                                        {item.name}
                                     </span>
                                 </div>
                                 <div className="tw-flex tw-w-full tw-justify-between">
-                                    <span className="tw-text-xs">2 versions</span>
-                                    <span className="tw-text-xs">Draft</span>
+                                    <span className="tw-text-xs">{item.description}</span>
                                 </div>
                             </button>
                         )
