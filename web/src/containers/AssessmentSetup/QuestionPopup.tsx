@@ -22,7 +22,7 @@ export const QuestionPopup: FC<Props> = ({
     onSubmit,
 }) => {
 
-    const initQuestion = {
+    const initModel = {
         description: '',
         type: QuestionType.FreeText,
         choices: [],
@@ -30,7 +30,7 @@ export const QuestionPopup: FC<Props> = ({
     }
 
     const [tabIndex, setTabIndex] = useState(0)
-    const [question, setQuestion] = useState<QuestionModel>(initQuestion)
+    const [question, setQuestion] = useState<QuestionModel>(initModel)
     const [tabAnswerEnable, setTabAnswerEnable] = useState(false)
     const isChoiceQuestion = useMemo(() => {
         return (+question.type === QuestionType.SingleChoice || +question.type === QuestionType.MultipleChoice)
@@ -100,6 +100,7 @@ export const QuestionPopup: FC<Props> = ({
 
     function handleSubmit() {
         onSubmit && onSubmit(question)
+        setQuestion(initModel)
     }
 
     return (

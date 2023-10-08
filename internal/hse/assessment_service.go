@@ -2,7 +2,6 @@ package hse
 
 import (
 	"errors"
-	"log"
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
@@ -106,6 +105,7 @@ func (sv AssessmentService) GetVersions(id int64) ([]AssessmentVersionModel, err
 	entities := []entity.AssessmentVersion{}
 
 	res := sv.db.
+		Preload("Questions").
 		Where("assessment_id = ?", id).
 		Select(
 			"id",
@@ -119,8 +119,9 @@ func (sv AssessmentService) GetVersions(id int64) ([]AssessmentVersionModel, err
 
 	result := lo.Map(entities, func(item entity.AssessmentVersion, index int) AssessmentVersionModel {
 		return AssessmentVersionModel{
-			Id:      item.Id,
-			Version: item.Version,
+			Id:            item.Id,
+			Version:       item.Version,
+			QuestionCount: len(item.Questions),
 		}
 	})
 
@@ -132,8 +133,6 @@ func (sv AssessmentService) Update(id int64, model *AssessmentModel) error {
 	if err := sv.db.Find(assessment, id).Error; err != nil {
 		return err
 	}
-
-	log.Printf("updated by %v", model.UpdatedBy)
 
 	err := assessment.Update(model.Name, model.Description, model.UpdatedBy)
 

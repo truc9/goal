@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import cn from "classnames"
 import AssessmentModel from "../HSE/models/AssessmentModel"
 import assessmentService from "../../services/assessmentService"
-import { FiEdit, FiFile, FiTriangle } from "react-icons/fi"
+import { FiEdit, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
 import useBearStore from "../../store"
 import { Popup } from "../../components/Popup"
-import { FormGroup, FormLabel } from "@mui/material"
+import { FormGroup, FormLabel, Tooltip } from "@mui/material"
 
 const AssessmentSetup = () => {
     const navigate = useNavigate()
@@ -85,24 +85,25 @@ const AssessmentSetup = () => {
 
     return (
         <div className="tw-flex tw-flex-1 tw-h-full tw-p-2 tw-border">
-            <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-overflow-auto tw-border-r">
-                <div className="tw-h-full tw-overflow-auto">
+            <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-border-r">
+                <div className="tw-h-full">
                     {assessments.map((item: AssessmentModel, index: number) => {
                         return (
                             <button
                                 key={index}
                                 onClick={() => onItemChange(item)}
-                                className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-gap-3 tw-justify-center", { "active": item.id === curAssessmentId })}
+                                className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-justify-center", { "active": item.id === curAssessmentId })}
                             >
-                                <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
-                                    <span><FiFile size={16} /></span>
-                                    <div className="tw-font-bold">
+                                <Tooltip title={item.name} placement="right">
+                                    <div className="tw-w-full tw-h-2/5 tw-overflow-hidden tw-truncate">
                                         {item.name}
                                     </div>
-                                </div>
-                                <div className="tw-flex tw-w-full tw-justify-between">
-                                    <span className="tw-text-xs">{item.description}</span>
-                                </div>
+                                </Tooltip>
+                                <Tooltip title={item.description} placement="right">
+                                    <div className="tw-w-full tw-justify-between tw-h-3/5 tw-overflow-hidden tw-line-clamp-3 tw-text-xs tw-text-slate-400">
+                                        {item.description}
+                                    </div>
+                                </Tooltip>
                                 <div className="tw-flex tw-items-center tw-gap-3 tw-justify-end tw-w-full">
                                     <button onClick={() => editAssessment(item)}><FiEdit /></button>
                                 </div>

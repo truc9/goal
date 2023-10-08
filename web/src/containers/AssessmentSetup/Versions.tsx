@@ -42,12 +42,12 @@ const Versions = () => {
                             >
                                 <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
                                     <span><FiFile size={16} /></span>
-                                    <span className="tw-font-bold">
+                                    <span>
                                         Version {item.version}
                                     </span>
                                 </div>
                                 <div className="tw-flex tw-w-full tw-justify-between">
-                                    <span className="tw-text-xs tw-flex tw-gap-2 tw-items-center"><IoListCircle /> 2 questions</span>
+                                    <span className="tw-text-xs tw-flex tw-gap-2 tw-items-center tw-text-slate-400"><IoListCircle />{item.questionCount} questions</span>
                                 </div>
                             </button>
                         )
