@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import cn from "classnames"
 import AssessmentModel from "../HSE/models/AssessmentModel"
 import assessmentService from "../../services/assessmentService"
-import { FiFile, FiTriangle } from "react-icons/fi"
+import { FiEdit, FiFile, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
 import useBearStore from "../../store"
 import { Popup } from "../../components/Popup"
@@ -81,16 +81,19 @@ const AssessmentSetup = () => {
                             <button
                                 key={index}
                                 onClick={() => onItemChange(item)}
-                                className={cn("tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-20 [&.active]:tw-border-l-4 [&.active]:tw-bg-orange-50 tw-border-orange-500 hover:tw-border-l-4 hover:tw-bg-orange-50 tw-text-left tw-flex tw-flex-col tw-gap-2 tw-justify-center", { "active": item.id === curAssessmentId })}
+                                className={cn("tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-gap-3 tw-justify-center", { "active": item.id === curAssessmentId })}
                             >
                                 <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
                                     <span><FiFile size={16} /></span>
-                                    <span className="tw-font-bold">
+                                    <div className="tw-font-bold">
                                         {item.name}
-                                    </span>
+                                    </div>
                                 </div>
                                 <div className="tw-flex tw-w-full tw-justify-between">
                                     <span className="tw-text-xs">{item.description}</span>
+                                </div>
+                                <div>
+                                    <button onClick={() => alert("test")}><FiEdit /></button>
                                 </div>
                             </button>
                         )

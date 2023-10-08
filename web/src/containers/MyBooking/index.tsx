@@ -106,14 +106,14 @@ const MyBooking: React.FC = () => {
         <PageContainer icon={<IoBookOutline />} title="My Booking">
             <div className="tw-flex tw-flex-col tw-gap-5">
                 <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
-                    <div className="tw-flex tw-items-center tw-gap-1 tw-px-1 tw-py-1 tw-rounded tw-bg-orange-50 tw-border-orange-100 tw-border">
-                        <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-1 tw-shadow-lg tw-bg-orange-500 tw-text-white tw-rounded"><FiChevronLeft size="26" /></button>
+                    <div className="tw-flex tw-items-center tw-gap-1 tw-px-1 tw-py-1 tw-rounded tw-bg-lime-50 tw-border-lime-100 tw-border">
+                        <button disabled={index === 0} onClick={goBack} className="disabled:tw-bg-slate-200 tw-p-1 tw-shadow-lg tw-bg-lime-500 tw-text-white tw-rounded"><FiChevronLeft size="26" /></button>
                         {period ? (
-                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-orange-500 tw-p-2 tw-rounded">{dayjs(period?.from).format('DD MMM YYYY')} - {dayjs(period?.to).format('DD MMM YYYY')}</span>
+                            <span className="tw-flex tw-items-center tw-gap-3 tw-text-lime-500 tw-p-2 tw-rounded">{dayjs(period?.from).format('DD MMM YYYY')} - {dayjs(period?.to).format('DD MMM YYYY')}</span>
                         ) : (
-                            <span className="tw-text-orange-500 tw-bg-orange-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
+                            <span className="tw-text-lime-500 tw-bg-lime-50 tw-p-2 tw-rounded">Period is not opened. Go back current period</span>
                         )}
-                        <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-1 tw-shadow-lg tw-bg-orange-500 tw-text-white tw-rounded"><FiChevronRight size="26" /></button>
+                        <button disabled={index === periods.length - 1} onClick={goNext} className="disabled:tw-bg-slate-200 tw-p-1 tw-shadow-lg tw-bg-lime-500 tw-text-white tw-rounded"><FiChevronRight size="26" /></button>
                     </div>
                 </div>
                 {period && (
@@ -124,8 +124,8 @@ const MyBooking: React.FC = () => {
                                     return (
                                         <th key={i} className="tw-h-10 tw-justify-center tw-items-center">
                                             <div className="tw-flex tw-flex-col">
-                                                <span className="tw-text-orange-500 tw-font-bold tw-uppercase">{dayjs(d).format('ddd')}</span>
-                                                <small className="tw-text-orange-500/50">{dayjs(d).format('DD-MMM-YYYY')}</small>
+                                                <span className="tw-text-lime-500 tw-font-bold tw-uppercase">{dayjs(d).format('ddd')}</span>
+                                                <small className="tw-text-lime-500/50">{dayjs(d).format('DD-MMM-YYYY')}</small>
                                             </div>
                                         </th>
                                     )
@@ -155,7 +155,7 @@ const MyBooking: React.FC = () => {
                                                 </div>
                                             ) : (
                                                 <div className="tw-h-16 tw-flex tw-items-center tw-justify-center tw-transition-all">
-                                                    <span className={cn({ "tw-text-orange-500": booking, "tw-text-slate-200": !booking })}><IoLockClosedSharp size={40} /></span>
+                                                    <span className={cn({ "tw-text-lime-500": booking, "tw-text-slate-200": !booking })}><IoLockClosedSharp size={40} /></span>
                                                 </div>
                                             )}
                                         </td>

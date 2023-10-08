@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
         field: 'isCurrentPeriod',
         headerName: 'Current',
         width: 400,
-        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-orange-500" /> : null
+        renderCell: params => params?.value ? <IoCheckmarkCircle size={36} className="tw-text-green-500" /> : null
     },
 ]
 

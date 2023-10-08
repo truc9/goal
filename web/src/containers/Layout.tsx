@@ -41,7 +41,7 @@ const PageMenu: FC<PageMenuData> = ({
 }) => {
     return (
         <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-orange-400 [&.active]:tw-bg-orange-400 hover:tw-text-white tw-rounded'>
+            <NavLink to={path} className='tw-p-3 hover:tw-bg-lime-400 [&.active]:tw-bg-lime-400 hover:tw-text-white tw-rounded'>
                 {icon}
             </NavLink>
         </Tooltip>
@@ -62,7 +62,7 @@ const Layout: React.FC = () => {
 
     return (
         <div className='tw-w-screen tw-h-screen tw-flex' >
-            <nav className='tw-w-14 tw-bg-gradient-to-r tw-from-orange-500 tw-to-orange-600 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
+            <nav className='tw-w-14 tw-bg-lime-500 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
                 <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
                 <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
                 {user.role == 'admin' && (
