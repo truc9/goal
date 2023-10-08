@@ -24,11 +24,12 @@ const AssessmentSetup = () => {
     })
 
     useEffect(() => {
-        load()
+        init()
+
         addGlobalAction({
             key: 'addAssessment',
             name: "Assessment",
-            actionFn: handleCreateAssessment
+            actionFn: createAssessment
         })
 
         return () => {
@@ -36,7 +37,7 @@ const AssessmentSetup = () => {
         }
     }, [])
 
-    async function load() {
+    async function init() {
         await loadAssessments()
     }
 
@@ -50,38 +51,48 @@ const AssessmentSetup = () => {
         navigate(`${e.id!}`)
     }
 
-    function handleShowAssessmentPopup() {
+    function showPopup() {
         setAssessmentModel({ name: '', description: '' })
         setAssessmentPopupOpen(true)
     }
 
-    function handleCreateAssessment() {
-        handleShowAssessmentPopup()
+    function createAssessment() {
+        showPopup()
     }
 
-    function handleAssessmentChange(e: any) {
+    function editAssessment(item: AssessmentModel) {
+        setAssessmentModel(item)
+        setAssessmentPopupOpen(true)
+    }
+
+    function onAssessmentChange(e: any) {
         setAssessmentModel({
             ...assessmentModel,
             [e.target.name]: e.target.value
         })
     }
 
-    async function createAssessment() {
-        await assessmentService.create(assessmentModel.name, assessmentModel.description)
+    async function submit() {
+        if (!assessmentModel.id) {
+            await assessmentService.create(assessmentModel.name, assessmentModel.description)
+        }
+        else {
+            await assessmentService.update(assessmentModel.id, assessmentModel)
+        }
         setAssessmentPopupOpen(false)
         await loadAssessments()
     }
 
     return (
         <div className="tw-flex tw-flex-1 tw-h-full tw-p-2 tw-border">
-            <div className="tw-bg-white tw-shadow tw-flex tw-flex-col tw-w-[260px] tw-h-full tw-overflow-auto tw-border-r">
-                <div className="tw-h-full">
+            <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-overflow-auto tw-border-r">
+                <div className="tw-h-full tw-overflow-auto">
                     {assessments.map((item: AssessmentModel, index: number) => {
                         return (
                             <button
                                 key={index}
                                 onClick={() => onItemChange(item)}
-                                className={cn("tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-gap-3 tw-justify-center", { "active": item.id === curAssessmentId })}
+                                className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-gap-3 tw-justify-center", { "active": item.id === curAssessmentId })}
                             >
                                 <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
                                     <span><FiFile size={16} /></span>
@@ -92,8 +103,8 @@ const AssessmentSetup = () => {
                                 <div className="tw-flex tw-w-full tw-justify-between">
                                     <span className="tw-text-xs">{item.description}</span>
                                 </div>
-                                <div>
-                                    <button onClick={() => alert("test")}><FiEdit /></button>
+                                <div className="tw-flex tw-items-center tw-gap-3 tw-justify-end tw-w-full">
+                                    <button onClick={() => editAssessment(item)}><FiEdit /></button>
                                 </div>
                             </button>
                         )
@@ -110,16 +121,16 @@ const AssessmentSetup = () => {
                 title="Create Assessment"
                 isOpen={assessmentPopupOpen}
                 onCloseClicked={() => setAssessmentPopupOpen(false)}
-                onSubmitClicked={createAssessment}
+                onSubmitClicked={submit}
             >
                 <div className='tw-flex tw-flex-col tw-items-center tw-gap-3'>
                     <FormGroup sx={{ width: "100%" }}>
                         <FormLabel>Name</FormLabel>
-                        <input value={assessmentModel.name} onChange={handleAssessmentChange} type="text" name="name" id="name" />
+                        <input value={assessmentModel.name} onChange={onAssessmentChange} type="text" name="name" id="name" />
                     </FormGroup>
                     <FormGroup sx={{ width: "100%" }}>
                         <FormLabel>Description</FormLabel>
-                        <textarea value={assessmentModel.description} onChange={handleAssessmentChange} name='description' id='description' rows={5}></textarea>
+                        <textarea value={assessmentModel.description} onChange={onAssessmentChange} name='description' id='description' rows={5}></textarea>
                     </FormGroup>
                 </div>
             </Popup>

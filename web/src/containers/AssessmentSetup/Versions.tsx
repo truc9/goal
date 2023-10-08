@@ -28,7 +28,7 @@ const Versions = () => {
 
     return (
         <div className="tw-flex tw-flex-1 tw-h-full">
-            <div className="tw-bg-white tw-flex tw-flex-col tw-w-[260px] tw-h-full tw-overflow-auto tw-border-r">
+            <div className="tw-bg-white tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-overflow-auto tw-border-r">
                 <div className="tw-h-full">
                     {versions.map((item: AssessmentVersionModel, index: number) => {
                         return (

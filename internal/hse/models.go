@@ -1,16 +1,21 @@
 package hse
 
-import "github.com/truc9/goal/internal/entity"
+import (
+	"github.com/truc9/goal/internal/entity"
+	"github.com/truc9/goal/internal/shared/model"
+)
 
 type AssessmentModel struct {
+	model.BaseModel
 	Id          int64  `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 type AssessmentVersionModel struct {
-	Id      int64 `json:"id"`
-	Version int   `json:"version"`
+	Id            int64 `json:"id"`
+	Version       int   `json:"version"`
+	QuestionCount int   `json:"questionCount"`
 }
 
 type ChoiceModel struct {

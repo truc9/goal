@@ -92,6 +92,7 @@ func main() {
 		// HSE Assessments
 		api.GET("/assessments", assessmentCtrl.GetAll)
 		api.POST("/assessments", assessmentCtrl.Create)
+		api.PUT("/assessments/:assessmentId", assessmentCtrl.Update)
 		api.DELETE("/assessments/:assessmentId", assessmentCtrl.Delete)
 		api.GET("/assessments/:assessmentId/versions", assessmentCtrl.GetVersions)
 

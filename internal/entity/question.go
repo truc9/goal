@@ -18,7 +18,7 @@ type Question struct {
 	Description         string            `json:"description"`
 	QuestionType        QuestionType      `json:"questionType"`
 	AssessmentVersionId int64             `json:"assessmentVersionId"`
-	AssessmentVersion   AssessmentVersion `json:"assessmentVersion"`
+	AssessmentVersion   AssessmentVersion `gorm:"foreignKey:AssessmentVersionId" json:"assessmentVersion"`
 	Choices             []ChoiceAnswer    `json:"choices"`
 }
 

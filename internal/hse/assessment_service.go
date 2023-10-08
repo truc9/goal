@@ -2,6 +2,7 @@ package hse
 
 import (
 	"errors"
+	"log"
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
@@ -18,7 +19,7 @@ func NewAssessmentService(db *gorm.DB) AssessmentService {
 	}
 }
 
-func (sv AssessmentService) CreateAssessment(userId int64, model *AssessmentModel) (int64, error) {
+func (sv AssessmentService) Create(userId int64, model *AssessmentModel) (int64, error) {
 	var result int64
 	err := sv.db.Transaction(func(tx *gorm.DB) error {
 		assessment, err := entity.NewAssessment(userId, model.Name, model.Description)
@@ -40,7 +41,7 @@ func (sv AssessmentService) CreateAssessment(userId int64, model *AssessmentMode
 			version := &entity.AssessmentVersion{
 				AssessmentId: assessment.Id,
 				Version:      1,
-				Assessment:   assessment,
+				Assessment:   *assessment,
 			}
 			res = tx.Create(version)
 
@@ -59,9 +60,9 @@ func (sv AssessmentService) CreateAssessment(userId int64, model *AssessmentMode
 	return result, err
 }
 
-func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
+func (sv AssessmentService) GetAll() ([]AssessmentModel, error) {
 	var entities []entity.Assessment
-	res := sv.db.Find(&entities)
+	res := sv.db.Order("created_at desc").Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}
@@ -77,9 +78,9 @@ func (sv AssessmentService) GetAssessments() ([]AssessmentModel, error) {
 	return assessments, nil
 }
 
-func (sv AssessmentService) DeleteAssessment(assessmentId int64) error {
+func (sv AssessmentService) Delete(id int64) error {
 	a := &entity.Assessment{}
-	res := sv.db.First(a, assessmentId)
+	res := sv.db.First(a, id)
 	if res.Error != nil {
 		return res.Error
 	}
@@ -101,11 +102,11 @@ func (sv AssessmentService) DeleteAssessment(assessmentId int64) error {
 	})
 }
 
-func (sv AssessmentService) GetAssessmentVersions(assessmentId int64) ([]AssessmentVersionModel, error) {
+func (sv AssessmentService) GetVersions(id int64) ([]AssessmentVersionModel, error) {
 	entities := []entity.AssessmentVersion{}
 
 	res := sv.db.
-		Where("assessment_id = ?", assessmentId).
+		Where("assessment_id = ?", id).
 		Select(
 			"id",
 			"version",
@@ -124,4 +125,21 @@ func (sv AssessmentService) GetAssessmentVersions(assessmentId int64) ([]Assessm
 	})
 
 	return result, nil
+}
+
+func (sv AssessmentService) Update(id int64, model *AssessmentModel) error {
+	assessment := &entity.Assessment{}
+	if err := sv.db.Find(assessment, id).Error; err != nil {
+		return err
+	}
+
+	log.Printf("updated by %v", model.UpdatedBy)
+
+	err := assessment.Update(model.Name, model.Description, model.UpdatedBy)
+
+	if err != nil {
+		return err
+	}
+
+	return sv.db.Save(&assessment).Error
 }

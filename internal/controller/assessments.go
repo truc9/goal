@@ -6,7 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/hse"
-	"github.com/truc9/goal/internal/utils/http_context"
+	"github.com/truc9/goal/internal/utils/httpcontext"
+	"github.com/truc9/goal/internal/utils/params"
 )
 
 type AssessmentController struct {
@@ -27,14 +28,14 @@ func NewAssessmentController(assessmentSv hse.AssessmentService) AssessmentContr
 //	@Param			model body		hse.AssessmentModel true "Create Assessment"
 //	@Success		200	{object}	uuid.UUID
 //	@Router			/api/assessments [post]
-func (ctrl AssessmentController) Create(c echo.Context) (err error) {
-	userId := http_context.GetUserId(c)
+func (ct AssessmentController) Create(c echo.Context) (err error) {
+	userId := httpcontext.GetUserId(c)
 	model := &hse.AssessmentModel{}
 	if err := c.Bind(model); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	result, err := ctrl.assessmentSv.CreateAssessment(userId, model)
+	result, err := ct.assessmentSv.Create(userId, model)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -49,8 +50,8 @@ func (ctrl AssessmentController) Create(c echo.Context) (err error) {
 //	@Produce		json
 //	@Success		200	{array}	entity.Booking
 //	@Router			/api/asessments [get]
-func (ctrl AssessmentController) GetAll(c echo.Context) (err error) {
-	assessments, err := ctrl.assessmentSv.GetAssessments()
+func (ct AssessmentController) GetAll(c echo.Context) (err error) {
+	assessments, err := ct.assessmentSv.GetAll()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -64,9 +65,9 @@ func (ctrl AssessmentController) GetAll(c echo.Context) (err error) {
 //	@Produce		json
 //	@Success		200	{object}	int64
 //	@Router			/api/asessments/:assessmentId [delete]
-func (ctrl AssessmentController) Delete(c echo.Context) (err error) {
+func (ct AssessmentController) Delete(c echo.Context) (err error) {
 	assessmentId, _ := strconv.ParseInt(c.Param("assessmentId"), 10, 64)
-	deleteError := ctrl.assessmentSv.DeleteAssessment(assessmentId)
+	deleteError := ct.assessmentSv.Delete(assessmentId)
 
 	if deleteError != nil {
 		return c.JSON(http.StatusInternalServerError, deleteError)
@@ -80,8 +81,33 @@ func (ctrl AssessmentController) Delete(c echo.Context) (err error) {
 //	@Produce		json
 //	@Success		200	{object}	[]hse.AssessmentVersionModel
 //	@Router			/api/asessments/:assessmentId/versions [get]
-func (ctrl AssessmentController) GetVersions(c echo.Context) (err error) {
+func (ct AssessmentController) GetVersions(c echo.Context) (err error) {
 	assessmentId, _ := strconv.ParseInt(c.Param("assessmentId"), 10, 64)
-	versions, _ := ctrl.assessmentSv.GetAssessmentVersions(assessmentId)
+	versions, _ := ct.assessmentSv.GetVersions(assessmentId)
 	return c.JSON(http.StatusOK, versions)
+}
+
+// Update single assessment
+//
+// @Summary		Update Assessment
+// @Produce 	json
+// @Success		200 {object} 	error.Error
+// @Router 		/api/assessments/:assessmentId [put]
+func (ct AssessmentController) Update(c echo.Context) (err error) {
+	id := params.GetIntParam(c, "assessmentId")
+	userId := httpcontext.GetUserId(c)
+	model := &hse.AssessmentModel{}
+
+	if err := c.Bind(&model); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	model.UpdatedBy = userId
+
+	err = ct.assessmentSv.Update(id, model)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, nil)
 }

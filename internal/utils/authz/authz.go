@@ -6,13 +6,13 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
-	"github.com/truc9/goal/internal/utils/http_context"
+	"github.com/truc9/goal/internal/utils/httpcontext"
 )
 
 func RequireRoles(roleTypes ...entity.RoleNameType) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			role := http_context.GetUserRole(c)
+			role := httpcontext.GetUserRole(c)
 			if lo.Contains(roleTypes, entity.RoleNameType(role)) {
 				return next(c)
 			}

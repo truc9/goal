@@ -2,6 +2,7 @@ package entity
 
 import (
 	"errors"
+	"fmt"
 )
 
 type Assessment struct {
@@ -24,4 +25,24 @@ func NewAssessment(userID int64, name, description string) (*Assessment, error) 
 		Description: description,
 		CreatedBy:   userID,
 	}, nil
+}
+
+func (a *Assessment) Update(name, description string, updatedBy int64) error {
+	if len(name) == 0 {
+		return fmt.Errorf("name must be provided")
+	}
+
+	if len(description) == 0 {
+		return fmt.Errorf("description must be provided")
+	}
+
+	if updatedBy == 0 {
+		return fmt.Errorf("updated by user is invalid")
+	}
+
+	a.Name = name
+	a.Description = description
+	a.UpdatedBy = updatedBy
+
+	return nil
 }

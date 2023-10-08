@@ -9,6 +9,10 @@ async function create(name: string, description: string) {
     })
 }
 
+async function update(id: number, model: AssessmentModel) {
+    await httpClient.put(`assessments/${id}`, model)
+}
+
 async function getAll(): Promise<AssessmentModel[]> {
     const result = await httpClient.get<AssessmentModel[]>('assessments')
     return result
@@ -25,6 +29,7 @@ async function deleteById(id: number): Promise<void> {
 
 export default {
     create,
+    update,
     getAll,
     getVersions,
     deleteById
