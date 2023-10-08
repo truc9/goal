@@ -1,9 +1,5 @@
 import { useState } from 'react'
-
 import { useNavigate } from 'react-router-dom'
-
-import { TextField } from '@mui/material'
-
 import { SkeletonLoading } from '../components/SkeletonLoading'
 import authService from '../services/authService'
 
@@ -45,10 +41,10 @@ const Register = () => {
                 </div>
             ) : (
                 <div className='tw-w-[500px] tw-flex tw-flex-col tw-gap-3'>
-                    <TextField variant='outlined' name='email' onChange={handleChange} placeholder='Email' />
-                    <TextField variant='outlined' name='firstName' onChange={handleChange} placeholder='First Name' />
-                    <TextField variant='outlined' name='lastName' onChange={handleChange} placeholder='Last Name' />
-                    <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />
+                    <input type="text" name='email' onChange={handleChange} placeholder='Email' />
+                    <input type="text" name='firstName' onChange={handleChange} placeholder='First Name' />
+                    <input type="text" name='lastName' onChange={handleChange} placeholder='Last Name' />
+                    <input type='password' name='password' onChange={handleChange} placeholder='Password' />
                     <button className='btn-primary' onClick={handleRegister}>Register</button>
                     <button className='btn-secondary' onClick={() => navigate('/login')}>Already have account ?</button>
                 </div>

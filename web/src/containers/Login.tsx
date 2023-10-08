@@ -2,14 +2,10 @@ import {
     useEffect,
     useState,
 } from 'react'
-
 import {
     useLocation,
     useNavigate,
 } from 'react-router-dom'
-
-import { TextField } from '@mui/material'
-
 import { SkeletonLoading } from '../components/SkeletonLoading'
 import useLocalAuth from '../hooks/useLocalAuth'
 
@@ -65,8 +61,8 @@ const Login = () => {
                         </div>
                     ) : (
                         <div className='tw-w-[400px] tw-flex tw-flex-col tw-gap-3'>
-                            <TextField variant='outlined' name='email' onChange={handleChange} placeholder='User Name/Email' />
-                            <TextField variant='outlined' type='password' name='password' onChange={handleChange} placeholder='Password' />
+                            <input type='text' name='email' onChange={handleChange} placeholder='User Name/Email' />
+                            <input type='password' name='password' onChange={handleChange} placeholder='Password' />
                             <button className='btn-primary' onClick={handleSignIn}>Login</button>
                             <button className='btn-secondary' onClick={() => navigate('/register')}>Create an Account</button>
                         </div>
