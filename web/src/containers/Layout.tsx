@@ -61,7 +61,7 @@ const Layout: React.FC = () => {
     }
 
     return (
-        <div className='tw-w-screen tw-h-screen tw-flex' >
+        <div className='tw-flex tw-h-screen tw-overflow-hidden'>
             <nav className='tw-w-14 tw-bg-lime-500 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
                 <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
                 <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
@@ -92,7 +92,7 @@ const Layout: React.FC = () => {
                         </Tooltip>
                     </div>
                 </div>
-                <div className='tw-flex-1'>
+                <div className='tw-flex-1 tw-overflow-y-auto'>
                     <Suspense fallback={<Loading />}>
                         <Outlet />
                     </Suspense>

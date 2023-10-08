@@ -84,9 +84,9 @@ const AssessmentSetup = () => {
     }
 
     return (
-        <div className="tw-flex tw-flex-1 tw-h-full tw-p-2 tw-border">
+        <div className="tw-flex tw-h-full tw-p-2 tw-border">
             <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-border-r">
-                <div className="tw-h-full">
+                <div className="tw-h-full tw-overflow-auto">
                     {assessments.map((item: AssessmentModel, index: number) => {
                         return (
                             <button

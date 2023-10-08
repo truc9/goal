@@ -69,7 +69,7 @@ const BookingDashboard: React.FC = () => {
                 <tbody>
                     {userBookings.map((ub: UserBooking, idx: number) => {
                         return (
-                            <tr className="tw-table-row odd:tw-bg-slate-100" key={idx}>
+                            <tr className="tw-table-row" key={idx}>
                                 <td>
                                     <span className="tw-justify-start tw-px-5 tw-items-center tw-flex">{ub.userDisplayName}</span>
                                 </td>
@@ -78,7 +78,7 @@ const BookingDashboard: React.FC = () => {
                                     return (
                                         <td key={i} className="tw-p-2">
                                             {booking ? (
-                                                <span className="tw-text-green-500/50 tw-justify-center tw-items-center tw-flex">
+                                                <span className="tw-text-green-500 tw-justify-center tw-items-center tw-flex">
                                                     <IoCheckmarkCircle size="40" />
                                                 </span>
                                             ) : (
