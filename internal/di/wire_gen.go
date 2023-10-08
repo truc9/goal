@@ -10,6 +10,7 @@ import (
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/controller"
 	"github.com/truc9/goal/internal/db"
+	"github.com/truc9/goal/internal/hrm"
 	"github.com/truc9/goal/internal/hse"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/scheduler"
@@ -75,4 +76,11 @@ func GetQuestionController() controller.QuestionController {
 	questionService := hse.NewQuestionService(gormDB)
 	questionController := controller.NewQuestionController(questionService)
 	return questionController
+}
+
+func GetEmployeeController() controller.EmployeeController {
+	gormDB := db.New()
+	employeeService := hrm.NewEmployeeService(gormDB)
+	employeeController := controller.NewEmployeeController(employeeService)
+	return employeeController
 }

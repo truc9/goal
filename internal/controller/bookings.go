@@ -14,9 +14,9 @@ type BookingController struct {
 	bookingSv booking.BookingService
 }
 
-func NewBookingController(s booking.BookingService) BookingController {
+func NewBookingController(bookingSv booking.BookingService) BookingController {
 	return BookingController{
-		bookingSv: s,
+		bookingSv: bookingSv,
 	}
 }
 

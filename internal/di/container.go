@@ -5,6 +5,7 @@ import (
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/controller"
 	"github.com/truc9/goal/internal/db"
+	"github.com/truc9/goal/internal/hrm"
 	"github.com/truc9/goal/internal/hse"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/stats"
@@ -17,3 +18,4 @@ var statSet = wire.NewSet(controller.NewStatController, stats.NewStatService, bo
 var websocketSet = wire.NewSet(controller.NewWebSocketController, stats.NewStatService, booking.NewBookingService, booking.NewPeriodService, db.New)
 var assessmentSet = wire.NewSet(controller.NewAssessmentController, hse.NewAssessmentService, db.New)
 var questionSet = wire.NewSet(controller.NewQuestionController, hse.NewQuestionService, db.New)
+var employeeSet = wire.NewSet(controller.NewEmployeeController, hrm.NewEmployeeService, db.New)

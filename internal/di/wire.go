@@ -50,3 +50,8 @@ func GetQuestionController() controller.QuestionController {
 	wire.Build(questionSet)
 	return controller.QuestionController{}
 }
+
+func GetEmployeeController() controller.EmployeeController {
+	wire.Build(employeeSet)
+	return controller.EmployeeController{}
+}
