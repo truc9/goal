@@ -41,7 +41,7 @@ const PageMenu: FC<PageMenuData> = ({
 }) => {
     return (
         <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-lime-400 [&.active]:tw-bg-lime-400 hover:tw-text-white tw-rounded'>
+            <NavLink to={path} className='tw-p-3 hover:tw-bg-gradient-to-r [&.active]:tw-bg-gradient-to-r tw-from-rose-300 tw-to-rose-500 hover:tw-shadow-lg [&.active]:tw-shadow-lg hover:tw-text-white tw-rounded'>
                 {icon}
             </NavLink>
         </Tooltip>
@@ -88,7 +88,7 @@ const Layout: React.FC = () => {
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
                         <Tooltip placement="bottom" title="Signout">
-                            <button className='btn-secondary' onClick={handleSignOut}><FiLogOut /></button>
+                            <button className='btn-icon' onClick={handleSignOut}><FiLogOut /></button>
                         </Tooltip>
                     </div>
                 </div>

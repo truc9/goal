@@ -20,6 +20,8 @@ const BookingDashboard: React.FC = () => {
     const [userBookings, setUserBookings] = useState<UserBooking[]>([])
     const [dates, setDates] = useState<Date[]>([])
     const [nextPeriod, setNextPeriod] = useState<BookingPeriod>()
+    const [title, setTitle] = useState("")
+
     const socket = useWebSocket()
 
     socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
@@ -35,6 +37,7 @@ const BookingDashboard: React.FC = () => {
             const days = Array.from(Array(7).keys()).map(d => dayjs(nextPeriod.from).add(d, 'day'))
             setDates(days.map(dd => dd.toDate()))
             loadBookings()
+            setTitle(`Booking ${dayjs(nextPeriod?.from).format('DD/MMM/YYYY')} to ${dayjs(nextPeriod?.to).format('DD/MMM/YYYY')}`)
         }
     }, [nextPeriod])
 
@@ -51,10 +54,7 @@ const BookingDashboard: React.FC = () => {
     }
 
     return (
-        <PageContainer icon={<FiBarChart2 />} title="Booking Dashboard">
-            <div className="tw-flex tw-items-center tw-content-center tw-text-center tw-text-xl tw-font-bold tw-text-lime-500 tw-justify-center tw-mb-5">
-                <h3>{dayjs(nextPeriod?.from).format('DD MMM YYYY')} - {dayjs(nextPeriod?.to).format('DD MMM YYYY')}</h3>
-            </div>
+        <PageContainer icon={<FiBarChart2 />} title={title}>
             <table className='tw-w-full tw-table'>
                 <thead>
                     <tr>

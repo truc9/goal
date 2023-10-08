@@ -5,7 +5,6 @@
 
 body {
   font-family: "Inter", sans-serif;
-  font-size: 11pt;
 }
 
 @layer base {
@@ -29,5 +28,9 @@ body {
 
   .btn-danger {
     @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-red-500 tw-px-3 tw-py-2 tw-text-white tw-rounded hover:tw-bg-red-400 active:tw-ring-red-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
+  }
+
+  .btn-icon {
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-lime-500 tw-px-2 tw-py-2 tw-text-white tw-rounded hover:tw-bg-lime-400 active:tw-ring-lime-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
   }
 }

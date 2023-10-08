@@ -95,7 +95,7 @@ const AssessmentSetup = () => {
                                 className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-justify-center", { "active": item.id === curAssessmentId })}
                             >
                                 <Tooltip title={item.name} placement="right">
-                                    <div className="tw-w-full tw-h-2/5 tw-overflow-hidden tw-truncate">
+                                    <div className="tw-w-full tw-h-2/5 tw-overflow-hidden tw-truncate tw-font-bold">
                                         {item.name}
                                     </div>
                                 </Tooltip>
