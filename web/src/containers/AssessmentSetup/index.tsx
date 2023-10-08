@@ -2,16 +2,38 @@ import { useEffect, useState } from "react"
 import cn from "classnames"
 import AssessmentModel from "../HSE/models/AssessmentModel"
 import assessmentService from "../../services/assessmentService"
-import { FiFile } from "react-icons/fi"
+import { FiFile, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
+import useBearStore from "../../store"
+import { Popup } from "../../components/Popup"
+import { FormGroup, FormLabel } from "@mui/material"
 
 const AssessmentSetup = () => {
+    const navigate = useNavigate()
+
+    const addGlobalAction = useBearStore(state => state.addGlobalAction)
+    const removeGlobalAction = useBearStore(state => state.removeGlobalAction)
+
     const [assessments, setAssessments] = useState<AssessmentModel[]>([])
     const [curAssessmentId, setCurAssessmentId] = useState(0)
-    const navigate = useNavigate()
+
+    const [assessmentPopupOpen, setAssessmentPopupOpen] = useState(false)
+    const [assessmentModel, setAssessmentModel] = useState<AssessmentModel>({
+        name: '',
+        description: ''
+    })
 
     useEffect(() => {
         load()
+        addGlobalAction({
+            key: 'addAssessment',
+            name: "Assessment",
+            actionFn: handleCreateAssessment
+        })
+
+        return () => {
+            removeGlobalAction('addAssessment')
+        }
     }, [])
 
     async function load() {
@@ -28,6 +50,28 @@ const AssessmentSetup = () => {
         navigate(`${e.id!}`)
     }
 
+    function handleShowAssessmentPopup() {
+        setAssessmentModel({ name: '', description: '' })
+        setAssessmentPopupOpen(true)
+    }
+
+    function handleCreateAssessment() {
+        handleShowAssessmentPopup()
+    }
+
+    function handleAssessmentChange(e: any) {
+        setAssessmentModel({
+            ...assessmentModel,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    async function createAssessment() {
+        await assessmentService.create(assessmentModel.name, assessmentModel.description)
+        setAssessmentPopupOpen(false)
+        await loadAssessments()
+    }
+
     return (
         <div className="tw-flex tw-flex-1 tw-h-full tw-p-2 tw-border">
             <div className="tw-bg-white tw-shadow tw-flex tw-flex-col tw-w-[260px] tw-h-full tw-overflow-auto tw-border-r">
@@ -37,7 +81,7 @@ const AssessmentSetup = () => {
                             <button
                                 key={index}
                                 onClick={() => onItemChange(item)}
-                                className={cn("tw-transition-all tw-w-full tw-p-2 tw-h-20 [&.active]:tw-border-l-4 [&.active]:tw-bg-orange-50 tw-border-orange-500 hover:tw-border-l-4 hover:tw-bg-orange-50 tw-text-left tw-flex tw-flex-col tw-gap-2 tw-justify-center", { "active": item.id === curAssessmentId })}
+                                className={cn("tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-20 [&.active]:tw-border-l-4 [&.active]:tw-bg-orange-50 tw-border-orange-500 hover:tw-border-l-4 hover:tw-bg-orange-50 tw-text-left tw-flex tw-flex-col tw-gap-2 tw-justify-center", { "active": item.id === curAssessmentId })}
                             >
                                 <div className="tw-text-left tw-flex tw-items-center tw-gap-2">
                                     <span><FiFile size={16} /></span>
@@ -57,6 +101,26 @@ const AssessmentSetup = () => {
             <main className="tw-flex-1">
                 <Outlet />
             </main>
+
+            <Popup
+                icon={<FiTriangle />}
+                size="sm"
+                title="Create Assessment"
+                isOpen={assessmentPopupOpen}
+                onCloseClicked={() => setAssessmentPopupOpen(false)}
+                onSubmitClicked={createAssessment}
+            >
+                <div className='tw-flex tw-flex-col tw-items-center tw-gap-3'>
+                    <FormGroup sx={{ width: "100%" }}>
+                        <FormLabel>Name</FormLabel>
+                        <input value={assessmentModel.name} onChange={handleAssessmentChange} type="text" name="name" id="name" />
+                    </FormGroup>
+                    <FormGroup sx={{ width: "100%" }}>
+                        <FormLabel>Description</FormLabel>
+                        <textarea value={assessmentModel.description} onChange={handleAssessmentChange} name='description' id='description' rows={5}></textarea>
+                    </FormGroup>
+                </div>
+            </Popup>
         </div >
     )
 }

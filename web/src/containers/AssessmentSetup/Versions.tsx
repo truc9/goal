@@ -36,7 +36,7 @@ const Versions = () => {
                                 key={index}
                                 onClick={() => onItemChange(item)}
                                 className={cn(
-                                    "tw-transition-all tw-w-full tw-p-2 tw-h-20 [&.active]:tw-border-l-4 [&.active]:tw-bg-orange-50 tw-border-orange-500 hover:tw-bg-orange-50 tw-text-left tw-flex tw-flex-col tw-gap-2 tw-justify-center",
+                                    " tw-border-b tw-border-b-slate-200 tw-transition-all tw-w-full tw-p-2 tw-h-20 [&.active]:tw-border-l-4 [&.active]:tw-bg-orange-50 tw-border-orange-500 hover:tw-bg-orange-50 tw-text-left tw-flex tw-flex-col tw-gap-2 tw-justify-center",
                                     { "active": item.id === curVersionId }
                                 )}
                             >

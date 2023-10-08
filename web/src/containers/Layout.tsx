@@ -11,6 +11,7 @@ import {
     FiFile,
     FiGrid,
     FiLogOut,
+    FiPlus,
 } from 'react-icons/fi'
 import {
     NavLink,
@@ -22,6 +23,7 @@ import { Tooltip } from '@mui/material'
 
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
+import useBearStore, { GlobalAction } from '../store'
 
 const iconSize = 22
 
@@ -47,6 +49,8 @@ const PageMenu: FC<PageMenuData> = ({
 }
 
 const Layout: React.FC = () => {
+    const actions = useBearStore((state) => state.actions)
+
     const { user, signout } = useLocalAuth()
     const navigate = useNavigate()
 
@@ -65,15 +69,21 @@ const Layout: React.FC = () => {
                     <>
                         <PageMenu tooltip='Booking Dashboard' icon={<FiBarChart2 size={iconSize} />} path='/booking-dashboard' />
                         <PageMenu tooltip='Booking Periods' icon={<FiCalendar size={iconSize} />} path='/booking-periods' />
-                        {/* <PageMenu tooltip='HSE' icon={<FiTriangle size={iconSize} />} path='/hse' /> */}
                         <PageMenu tooltip='Assessment Setup' icon={<FiFile size={iconSize} />} path='/assessments' />
                     </>
                 )}
             </nav>
             <main className='tw-flex-1 tw-flex tw-flex-col tw-bg-slate-100'>
-                <div className='tw-h-16 tw-flex tw-items-center tw-px-5 tw-bg-white tw-shadow'>
+                <div className='tw-h-16 tw-shrink-0 tw-grow-0 tw-flex tw-items-center tw-px-2 tw-bg-white tw-shadow tw-justify-between tw-gap-3'>
                     <div className='tw-w-60'>
                         <input type="text" className='tw-w-[300px]' placeholder='Search...' />
+                    </div>
+                    <div className='tw-flex tw-items-center'>
+                        {actions.map((action: GlobalAction) => {
+                            return (
+                                <button className='btn-secondary' onClick={action.actionFn}>{action.key === 'addAssessment' && <FiPlus />}{action.name}</button>
+                            )
+                        })}
                     </div>
                     <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
                         <h3>{user?.name}</h3>
