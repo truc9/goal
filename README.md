@@ -78,6 +78,7 @@ make test_cov
 ## Stack
 - Go
 - React
-- MUI React
-- TailwindCSS
-- GORM (Postgres)
+- [MUI React](https://mui.com)
+- [TailwindCSS](https://tailwindcss.com)
+- [GORM (Postgres)](https://gorm.io)
+- [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
