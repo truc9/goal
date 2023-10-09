@@ -60,7 +60,6 @@ func main() {
 	go scheduler.Run()
 
 	app.GET("/ws", func(c echo.Context) error {
-		log.Print("websocket connected")
 		websocketCtrl.ServeWS(c, hub)
 		return nil
 	})
