@@ -38,7 +38,8 @@ export const WebSocketProvider: FC<{
     }, [socket])
 
     const createWebSocket = () => {
-        const socket = new WebSocket(`ws://localhost:8000/ws`)
+        // const socket = new WebSocket(`ws://localhost:8000/ws`)
+        const socket = new WebSocket(`ws://ballina-numbat-pzhs.1.us-1.fl0.io:8000/ws`)
         setSocket(socket)
     }
 
