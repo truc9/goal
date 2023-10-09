@@ -79,7 +79,7 @@ export const QuestionPopup: FC<Props> = ({
         setOpenChoicePopup(true)
     }
 
-    function onQuestionTypeChange(e: any, value: string) {
+    function onQuestionTypeChange(_: any, value: string) {
         const id = +value
 
         const isAnswerEnabled = [
