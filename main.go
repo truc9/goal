@@ -35,7 +35,7 @@ func main() {
 	app.Use(middleware.Secure())
 	app.Use(middleware.RequestID())
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:5173", "http://*.goal.co.uk"},
+		AllowOrigins: []string{"http://localhost:5173", "http://*.goal.co.uk", "https://officely.vercel.app"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
