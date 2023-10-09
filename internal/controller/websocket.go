@@ -3,7 +3,6 @@ package controller
 import (
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
@@ -32,10 +31,8 @@ var (
 
 func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 	upgrader.CheckOrigin = func(r *http.Request) bool {
-		//TODO: config
-		return strings.Contains(r.Host, "localhost") ||
-			strings.Contains(r.Host, "app.goal.co.uk") ||
-			strings.Contains(r.Host, "getgoal.vercel.app")
+		//TODO: check properly
+		return true
 	}
 
 	conn, err := upgrader.Upgrade(ctx.Response(), ctx.Request(), nil)
