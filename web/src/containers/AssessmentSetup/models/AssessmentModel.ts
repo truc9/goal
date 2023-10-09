@@ -1,4 +1,4 @@
-export default interface AssessmentModel {
+export interface AssessmentModel {
     id?: number
     name: string
     description: string

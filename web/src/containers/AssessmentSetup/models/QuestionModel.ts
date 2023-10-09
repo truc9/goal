@@ -10,6 +10,7 @@ export enum QuestionType {
 
 export interface QuestionModel {
     id?: number
+    ordinal: number
     description: string
     type: QuestionType
     choices?: ChoiceAnswer[]

@@ -3,10 +3,10 @@ import { Popup } from "../../components/Popup"
 import { Box, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Radio, RadioGroup, Tab, Tabs, TextareaAutosize } from "@mui/material"
 import { TabContent } from "../../components/TabContent"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
-import { QuestionModel, QuestionType } from "../HSE/models/QuestionModel"
 import { v4 as newId } from 'uuid'
 import { IoSettings, IoTrash } from "react-icons/io5"
 import { FiPlusSquare } from "react-icons/fi"
+import { QuestionModel, QuestionType } from "./models/QuestionModel"
 
 interface Props {
     versionId: number
@@ -24,6 +24,7 @@ export const QuestionPopup: FC<Props> = ({
 
     const initModel = {
         description: '',
+        ordinal: 0,
         type: QuestionType.FreeText,
         choices: [],
         assessmentVersionId: versionId

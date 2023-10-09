@@ -21,7 +21,7 @@ import {
 import { PageContainer } from '../../components/PageContainer'
 import { Popup } from '../../components/Popup'
 import assessmentService from '../../services/assessmentService'
-import AssessmentModel from './models/AssessmentModel'
+import { AssessmentModel } from '../AssessmentSetup/models/AssessmentModel'
 
 interface AssessmentProps {
     name: string

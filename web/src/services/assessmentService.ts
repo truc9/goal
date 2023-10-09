@@ -1,5 +1,5 @@
-import AssessmentModel from '../containers/HSE/models/AssessmentModel'
-import { AssessmentVersionModel } from '../containers/HSE/models/AssessmentVersionModel'
+import { AssessmentModel } from '../containers/AssessmentSetup/models/AssessmentModel'
+import { AssessmentVersionModel } from '../containers/AssessmentSetup/models/AssessmentVersionModel'
 import httpClient from './httpClient'
 
 async function create(name: string, description: string) {

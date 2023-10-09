@@ -1,4 +1,4 @@
-import { QuestionModel } from "../containers/HSE/models/QuestionModel"
+import { QuestionModel } from "../containers/AssessmentSetup/models/QuestionModel"
 import httpClient from "./httpClient"
 
 async function getByAssessmentVersion(versionId: number) {

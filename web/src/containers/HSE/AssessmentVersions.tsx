@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { PageContainer } from '../../components/PageContainer'
 import { useEffect, useState } from 'react'
 import httpClient from '../../services/httpClient'
-import { AssessmentVersionModel } from './models/AssessmentVersionModel'
+import { AssessmentVersionModel } from '../AssessmentSetup/models/AssessmentVersionModel'
 
 const AssessmentVersions = () => {
     const { id } = useParams()

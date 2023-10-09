@@ -26,6 +26,7 @@ type ChoiceModel struct {
 
 type QuestionModel struct {
 	Id                  int64               `json:"id"`
+	Ordinal             int64               `json:"ordinal"`
 	Description         string              `json:"description"`
 	Type                entity.QuestionType `json:"type"`
 	TypeName            string              `json:"typeName"`

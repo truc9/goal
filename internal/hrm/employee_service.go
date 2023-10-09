@@ -16,7 +16,7 @@ func NewEmployeeService(db *gorm.DB) EmployeeService {
 	}
 }
 
-func (s *EmployeeService) GetAll() ([]EmployeeModel, error) {
+func (s EmployeeService) GetAll() ([]EmployeeModel, error) {
 	users := []entity.User{}
 	if err := s.db.Where("employee_number IS NOT NULL").Find(&users).Error; err != nil {
 		return nil, err

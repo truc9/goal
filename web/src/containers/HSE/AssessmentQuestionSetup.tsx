@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Box, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Radio, RadioGroup, Tab, Tabs, TextareaAutosize, Typography } from "@mui/material"
 import { IoSettings } from "react-icons/io5"
-import { QuestionModel, QuestionType } from "./models/QuestionModel"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
 import { v4 as uuid_v4 } from 'uuid'
 import { FiDownload, FiPlus, FiPlusSquare, FiXCircle } from "react-icons/fi"
@@ -10,6 +9,7 @@ import { PageContainer } from "../../components/PageContainer"
 import { Popup } from "../../components/Popup"
 import questionService from "../../services/questionService"
 import { QuestionTypeDict } from "../../constant"
+import { QuestionModel, QuestionType } from "../AssessmentSetup/models/QuestionModel"
 
 interface TabPanelProps {
     children?: React.ReactNode
@@ -36,11 +36,11 @@ function TabContent(props: TabPanelProps) {
     )
 }
 
-
 const AssessmentQuestionSetup = () => {
     const { versionId } = useParams()
     const initQuestion = {
         description: '',
+        ordinal: 0,
         type: QuestionType.FreeText,
         choices: [],
         assessmentVersionId: +versionId!

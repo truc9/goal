@@ -1,4 +1,4 @@
 export default {
-    //TODO: Get from ENV
-    apiUrl: 'http://localhost:8000/api'
+    apiUrl: `${import.meta.env.VITE_API_URL}/api`,
+    wsUrl: `${import.meta.env.VITE_WS_URL}/ws`
 }

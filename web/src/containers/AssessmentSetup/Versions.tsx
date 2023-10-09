@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import cn from "classnames"
 import { Outlet, useNavigate, useParams } from "react-router-dom"
-import { AssessmentVersionModel } from "../HSE/models/AssessmentVersionModel"
 import assessmentService from "../../services/assessmentService"
 import { FiFile } from "react-icons/fi"
 import { IoListCircle } from "react-icons/io5"
+import { AssessmentVersionModel } from "./models/AssessmentVersionModel"
 
 const Versions = () => {
     const { assessmentId } = useParams()

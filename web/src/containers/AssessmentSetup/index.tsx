@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import cn from "classnames"
-import AssessmentModel from "../HSE/models/AssessmentModel"
 import assessmentService from "../../services/assessmentService"
 import { FiEdit, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
 import useBearStore from "../../store"
 import { Popup } from "../../components/Popup"
 import { FormGroup, FormLabel, Tooltip } from "@mui/material"
+import { AssessmentModel } from "./models/AssessmentModel"
 
 const AssessmentSetup = () => {
     const navigate = useNavigate()

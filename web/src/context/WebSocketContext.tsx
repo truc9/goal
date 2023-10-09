@@ -5,6 +5,7 @@ import {
     useEffect,
     useState,
 } from 'react'
+import config from '../config'
 
 interface BroadcastData {
     event: string
@@ -38,7 +39,7 @@ export const WebSocketProvider: FC<{
     }, [socket])
 
     const createWebSocket = () => {
-        const socket = new WebSocket(`ws://localhost:8000/ws`)
+        const socket = new WebSocket(config.wsUrl)
         setSocket(socket)
     }
 

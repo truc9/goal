@@ -28,6 +28,7 @@ func (sv QuestionService) GetAll(assessmentVersionId int64) []QuestionModel {
 	models := lop.Map(questions, func(item entity.Question, _ int) QuestionModel {
 		return QuestionModel{
 			Id:          item.Id,
+			Ordinal:     item.Ordinal,
 			Description: item.Description,
 			Type:        item.QuestionType,
 			Version:     item.AssessmentVersion.Version,
