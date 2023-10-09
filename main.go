@@ -65,6 +65,10 @@ func main() {
 		return nil
 	})
 
+	app.GET("/hc", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, "Good")
+	})
+
 	anonymous := app.Group("api")
 	{
 		anonymous.POST("/register", iamCtrl.RegisterUser)
