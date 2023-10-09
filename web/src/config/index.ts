@@ -1,4 +1,5 @@
 export default {
     //TODO: Get from ENV
-    apiUrl: 'http://localhost:8000/api'
+    apiUrl: 'https://ballina-numbat-pzhs.1.us-1.fl0.io/api'
+    // 'http://localhost:8000/api'
 }
