@@ -1,37 +1,43 @@
 basePath: /api
 definitions:
-  entity.Booking:
-    properties:
-      bookingPeriodId:
-        type: string
-      date:
-        type: string
-      id:
-        type: string
-      user:
-        $ref: "#/definitions/entity.User"
-      userId:
-        type: string
-    type: object
-  entity.GrouppedUserBooking:
+  booking.GrouppedUserBooking:
     properties:
       bookings:
         items:
-          $ref: "#/definitions/entity.UserBookingItem"
+          $ref: '#/definitions/booking.UserBookingItem'
         type: array
       userDisplayName:
         type: string
     type: object
-  entity.UserBookingItem:
+  booking.UserBookingItem:
     properties:
       bookingDate:
         type: string
       bookingId:
-        type: string
+        type: integer
       bookingPeriodId:
-        type: string
+        type: integer
       userDisplayName:
         type: string
+    type: object
+  entity.Booking:
+    properties:
+      bookingPeriodId:
+        type: integer
+      createdAt:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      uid:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      userId:
+        type: integer
     type: object
   entity.Role:
     properties:
@@ -44,22 +50,54 @@ definitions:
     type: object
   entity.User:
     properties:
+      createdAt:
+        type: string
       email:
+        type: string
+      employeeNumber:
         type: string
       firstName:
         type: string
       hashPassword:
         type: string
       id:
-        type: string
+        type: integer
       lastName:
         type: string
       role:
-        $ref: "#/definitions/entity.Role"
+        $ref: '#/definitions/entity.Role'
       roleId:
         type: integer
+      uid:
+        type: string
+      updatedAt:
+        type: string
       username:
         type: string
+    type: object
+  hse.AssessmentModel:
+    properties:
+      createdBy:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      uid:
+        type: string
+      updatedBy:
+        type: integer
+    type: object
+  hse.AssessmentVersionModel:
+    properties:
+      id:
+        type: integer
+      questionCount:
+        type: integer
+      version:
+        type: integer
     type: object
 info:
   contact:
@@ -72,80 +110,143 @@ info:
   title: GOAL Swagger API
   version: "1.0"
 paths:
-  /api/bookings:
+  /api/asessments:
     get:
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/entity.GrouppedUserBooking"
+              $ref: '#/definitions/entity.Booking'
             type: array
-      summary: Get all bookings
-      tags:
-        - bookings
-    post:
+      summary: Get all assessments
+  /api/asessments/:assessmentId:
+    delete:
       consumes:
-        - application/json
-      parameters:
-        - description: Submit Booking
-          in: body
-          name: model
-          required: true
-          schema:
-            $ref: "#/definitions/entity.Booking"
+      - application/json
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/entity.Booking"
+            type: integer
+      summary: Delete Assessment
+  /api/asessments/:assessmentId/versions:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/hse.AssessmentVersionModel'
+            type: array
+      summary: Get versions
+  /api/assessments:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Assessment
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssessmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create Assessment
+  /api/assessments/:assessmentId:
+    put:
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Assessment
+  /api/bookings:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/booking.GrouppedUserBooking'
+            type: array
+      summary: Get all bookings
+      tags:
+      - bookings
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Submit Booking
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Booking'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Booking'
       summary: Submit booking
       tags:
-        - bookings
+      - bookings
   /api/bookings/{bookingId}:
     delete:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Booking ID
-          in: path
-          name: bookingId
-          required: true
-          type: integer
+      - description: Booking ID
+        in: path
+        name: bookingId
+        required: true
+        type: integer
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
       summary: Delete booking
       tags:
-        - bookings
+      - bookings
   /api/bookings/{bookingPeriodId}:
     get:
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - description: Booking Period ID
-          in: path
-          name: bookingPeriodId
-          required: true
-          type: integer
+      - description: Booking Period ID
+        in: path
+        name: bookingPeriodId
+        required: true
+        type: integer
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: "#/definitions/entity.Booking"
+              $ref: '#/definitions/entity.Booking'
             type: array
       summary: Get all bookings by Period ID
       tags:
-        - bookings
+      - bookings
 swagger: "2.0"

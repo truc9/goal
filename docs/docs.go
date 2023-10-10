@@ -22,6 +22,105 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/asessments": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all assessments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Booking"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/asessments/:assessmentId": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete Assessment",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/asessments/:assessmentId/versions": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get versions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/hse.AssessmentVersionModel"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assessments": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create Assessment",
+                "parameters": [
+                    {
+                        "description": "Create Assessment",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hse.AssessmentModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/assessments/:assessmentId": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update Assessment",
+                "responses": {}
+            }
+        },
         "/api/bookings": {
             "get": {
                 "consumes": [
@@ -40,7 +139,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.GrouppedUserBooking"
+                                "$ref": "#/definitions/booking.GrouppedUserBooking"
                             }
                         }
                     }
@@ -142,33 +241,13 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "entity.Booking": {
-            "type": "object",
-            "properties": {
-                "bookingPeriodId": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/entity.User"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.GrouppedUserBooking": {
+        "booking.GrouppedUserBooking": {
             "type": "object",
             "properties": {
                 "bookings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.UserBookingItem"
+                        "$ref": "#/definitions/booking.UserBookingItem"
                     }
                 },
                 "userDisplayName": {
@@ -176,20 +255,49 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.UserBookingItem": {
+        "booking.UserBookingItem": {
             "type": "object",
             "properties": {
                 "bookingDate": {
                     "type": "string"
                 },
                 "bookingId": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "bookingPeriodId": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "userDisplayName": {
                     "type": "string"
+                }
+            }
+        },
+        "entity.Booking": {
+            "type": "object",
+            "properties": {
+                "bookingPeriodId": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/entity.User"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },
@@ -210,7 +318,13 @@ const docTemplate = `{
         "entity.User": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "email": {
+                    "type": "string"
+                },
+                "employeeNumber": {
                     "type": "string"
                 },
                 "firstName": {
@@ -220,7 +334,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "lastName": {
                     "type": "string"
@@ -231,8 +345,51 @@ const docTemplate = `{
                 "roleId": {
                     "type": "integer"
                 },
+                "uid": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "hse.AssessmentModel": {
+            "type": "object",
+            "properties": {
+                "createdBy": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updatedBy": {
+                    "type": "integer"
+                }
+            }
+        },
+        "hse.AssessmentVersionModel": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "questionCount": {
+                    "type": "integer"
+                },
+                "version": {
+                    "type": "integer"
                 }
             }
         }

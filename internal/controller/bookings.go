@@ -62,7 +62,7 @@ func (ctrl BookingController) Delete(c echo.Context) (err error) {
 //	@Tags			bookings
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}	entity.GrouppedUserBooking
+//	@Success		200	{array}	booking.GrouppedUserBooking
 //	@Router			/api/bookings [get]
 func (ctrl BookingController) GetBookings(c echo.Context) (err error) {
 	periodId, _ := strconv.ParseInt(c.Param("bookingPeriodId"), 10, 64)

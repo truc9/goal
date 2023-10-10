@@ -91,7 +91,6 @@ func (ct AssessmentController) GetVersions(c echo.Context) (err error) {
 //
 // @Summary		Update Assessment
 // @Produce 	json
-// @Success		200 {object} 	error.Error
 // @Router 		/api/assessments/:assessmentId [put]
 func (ct AssessmentController) Update(c echo.Context) (err error) {
 	id := params.GetIntParam(c, "assessmentId")
