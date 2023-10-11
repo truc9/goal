@@ -7,3 +7,15 @@ type AssessmentVersion struct {
 	Assessment   Assessment `json:"assessment" gorm:"foreignKey:AssessmentId"`
 	Questions    []Question `json:"questions"`
 }
+
+func (v *AssessmentVersion) AddQuestion(q Question) []Question {
+	return v.Questions
+}
+
+func (v *AssessmentVersion) RemoveQuestion(questionId int64) []Question {
+	return v.Questions
+}
+
+func (v *AssessmentVersion) OrderQuestions() []Question {
+	return v.Questions
+}
