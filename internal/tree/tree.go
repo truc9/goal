@@ -4,18 +4,18 @@ type node struct {
 	left   *node
 	right  *node
 	parent *node
-	key    int64
+	key    int
 }
 
-func (n *node) Walk(res []int64) {
+func (n *node) Walk(arr *[]int) {
 	if n != nil {
-		n.left.Walk(res)
-		res = append(res, n.key)
-		n.right.Walk(res)
+		n.left.Walk(arr)
+		*arr = append(*arr, n.key)
+		n.right.Walk(arr)
 	}
 }
 
-func newNode(key int64) *node {
+func newNode(key int) *node {
 	return &node{
 		left:  nil,
 		right: nil,
@@ -33,7 +33,7 @@ func NewTree() *Tree {
 	}
 }
 
-func (t *Tree) Insert(key int64) {
+func (t *Tree) Insert(key int) {
 	// inserting node
 	var z *node = newNode(key)
 
@@ -69,8 +69,8 @@ func (t *Tree) Insert(key int64) {
 	}
 }
 
-func (t *Tree) InorderTreeWalk() []int64 {
-	var res []int64
-	t.root.Walk(res)
-	return res
+func (t *Tree) InorderTreeWalk() []int {
+	var arr []int
+	t.root.Walk(&arr)
+	return arr
 }
