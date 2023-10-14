@@ -3,16 +3,15 @@ import cn from "classnames"
 import assessmentService from "../../services/assessmentService"
 import { FiEdit, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
-import useBearStore from "../../store"
+import useStore from "../../store"
 import { Popup } from "../../components/Popup"
 import { FormGroup, FormLabel, Tooltip } from "@mui/material"
 import { AssessmentModel } from "./models/AssessmentModel"
 
 const AssessmentSetup = () => {
     const navigate = useNavigate()
-
-    const addGlobalAction = useBearStore(state => state.addGlobalAction)
-    const removeGlobalAction = useBearStore(state => state.removeGlobalAction)
+    const addGlobalAction = useStore(state => state.addAction)
+    const removeGlobalAction = useStore(state => state.removeAction)
 
     const [assessments, setAssessments] = useState<AssessmentModel[]>([])
     const [curAssessmentId, setCurAssessmentId] = useState(0)

@@ -19,7 +19,7 @@ func NewQuestionService(db *gorm.DB) QuestionService {
 func (sv QuestionService) GetAll(assessmentVersionId int64) []QuestionModel {
 	questions := []entity.Question{}
 
-	sv.db.Debug().
+	sv.db.
 		Where("assessment_version_id = ?", assessmentVersionId).
 		Model(&entity.Question{}).
 		Preload("Choices").
@@ -65,15 +65,12 @@ func (sv QuestionService) Delete(id int64) error {
 			return findErr
 		}
 
-		choices := []entity.ChoiceAnswer{}
-		sv.db.Where("question_id = ?", question.Id).Find(&choices)
-
-		delChoiceErr := sv.db.Delete(choices).Error
+		delChoiceErr := sv.db.Where("question_id = ?", id).Delete(&entity.ChoiceAnswer{}).Error
 		if delChoiceErr != nil {
 			return delChoiceErr
 		}
 
-		res := sv.db.Delete(question)
+		res := sv.db.Delete(question, id)
 		return res.Error
 	})
 	return err

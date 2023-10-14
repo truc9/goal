@@ -1,7 +1,7 @@
 import { QuestionModel } from "../containers/AssessmentSetup/models/QuestionModel"
 import httpClient from "./httpClient"
 
-async function getByAssessmentVersion(versionId: number) {
+async function getByVersion(versionId: number) {
     const result = await httpClient.get<QuestionModel[]>(`assessments/versions/${versionId}/questions`)
     return result
 }
@@ -15,7 +15,7 @@ async function remove(id: number) {
 }
 
 export default {
-    getByAssessmentVersion,
+    getByVersion,
     remove,
     create
 }

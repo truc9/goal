@@ -1,36 +1,10 @@
 import { create } from 'zustand'
+import { TopbarSlice, createTopbarSlice } from './topbarSlice'
+import { AssessmentSlice, createAssessmentSlice } from './assessmentSlice'
 
-type ActionKey =
-    | 'addAssessment'
-
-export interface GlobalAction {
-    key: ActionKey
-    name: string
-    actionFn: () => void
-}
-
-interface GlobalState {
-    actions: GlobalAction[]
-    addGlobalAction: (action: GlobalAction) => void
-    removeGlobalAction: (key: ActionKey) => void
-}
-
-const useBearStore = create<GlobalState>()((set) => ({
-    actions: [],
-    addGlobalAction: (action: GlobalAction) => set((state) => {
-        if (state.actions.find(a => a.key == action.key)) {
-            return {
-                actions: state.actions
-            }
-        }
-
-        return {
-            actions: [...state.actions, action]
-        }
-    }),
-    removeGlobalAction: (key: ActionKey) => set((state) => ({
-        actions: state.actions.filter(a => a.key !== key)
-    }))
+const useStore = create<TopbarSlice & AssessmentSlice>()((...a) => ({
+    ...createTopbarSlice(...a),
+    ...createAssessmentSlice(...a),
 }))
 
-export default useBearStore
+export default useStore

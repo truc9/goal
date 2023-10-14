@@ -23,7 +23,8 @@ import { Tooltip } from '@mui/material'
 
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
-import useBearStore, { GlobalAction } from '../store'
+import useStore from '../store'
+import { TopbarAction } from '../store/topbarSlice'
 
 const iconSize = 22
 
@@ -49,7 +50,7 @@ const PageMenu: FC<PageMenuData> = ({
 }
 
 const Layout: React.FC = () => {
-    const actions = useBearStore((state) => state.actions)
+    const actions = useStore((state) => state.actions)
 
     const { user, signout } = useLocalAuth()
     const navigate = useNavigate()
@@ -79,7 +80,7 @@ const Layout: React.FC = () => {
                         <input type="text" className='tw-w-[300px]' placeholder='Search...' />
                     </div>
                     <div className='tw-flex tw-items-center'>
-                        {actions.map((action: GlobalAction) => {
+                        {actions.map((action: TopbarAction) => {
                             return (
                                 <button className='btn-secondary' onClick={action.actionFn}>{action.key === 'addAssessment' && <FiPlus />}{action.name}</button>
                             )
