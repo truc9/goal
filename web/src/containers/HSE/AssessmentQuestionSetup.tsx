@@ -157,7 +157,7 @@ const AssessmentQuestionSetup = () => {
     }
 
     const loadQuestions = async () => {
-        const questions = await questionService.getByAssessmentVersion(+versionId!)
+        const questions = await questionService.getByVersion(+versionId!)
         setQuestions(questions)
         setQuestion(initQuestion)
     }
