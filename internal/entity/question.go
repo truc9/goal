@@ -30,12 +30,22 @@ type ChoiceAnswer struct {
 	TriggerQuestionId int64    `json:"triggerQuestionId"`
 }
 
-func NewQuestion(description string, questionType QuestionType, assessmentVersionId int64) *Question {
+func NewQuestion(description string, questionType QuestionType, assessmentVersionId int64) Question {
+	return Question{
+		Description:         description,
+		QuestionType:        questionType,
+		AssessmentVersionId: assessmentVersionId,
+		Choices:             make([]ChoiceAnswer, 0),
+	}
+}
+
+func NewQuestionWithOrdinal(description string, questionType QuestionType, assessmentVersionId int64, ordinal int64) *Question {
 	return &Question{
 		Description:         description,
 		QuestionType:        questionType,
 		AssessmentVersionId: assessmentVersionId,
 		Choices:             make([]ChoiceAnswer, 0),
+		Ordinal:             ordinal,
 	}
 }
 

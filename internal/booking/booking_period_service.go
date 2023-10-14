@@ -1,7 +1,7 @@
 package booking
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/samber/lo"
@@ -33,9 +33,10 @@ func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 	period := entity.CreateNextPeriod(time.Now())
 	entity := &entity.BookingPeriod{}
-	r := sv.db.Where("\"from\" = ?", period.From).First(&entity)
-	if r.RowsAffected != 0 {
-		return nil, fmt.Errorf("period found duplicated %v", entity.From)
+	sv.db.Where("\"from\" = ?", period.From).First(&entity)
+	if entity != nil {
+		log.Printf("period for week start from %v is already open", entity.From)
+		return entity, nil
 	}
 
 	res := sv.db.Create(period)

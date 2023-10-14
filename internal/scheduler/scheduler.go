@@ -21,11 +21,9 @@ func NewDailyScheduler(periodService booking.PeriodService) DailyScheduler {
 func (ds DailyScheduler) Run() {
 	sch := gocron.NewScheduler(time.UTC)
 	sch.Every(1).Day().Do(func() {
-		p, err := ds.periodService.CreateNextPeriod()
+		_, err := ds.periodService.CreateNextPeriod()
 		if err != nil {
 			log.Printf("error when create period %s\n", err)
-		} else {
-			log.Printf("period created successfully from %v to %v", p.From, p.To)
 		}
 		log.Println("schedule executed")
 	})

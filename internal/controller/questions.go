@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -29,6 +30,8 @@ func (ct QuestionController) Create(c echo.Context) error {
 	if err := c.Bind(model); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+
+	log.Println(model)
 
 	questionId, err := ct.questionSv.Create(model)
 	if err != nil {

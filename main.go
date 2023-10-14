@@ -31,7 +31,6 @@ func main() {
 	app := echo.New()
 	app.Logger.SetLevel(log.ERROR)
 
-	// app.Use(echoprometheus.NewMiddleware("monitoring"))
 	app.Use(middleware.Secure())
 	app.Use(middleware.RequestID())
 	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{

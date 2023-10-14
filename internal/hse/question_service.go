@@ -53,7 +53,7 @@ func (sv QuestionService) Create(model *QuestionModel) (int64, error) {
 		}
 	}
 
-	res := sv.db.Create(question)
+	res := sv.db.Create(&question)
 	return question.Id, res.Error
 }
 
