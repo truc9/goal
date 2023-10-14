@@ -6,7 +6,7 @@ import { QuestionModel } from "./models/QuestionModel"
 import { QuestionTypeDict } from "../../constant"
 import questionService from "../../services/questionService"
 import useBeerStore from "../../store"
-import { Loading } from "../../components/Loading"
+import { AsyncContent } from "../../components/AsyncContent"
 
 const Questions = () => {
     const [loading, setLoading] = useState(false)
@@ -44,9 +44,8 @@ const Questions = () => {
                         <button className="btn-secondary" onClick={() => setOpenQuestionPopup(true)}><FiPlus /> Add Question</button>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-1">
-                        {loading
-                            ? <div className="tw-p-5"><Loading /></div>
-                            : store.currentVersion?.questions?.map((q, index) => {
+                        <AsyncContent loading={loading}>
+                            {store.currentVersion?.questions?.map((q, index) => {
                                 return (
                                     <div key={index}
                                         className="tw-flex tw-items-center tw-h-16 tw-gap-3 tw-bg-slate-100 tw-p-5 tw-rounded hover:tw-cursor-move">
@@ -65,6 +64,7 @@ const Questions = () => {
                                     </div>
                                 )
                             })}
+                        </AsyncContent>
                     </div>
                 </div >
             </div >

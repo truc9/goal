@@ -94,6 +94,7 @@ const BookingDashboard: React.FC = () => {
                     })}
                 </tbody>
             </table>
+
         </PageContainer>
     )
 }

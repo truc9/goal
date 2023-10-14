@@ -94,7 +94,7 @@ const Layout: React.FC = () => {
                     </div>
                 </div>
                 <div className='tw-flex-1 tw-overflow-y-auto'>
-                    <Suspense fallback={<Loading />}>
+                    <Suspense fallback={<div className='tw-flex tw-items-center tw-gap-3 tw-p-10'><Loading /></div>}>
                         <Outlet />
                     </Suspense>
                 </div>

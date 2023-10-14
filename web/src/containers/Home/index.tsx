@@ -23,6 +23,7 @@ import { NotificationEvents } from '../../constant'
 import useLocalAuth from '../../hooks/useLocalAuth'
 import useWebSocket from '../../hooks/useWebSocket'
 import httpService from '../../services/httpClient'
+import { AsyncContent } from '../../components/AsyncContent'
 
 const Home = () => {
     const [totalEmployee, setTotalEmployee] = useState(0)
@@ -30,6 +31,7 @@ const Home = () => {
     const [data, setData] = useState<{ total: number, booked: number, unbooked: number }>({ total: 0, unbooked: 0, booked: 0 })
     const { user } = useLocalAuth()
     const socket = useWebSocket()
+    const [loadingStat, setLoadingStat] = useState(true)
 
     socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
         console.log(`${new Date()} dashboard updated with data ${JSON.stringify(data)}`)
@@ -52,6 +54,7 @@ const Home = () => {
     const handleLoad = async () => {
         const { booked, unbooked, total } = await httpService.get('stats/booking-overall')
         setData({ total, booked, unbooked })
+        setLoadingStat(false)
     }
 
     return (
@@ -67,17 +70,19 @@ const Home = () => {
                 </Card>
                 <Card title="Booking Overall Status">
                     <div>
-                        <PieChart width={300} height={300}>
-                            <Pie
-                                dataKey="value"
-                                isAnimationActive={false}
-                                data={stats}
-                                outerRadius={90}
-                                label
-                            />
-                            <Tooltip />
-                            <Legend verticalAlign="top" height={36} />
-                        </PieChart>
+                        <AsyncContent loading={loadingStat}>
+                            <PieChart width={300} height={300}>
+                                <Pie
+                                    dataKey="value"
+                                    isAnimationActive={false}
+                                    data={stats}
+                                    outerRadius={90}
+                                    label
+                                />
+                                <Tooltip />
+                                <Legend verticalAlign="top" height={36} />
+                            </PieChart>
+                        </AsyncContent>
                     </div>
                 </Card>
             </div>

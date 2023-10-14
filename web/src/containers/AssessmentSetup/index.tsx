@@ -7,7 +7,7 @@ import useBeerStore from "../../store"
 import { Popup } from "../../components/Popup"
 import { FormGroup, FormLabel, Tooltip } from "@mui/material"
 import { AssessmentModel } from "./models/AssessmentModel"
-import { Loading } from "../../components/Loading"
+import { AsyncContent } from "../../components/AsyncContent"
 
 const AssessmentSetup = () => {
     const navigate = useNavigate()
@@ -82,9 +82,8 @@ const AssessmentSetup = () => {
         <div className="tw-flex tw-h-full tw-p-2 tw-border">
             <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-border-r">
                 <div className="tw-h-full tw-overflow-auto">
-                    {loading
-                        ? <div className="tw-p-5"><Loading /></div>
-                        : store.assessments.map((item: AssessmentModel, index: number) => {
+                    <AsyncContent loading={loading}>
+                        {store.assessments.map((item: AssessmentModel, index: number) => {
                             return (
                                 <button
                                     key={index}
@@ -107,6 +106,7 @@ const AssessmentSetup = () => {
                                 </button>
                             )
                         })}
+                    </AsyncContent>
                 </div>
             </div>
             <main className="tw-flex-1">
