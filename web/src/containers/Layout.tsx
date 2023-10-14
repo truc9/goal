@@ -23,7 +23,7 @@ import { Tooltip } from '@mui/material'
 
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
-import useStore from '../store'
+import useBeerStore from '../store'
 import { TopbarAction } from '../store/topbarSlice'
 
 const iconSize = 22
@@ -50,7 +50,7 @@ const PageMenu: FC<PageMenuData> = ({
 }
 
 const Layout: React.FC = () => {
-    const actions = useStore((state) => state.actions)
+    const actions = useBeerStore((state) => state.actions)
 
     const { user, signout } = useLocalAuth()
     const navigate = useNavigate()

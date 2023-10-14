@@ -5,29 +5,35 @@ import { QuestionPopup } from "./QuestionPopup"
 import { QuestionModel } from "./models/QuestionModel"
 import { QuestionTypeDict } from "../../constant"
 import questionService from "../../services/questionService"
+import useBeerStore from "../../store"
+import { Loading } from "../../components/Loading"
 
 const Questions = () => {
+    const [loading, setLoading] = useState(false)
     const { versionId } = useParams()
-    const [questions, setQuestions] = useState<QuestionModel[]>([])
+    const store = useBeerStore()
     const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
 
     useEffect(() => {
-        refresh()
+        loadQuestions()
     }, [versionId])
 
-    async function refresh() {
+    async function loadQuestions() {
+        setLoading(true)
         const questions = await questionService.getByVersion(+versionId!)
-        setQuestions(questions)
+        store.loadQuestions(questions)
+        setLoading(false)
     }
 
     async function handleSubmitQuestion(question: QuestionModel) {
+        setOpenQuestionPopup(false)
         await questionService.create(question)
-        await refresh()
+        await loadQuestions()
     }
 
     async function handleDeleteQuestion(question: QuestionModel) {
         await questionService.remove(question.id!)
-        await refresh()
+        await loadQuestions()
     }
 
     return (
@@ -38,25 +44,27 @@ const Questions = () => {
                         <button className="btn-secondary" onClick={() => setOpenQuestionPopup(true)}><FiPlus /> Add Question</button>
                     </div>
                     <div className="tw-flex tw-flex-col tw-gap-1">
-                        {questions.map((q, index) => {
-                            return (
-                                <div key={index}
-                                    className="tw-flex tw-items-center tw-h-16 tw-gap-3 tw-bg-slate-100 tw-p-5 tw-rounded hover:tw-cursor-move">
-                                    <div>
-                                        <FiList />
-                                    </div>
-                                    <div className="tw-flex tw-justify-between tw-w-full">
-                                        <div className="flex-1">
-                                            {q.description}
+                        {loading
+                            ? <div className="tw-p-5"><Loading /></div>
+                            : store.currentVersion?.questions?.map((q, index) => {
+                                return (
+                                    <div key={index}
+                                        className="tw-flex tw-items-center tw-h-16 tw-gap-3 tw-bg-slate-100 tw-p-5 tw-rounded hover:tw-cursor-move">
+                                        <div>
+                                            <FiList />
                                         </div>
-                                        <div className="tw-w-40 tw-flex tw-items-center tw-justify-between tw-gap-5">
-                                            {QuestionTypeDict[q.type]}
-                                            <button onClick={() => handleDeleteQuestion(q)}><FiTrash /></button>
+                                        <div className="tw-flex tw-justify-between tw-w-full">
+                                            <div className="flex-1">
+                                                {q.description}
+                                            </div>
+                                            <div className="tw-w-40 tw-flex tw-items-center tw-justify-between tw-gap-5">
+                                                {QuestionTypeDict[q.type]}
+                                                <button onClick={() => handleDeleteQuestion(q)}><FiTrash /></button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
                     </div>
                 </div >
             </div >

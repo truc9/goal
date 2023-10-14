@@ -21,7 +21,6 @@ export const QuestionPopup: FC<Props> = ({
     onClose,
     onSubmit,
 }) => {
-
     const initModel = {
         description: '',
         ordinal: 0,

@@ -3,36 +3,30 @@ import cn from "classnames"
 import assessmentService from "../../services/assessmentService"
 import { FiEdit, FiTriangle } from "react-icons/fi"
 import { Outlet, useNavigate } from "react-router-dom"
-import useStore from "../../store"
+import useBeerStore from "../../store"
 import { Popup } from "../../components/Popup"
 import { FormGroup, FormLabel, Tooltip } from "@mui/material"
 import { AssessmentModel } from "./models/AssessmentModel"
+import { Loading } from "../../components/Loading"
 
 const AssessmentSetup = () => {
     const navigate = useNavigate()
-    const addGlobalAction = useStore(state => state.addAction)
-    const removeGlobalAction = useStore(state => state.removeAction)
-
-    const [assessments, setAssessments] = useState<AssessmentModel[]>([])
-    const [curAssessmentId, setCurAssessmentId] = useState(0)
-
+    const store = useBeerStore()
     const [assessmentPopupOpen, setAssessmentPopupOpen] = useState(false)
-    const [assessmentModel, setAssessmentModel] = useState<AssessmentModel>({
-        name: '',
-        description: ''
-    })
+    const [assessmentModel, setAssessmentModel] = useState<AssessmentModel>(new AssessmentModel())
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         init()
 
-        addGlobalAction({
+        store.addAction({
             key: 'addAssessment',
             name: "Assessment",
             actionFn: createAssessment
         })
 
         return () => {
-            removeGlobalAction('addAssessment')
+            store.removeAction('addAssessment')
         }
     }, [])
 
@@ -41,17 +35,19 @@ const AssessmentSetup = () => {
     }
 
     async function loadAssessments() {
+        setLoading(true)
         const assessments = await assessmentService.getAll()
-        setAssessments(assessments)
+        store.loadAssessments(assessments)
+        setLoading(false)
     }
 
     function onItemChange(e: AssessmentModel) {
-        setCurAssessmentId(e.id!)
+        store.loadCurrentAssessment(e)
         navigate(`${e.id!}`)
     }
 
     function showPopup() {
-        setAssessmentModel({ name: '', description: '' })
+        setAssessmentModel(new AssessmentModel())
         setAssessmentPopupOpen(true)
     }
 
@@ -86,29 +82,31 @@ const AssessmentSetup = () => {
         <div className="tw-flex tw-h-full tw-p-2 tw-border">
             <div className="tw-shadow tw-flex tw-flex-col tw-w-[300px] tw-h-full tw-flex-grow-0 tw-border-r">
                 <div className="tw-h-full tw-overflow-auto">
-                    {assessments.map((item: AssessmentModel, index: number) => {
-                        return (
-                            <button
-                                key={index}
-                                onClick={() => onItemChange(item)}
-                                className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-justify-center", { "active": item.id === curAssessmentId })}
-                            >
-                                <Tooltip title={item.name} placement="right">
-                                    <div className="tw-w-full tw-h-2/5 tw-overflow-hidden tw-truncate tw-font-bold">
-                                        {item.name}
+                    {loading
+                        ? <div className="tw-p-5"><Loading /></div>
+                        : store.assessments.map((item: AssessmentModel, index: number) => {
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() => onItemChange(item)}
+                                    className={cn("tw-bg-white tw-relative tw-transition-all tw-w-full tw-border-b tw-border-b-slate-200 tw-p-2 tw-h-28 [&.active]:tw-border-l-4 [&.active]:tw-bg-lime-50 tw-border-lime-500 hover:tw-border-l-4 hover:tw-bg-lime-50 tw-text-left tw-flex tw-flex-col tw-justify-center", { "active": item.id === store.currentAssessment?.id })}
+                                >
+                                    <Tooltip title={item.name} placement="right">
+                                        <div className="tw-w-full tw-h-2/5 tw-overflow-hidden tw-truncate tw-font-bold">
+                                            {item.name}
+                                        </div>
+                                    </Tooltip>
+                                    <Tooltip title={item.description} placement="right">
+                                        <div className="tw-w-full tw-justify-between tw-h-3/5 tw-overflow-hidden tw-line-clamp-3 tw-text-xs tw-text-slate-400">
+                                            {item.description}
+                                        </div>
+                                    </Tooltip>
+                                    <div className="tw-flex tw-items-center tw-gap-3 tw-justify-end tw-w-full">
+                                        <button onClick={() => editAssessment(item)}><FiEdit /></button>
                                     </div>
-                                </Tooltip>
-                                <Tooltip title={item.description} placement="right">
-                                    <div className="tw-w-full tw-justify-between tw-h-3/5 tw-overflow-hidden tw-line-clamp-3 tw-text-xs tw-text-slate-400">
-                                        {item.description}
-                                    </div>
-                                </Tooltip>
-                                <div className="tw-flex tw-items-center tw-gap-3 tw-justify-end tw-w-full">
-                                    <button onClick={() => editAssessment(item)}><FiEdit /></button>
-                                </div>
-                            </button>
-                        )
-                    })}
+                                </button>
+                            )
+                        })}
                 </div>
             </div>
             <main className="tw-flex-1">
