@@ -21,13 +21,13 @@ const theme = createTheme({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
-      <Suspense fallback={<Loading />}>
-        <AuthProvider>
-          <WebSocketProvider>
+      <WebSocketProvider>
+        <Suspense fallback={<Loading />}>
+          <AuthProvider>
             <App />
-          </WebSocketProvider>
-        </AuthProvider>
-      </Suspense>
+          </AuthProvider>
+        </Suspense>
+      </WebSocketProvider>
     </ThemeProvider>
   </BrowserRouter>,
 )

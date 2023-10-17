@@ -1,6 +1,8 @@
 package stats
 
 import (
+	"log"
+
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
@@ -18,11 +20,16 @@ func NewStatService(db *gorm.DB, periodSv booking.PeriodService) StatsService {
 	}
 }
 
-func (sv *StatsService) GetBookingOverallStats() (model BookingModel, err error) {
+func (sv *StatsService) GetBookingOverallStats() (model *BookingModel, err error) {
 	var userCount int64
 	var bookedCount int64
 	sv.db.Model(&entity.User{}).Count(&userCount)
-	nextPeriod, _ := sv.periodSv.GetNextPeriod()
+
+	nextPeriod, err := sv.periodSv.GetNextPeriod()
+	if err != nil {
+		log.Printf("err %v", err)
+		return nil, err
+	}
 
 	sv.db.
 		Where("booking_period_id = ?", nextPeriod.Id).
@@ -30,7 +37,7 @@ func (sv *StatsService) GetBookingOverallStats() (model BookingModel, err error)
 		Find(&entity.Booking{}).
 		Count(&bookedCount)
 
-	return BookingModel{
+	return &BookingModel{
 		Booked:   int(bookedCount),
 		Unbooked: int(userCount) - int(bookedCount),
 		Total:    int(userCount),

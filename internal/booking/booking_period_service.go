@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -32,19 +33,23 @@ func (sv PeriodService) GetNextPeriod() (p *entity.BookingPeriod, err error) {
 
 func (sv PeriodService) CreateNextPeriod() (*entity.BookingPeriod, error) {
 	period := entity.CreateNextPeriod(time.Now())
+	log.Printf("draft next period is %v", period.From)
+
 	entity := &entity.BookingPeriod{}
-	sv.db.Where("\"from\" = ?", period.From).First(&entity)
-	if entity != nil {
-		log.Printf("period for week start from %v is already open", entity.From)
-		return entity, nil
+
+	tx := sv.db.Where("\"from\" = ?", period.From).First(&entity)
+	if tx.Error != nil && errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+		res := sv.db.Create(period)
+		if res.Error != nil {
+			log.Printf("failed to create next period due to %v", res.Error)
+			return nil, res.Error
+		}
+		log.Printf("create next period % successfully", period.From)
+		return period, tx.Error
 	}
 
-	res := sv.db.Create(period)
-
-	if res.Error != nil {
-		return nil, res.Error
-	}
-	return period, nil
+	log.Printf("period for week start from %v is already open", entity.From)
+	return entity, nil
 }
 
 func (sv PeriodService) GetPeriods() ([]PeriodModel, error) {

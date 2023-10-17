@@ -61,7 +61,7 @@ func (ctrl WebSocketController) ServeWS(ctx echo.Context, hub *ws.Hub) {
 	case ws.BookingUpdated:
 		log.Println("client updated booking")
 		type dto struct {
-			Stat     stats.BookingModel            `json:"stat"`
+			Stat     *stats.BookingModel           `json:"stat"`
 			Bookings []booking.GrouppedUserBooking `json:"bookings"`
 		}
 
