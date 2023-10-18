@@ -1,5 +1,7 @@
 package entity
 
+import "errors"
+
 type QuestionType int
 
 const (
@@ -30,10 +32,11 @@ type ChoiceAnswer struct {
 	TriggerQuestionId int64    `json:"triggerQuestionId"`
 }
 
-func NewQuestion(description string, questionType QuestionType, assessmentVersionId int64) Question {
+func NewQuestion(description string, questionType QuestionType, assessmentVersionId, ordinal int64) Question {
 	return Question{
 		Description:         description,
 		QuestionType:        questionType,
+		Ordinal:             ordinal,
 		AssessmentVersionId: assessmentVersionId,
 		Choices:             make([]ChoiceAnswer, 0),
 	}
@@ -55,4 +58,12 @@ func (q *Question) AddChoice(description string, triggerQuestionId int64) {
 		Description:       description,
 		TriggerQuestionId: triggerQuestionId,
 	})
+}
+
+func (q *Question) SetOrdinal(ordinal int64) error {
+	if ordinal == 0 {
+		return errors.New("ordinal is invalid")
+	}
+	q.Ordinal = ordinal
+	return nil
 }

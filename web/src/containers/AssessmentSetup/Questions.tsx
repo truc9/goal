@@ -28,7 +28,10 @@ const Questions = () => {
 
 	async function handleSubmitQuestion(question: QuestionModel) {
 		setOpenQuestionPopup(false)
-		await questionService.create(question)
+		await questionService.create({
+			...question,
+			ordinal: store.currentVersion.questionCount + 1
+		})
 		await loadQuestions()
 	}
 
