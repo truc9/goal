@@ -22,11 +22,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <ThemeProvider theme={theme}>
       <WebSocketProvider>
-        <Suspense fallback={<Loading />}>
-          <AuthProvider>
+        <AuthProvider>
+          <Suspense fallback={<Loading />}>
             <App />
-          </AuthProvider>
-        </Suspense>
+          </Suspense>
+        </AuthProvider>
       </WebSocketProvider>
     </ThemeProvider>
   </BrowserRouter>,

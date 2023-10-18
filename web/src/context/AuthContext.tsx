@@ -14,6 +14,7 @@ interface AuthContextValue {
 export const AuthContext = React.createContext<AuthContextValue>(null!)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+
     const [user, setUser] = useState<AuthUser>(null!)
 
     useEffect(() => {
