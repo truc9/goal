@@ -1,23 +1,15 @@
-import React, {
-    FC,
-    ReactNode,
-    Suspense,
-} from 'react'
+import React, { FC, ReactNode, Suspense } from 'react'
 
 import {
-    FiBarChart2,
-    FiCalendar,
-    FiCheckCircle,
-    FiFile,
-    FiGrid,
-    FiLogOut,
-    FiPlus,
+	FiBarChart2,
+	FiCalendar,
+	FiCheckCircle,
+	FiFile,
+	FiGrid,
+	FiLogOut,
+	FiPlus
 } from 'react-icons/fi'
-import {
-    NavLink,
-    Outlet,
-    useNavigate,
-} from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { Tooltip } from '@mui/material'
 
@@ -29,78 +21,116 @@ import { TopbarAction } from '../store/topbarSlice'
 const iconSize = 22
 
 interface PageMenuData {
-    path: string
-    text?: string
-    tooltip?: string
-    icon?: ReactNode
-    children?: PageMenuData[]
+	path: string
+	text?: string
+	tooltip?: string
+	icon?: ReactNode
+	children?: PageMenuData[]
 }
-const PageMenu: FC<PageMenuData> = ({
-    path,
-    icon,
-    tooltip,
-}) => {
-    return (
-        <Tooltip title={tooltip} placement='right'>
-            <NavLink to={path} className='tw-p-3 hover:tw-bg-gradient-to-r [&.active]:tw-bg-gradient-to-r tw-from-rose-300 tw-to-rose-500 hover:tw-shadow-lg [&.active]:tw-shadow-lg hover:tw-text-white tw-rounded'>
-                {icon}
-            </NavLink>
-        </Tooltip>
-    )
+const PageMenu: FC<PageMenuData> = ({ path, icon, tooltip }) => {
+	return (
+		<Tooltip title={tooltip} placement='right'>
+			<NavLink
+				to={path}
+				className='tw-rounded tw-from-violet-300 tw-to-violet-500 tw-p-3 hover:tw-bg-gradient-to-r hover:tw-text-white [&.active]:tw-bg-gradient-to-r'>
+				{icon}
+			</NavLink>
+		</Tooltip>
+	)
 }
 
 const Layout: React.FC = () => {
-    const actions = useBeerStore((state) => state.actions)
+	const actions = useBeerStore((state) => state.actions)
 
-    const { user, signout } = useLocalAuth()
-    const navigate = useNavigate()
+	const { user, signout } = useLocalAuth()
+	const navigate = useNavigate()
 
-    function handleSignOut() {
-        signout(() => {
-            navigate('/login', { replace: true })
-        })
-    }
+	function handleSignOut() {
+		signout(() => {
+			navigate('/login', { replace: true })
+		})
+	}
 
-    return (
-        <div className='tw-flex tw-h-screen tw-overflow-hidden'>
-            <nav className='tw-w-14 tw-bg-lime-500 tw-text-white tw-flex tw-flex-col tw-items-center tw-py-5'>
-                <PageMenu tooltip='Dashboard & Modules' icon={<FiGrid size={iconSize} />} path='/' />
-                <PageMenu tooltip='My Bookings' icon={<FiCheckCircle size={iconSize} />} path='/my-booking' />
-                {user.role == 'admin' && (
-                    <>
-                        <PageMenu tooltip='Booking Dashboard' icon={<FiBarChart2 size={iconSize} />} path='/booking-dashboard' />
-                        <PageMenu tooltip='Booking Periods' icon={<FiCalendar size={iconSize} />} path='/booking-periods' />
-                        <PageMenu tooltip='Assessment Setup' icon={<FiFile size={iconSize} />} path='/assessments' />
-                    </>
-                )}
-            </nav>
-            <main className='tw-flex-1 tw-flex tw-flex-col tw-bg-slate-100'>
-                <div className='tw-h-16 tw-shrink-0 tw-grow-0 tw-flex tw-items-center tw-px-2 tw-bg-white tw-shadow tw-justify-between tw-gap-3'>
-                    <div className='tw-w-60'>
-                        <input type="text" className='tw-w-[300px]' placeholder='Search...' />
-                    </div>
-                    <div className='tw-flex tw-items-center'>
-                        {actions.map((action: TopbarAction) => {
-                            return (
-                                <button className='btn-secondary' onClick={action.actionFn}>{action.key === 'addAssessment' && <FiPlus />}{action.name}</button>
-                            )
-                        })}
-                    </div>
-                    <div className='tw-flex-1 tw-flex tw-justify-end tw-items-center tw-gap-5'>
-                        <h3>{user?.name}</h3>
-                        <Tooltip placement="bottom" title="Signout">
-                            <button className='btn-icon' onClick={handleSignOut}><FiLogOut /></button>
-                        </Tooltip>
-                    </div>
-                </div>
-                <div className='tw-flex-1 tw-overflow-y-auto'>
-                    <Suspense fallback={<div className='tw-flex tw-items-center tw-gap-3 tw-p-10'><Loading /></div>}>
-                        <Outlet />
-                    </Suspense>
-                </div>
-            </main>
-        </div >
-    )
+	return (
+		<div className='tw-flex tw-h-screen tw-overflow-hidden'>
+			<nav className='tw-flex tw-w-14 tw-flex-col tw-items-center tw-bg-violet-500 tw-py-5 tw-text-white'>
+				<PageMenu
+					tooltip='Dashboard & Modules'
+					icon={<FiGrid size={iconSize} />}
+					path='/'
+				/>
+				<PageMenu
+					tooltip='My Bookings'
+					icon={<FiCheckCircle size={iconSize} />}
+					path='/my-booking'
+				/>
+				{user.role == 'admin' && (
+					<>
+						<PageMenu
+							tooltip='Booking Dashboard'
+							icon={<FiBarChart2 size={iconSize} />}
+							path='/booking-dashboard'
+						/>
+						<PageMenu
+							tooltip='Booking Periods'
+							icon={<FiCalendar size={iconSize} />}
+							path='/booking-periods'
+						/>
+						<PageMenu
+							tooltip='Assessment Setup'
+							icon={<FiFile size={iconSize} />}
+							path='/assessments'
+						/>
+					</>
+				)}
+			</nav>
+			<main className='tw-flex tw-flex-1 tw-flex-col tw-bg-slate-100'>
+				<div className='tw-flex tw-h-16 tw-shrink-0 tw-grow-0 tw-items-center tw-justify-between tw-gap-3 tw-bg-white tw-px-2 tw-shadow'>
+					<div className='tw-w-60'>
+						<input
+							type='text'
+							className='tw-w-[300px]'
+							placeholder='Search...'
+						/>
+					</div>
+					<div className='tw-flex tw-items-center'>
+						{actions.map((action: TopbarAction) => {
+							return (
+								<button
+									className='btn-secondary'
+									onClick={action.actionFn}>
+									{action.key === 'addAssessment' && (
+										<FiPlus />
+									)}
+									{action.name}
+								</button>
+							)
+						})}
+					</div>
+					<div className='tw-flex tw-flex-1 tw-items-center tw-justify-end tw-gap-5'>
+						<h3>{user?.name}</h3>
+						<Tooltip placement='bottom' title='Signout'>
+							<button
+								className='btn-icon'
+								onClick={handleSignOut}>
+								<FiLogOut />
+							</button>
+						</Tooltip>
+					</div>
+				</div>
+				<div className='tw-flex-1 tw-overflow-y-auto'>
+					<Suspense
+						fallback={
+							<div className='tw-flex tw-items-center tw-gap-3 tw-p-10'>
+								<Loading />
+							</div>
+						}>
+						<Outlet />
+					</Suspense>
+				</div>
+			</main>
+		</div>
+	)
 }
 
 export default Layout

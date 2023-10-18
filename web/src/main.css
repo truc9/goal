@@ -1,36 +1,36 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Inter", sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 
 @layer base {
-  input[type="text"],
-  input[type="password"],
-  textarea {
-    @apply tw-px-4 tw-py-2.5 tw-border focus:tw-outline-none tw-rounded tw-w-full focus:tw-ring-2 focus:tw-ring-lime-500 focus:tw-border-none tw-shadow-inner;
-  }
+	input[type='text'],
+	input[type='password'],
+	textarea {
+		@apply tw-w-full tw-rounded tw-border tw-px-4 tw-py-2.5 tw-shadow-inner focus:tw-border-none focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-violet-500;
+	}
 
-  .btn {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-px-3 tw-py-2.5 tw-text-slate-900 tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
-  }
+	.btn {
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-slate-200 tw-px-3 tw-py-2.5 tw-text-slate-900 tw-transition-all hover:tw-bg-slate-100 active:tw-ring-2 active:tw-ring-slate-100 active:tw-ring-offset-2;
+	}
 
-  .btn-secondary {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-slate-200 tw-px-3 tw-py-2.5 tw-text-slate-900 tw-rounded hover:tw-bg-slate-100 active:tw-ring-slate-100 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
-  }
+	.btn-secondary {
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-slate-200 tw-px-3 tw-py-2.5 tw-text-slate-900 tw-transition-all hover:tw-bg-slate-100 active:tw-ring-2 active:tw-ring-slate-100 active:tw-ring-offset-2;
+	}
 
-  .btn-primary {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-lime-500 tw-px-3 tw-py-2.5 tw-text-white tw-rounded hover:tw-bg-lime-500 active:tw-ring-lime-500 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
-  }
+	.btn-primary {
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-violet-500 tw-px-3 tw-py-2.5 tw-text-white tw-transition-all hover:tw-bg-violet-500 active:tw-ring-2 active:tw-ring-violet-500 active:tw-ring-offset-2;
+	}
 
-  .btn-danger {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-red-500 tw-px-3 tw-py-2.5 tw-text-white tw-rounded hover:tw-bg-red-400 active:tw-ring-red-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
-  }
+	.btn-danger {
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-red-500 tw-px-3 tw-py-2.5 tw-text-white tw-transition-all hover:tw-bg-red-400 active:tw-ring-2 active:tw-ring-red-400 active:tw-ring-offset-2;
+	}
 
-  .btn-icon {
-    @apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-bg-lime-500 tw-px-3 tw-py-2.5 tw-text-white tw-rounded hover:tw-bg-lime-400 active:tw-ring-lime-400 active:tw-ring-offset-2 active:tw-ring-2 tw-transition-all;
-  }
+	.btn-icon {
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-violet-500 tw-px-3 tw-py-2.5 tw-text-white tw-transition-all hover:tw-bg-violet-400 active:tw-ring-2 active:tw-ring-violet-400 active:tw-ring-offset-2;
+	}
 }

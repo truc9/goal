@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { FiList, FiPlus, FiTrash } from 'react-icons/fi'
+import { FiPlus } from 'react-icons/fi'
 import { QuestionPopup } from './QuestionPopup'
 import { QuestionModel } from './models/QuestionModel'
-import { QuestionTypeDict } from '../../constant'
 import questionService from '../../services/questionService'
 import useBeerStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
-import { IoChevronForward } from 'react-icons/io5'
+import { QuestionItem } from './QuestionItem'
 
 const Questions = () => {
 	const [loading, setLoading] = useState(false)
@@ -48,60 +47,17 @@ const Questions = () => {
 							<FiPlus /> Add Question
 						</button>
 					</div>
-					<div className='tw-flex tw-flex-col tw-gap-1'>
+					<div className='tw-flex tw-flex-col tw-gap-2'>
 						<AsyncContent loading={loading}>
 							{store.currentVersion?.questions?.map(
-								(q, index) => {
-									return (
-										<div
-											key={index}
-											className='tw-flex tw-flex-col tw-rounded tw-bg-slate-100 tw-p-5 hover:tw-cursor-move'>
-											<div className='tw-flex tw-items-center tw-gap-3'>
-												<div>
-													<FiList />
-												</div>
-												<div className='tw-flex tw-w-full tw-justify-between'>
-													<div className='flex-1 tw-font-bold'>
-														{q.description}
-													</div>
-													<div className='tw-flex tw-w-40 tw-items-center tw-justify-between tw-gap-5'>
-														<span className='tw-font-bold'>
-															{
-																QuestionTypeDict[
-																	q.type
-																]
-															}
-														</span>
-														<button
-															onClick={() =>
-																handleDeleteQuestion(
-																	q
-																)
-															}>
-															<FiTrash />
-														</button>
-													</div>
-												</div>
-											</div>
-											{(q.choices?.length ?? 0) > 0 && (
-												<div className='tw-mt-2 tw-flex tw-flex-col tw-gap-2'>
-													{q.choices?.map(
-														(c, cIdx) => (
-															<div
-																key={cIdx}
-																className='tw-flex tw-items-center tw-justify-start tw-gap-2 tw-rounded tw-bg-lime-500 tw-p-1 tw-text-white'>
-																<IoChevronForward
-																	size={20}
-																/>
-																{c.description}
-															</div>
-														)
-													)}
-												</div>
-											)}
-										</div>
-									)
-								}
+								(q: QuestionModel) => (
+									<QuestionItem
+										key={q.id}
+										question={q}
+										onEdit={handleDeleteQuestion}
+										onDelete={handleDeleteQuestion}
+									/>
+								)
 							)}
 						</AsyncContent>
 					</div>
