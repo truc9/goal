@@ -1,16 +1,17 @@
-import React from "react"
-import { Loading } from "./Loading"
+import React from 'react'
+import { Loading } from './Loading'
 
 interface Props {
-    loading: boolean
-    children: React.ReactNode
+  loading: boolean
+  children: React.ReactNode
 }
 
 export const AsyncContent: React.FC<Props> = ({ loading, children }) => {
-    if (loading) return <div className="tw-p-5"><Loading /></div>
+  if (loading)
     return (
-        <>
-            {children}
-        </>
+      <div className="tw-p-5">
+        <Loading />
+      </div>
     )
+  return <>{children}</>
 }

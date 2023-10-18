@@ -9,25 +9,21 @@ import { ThemeProvider, createTheme } from '@mui/material'
 import './main.css'
 
 const theme = createTheme({
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'sans-serif',
-      'Inter'
-    ].join(',')
-  },
+	typography: {
+		fontFamily: ['-apple-system', 'sans-serif', 'Inter'].join(',')
+	}
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <WebSocketProvider>
-        <AuthProvider>
-          <Suspense fallback={<Loading />}>
-            <App />
-          </Suspense>
-        </AuthProvider>
-      </WebSocketProvider>
-    </ThemeProvider>
-  </BrowserRouter>,
+	<BrowserRouter>
+		<ThemeProvider theme={theme}>
+			<WebSocketProvider>
+				<AuthProvider>
+					<Suspense fallback={<Loading />}>
+						<App />
+					</Suspense>
+				</AuthProvider>
+			</WebSocketProvider>
+		</ThemeProvider>
+	</BrowserRouter>
 )

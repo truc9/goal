@@ -7,81 +7,115 @@ import { QuestionTypeDict } from '../../constant'
 import questionService from '../../services/questionService'
 import useBeerStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
+import { IoChevronForward } from 'react-icons/io5'
 
 const Questions = () => {
-  const [loading, setLoading] = useState(false)
-  const { versionId } = useParams()
-  const store = useBeerStore()
-  const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
+	const [loading, setLoading] = useState(false)
+	const { versionId } = useParams()
+	const store = useBeerStore()
+	const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
 
-  useEffect(() => {
-    loadQuestions()
-  }, [versionId])
+	useEffect(() => {
+		loadQuestions()
+	}, [versionId])
 
-  async function loadQuestions() {
-    setLoading(true)
-    const questions = await questionService.getByVersion(+versionId!)
-    store.loadQuestions(questions)
-    setLoading(false)
-  }
+	async function loadQuestions() {
+		setLoading(true)
+		const questions = await questionService.getByVersion(+versionId!)
+		store.loadQuestions(questions)
+		setLoading(false)
+	}
 
-  async function handleSubmitQuestion(question: QuestionModel) {
-    setOpenQuestionPopup(false)
-    await questionService.create(question)
-    await loadQuestions()
-  }
+	async function handleSubmitQuestion(question: QuestionModel) {
+		setOpenQuestionPopup(false)
+		await questionService.create(question)
+		await loadQuestions()
+	}
 
-  async function handleDeleteQuestion(question: QuestionModel) {
-    await questionService.remove(question.id!)
-    await loadQuestions()
-  }
+	async function handleDeleteQuestion(question: QuestionModel) {
+		await questionService.remove(question.id!)
+		await loadQuestions()
+	}
 
-  return (
-    <>
-      <div className="tw-flex tw-h-full tw-flex-1 tw-flex-col tw-gap-3">
-        <div className="tw-flex tw-flex-col tw-gap-3 tw-p-3 md:tw-w-full">
-          <div className="tw-flex tw-items-center tw-gap-2">
-            <button
-              className="btn-secondary"
-              onClick={() => setOpenQuestionPopup(true)}>
-              <FiPlus /> Add Question
-            </button>
-          </div>
-          <div className="tw-flex tw-flex-col tw-gap-1">
-            <AsyncContent loading={loading}>
-              {store.currentVersion?.questions?.map((q, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="tw-flex tw-h-16 tw-items-center tw-gap-3 tw-rounded tw-bg-slate-100 tw-p-5 hover:tw-cursor-move">
-                    <div>
-                      <FiList />
-                    </div>
-                    <div className="tw-flex tw-w-full tw-justify-between">
-                      <div className="flex-1">{q.description}</div>
-                      <div className="tw-flex tw-w-40 tw-items-center tw-justify-between tw-gap-5">
-                        {QuestionTypeDict[q.type]}
-                        <button onClick={() => handleDeleteQuestion(q)}>
-                          <FiTrash />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </AsyncContent>
-          </div>
-        </div>
-      </div>
+	return (
+		<>
+			<div className='tw-flex tw-h-full tw-flex-1 tw-flex-col tw-gap-3'>
+				<div className='tw-flex tw-flex-col tw-gap-3 tw-p-3 md:tw-w-full'>
+					<div className='tw-flex tw-items-center tw-gap-2'>
+						<button
+							className='btn-secondary'
+							onClick={() => setOpenQuestionPopup(true)}>
+							<FiPlus /> Add Question
+						</button>
+					</div>
+					<div className='tw-flex tw-flex-col tw-gap-1'>
+						<AsyncContent loading={loading}>
+							{store.currentVersion?.questions?.map(
+								(q, index) => {
+									return (
+										<div
+											key={index}
+											className='tw-flex tw-flex-col tw-rounded tw-bg-slate-100 tw-p-5 hover:tw-cursor-move'>
+											<div className='tw-flex tw-items-center tw-gap-3'>
+												<div>
+													<FiList />
+												</div>
+												<div className='tw-flex tw-w-full tw-justify-between'>
+													<div className='flex-1 tw-font-bold'>
+														{q.description}
+													</div>
+													<div className='tw-flex tw-w-40 tw-items-center tw-justify-between tw-gap-5'>
+														<span className='tw-font-bold'>
+															{
+																QuestionTypeDict[
+																	q.type
+																]
+															}
+														</span>
+														<button
+															onClick={() =>
+																handleDeleteQuestion(
+																	q
+																)
+															}>
+															<FiTrash />
+														</button>
+													</div>
+												</div>
+											</div>
+											{(q.choices?.length ?? 0) > 0 && (
+												<div className='tw-mt-2 tw-flex tw-flex-col tw-gap-2'>
+													{q.choices?.map(
+														(c, cIdx) => (
+															<div
+																key={cIdx}
+																className='tw-flex tw-items-center tw-justify-start tw-gap-2 tw-rounded tw-bg-lime-500 tw-p-1 tw-text-white'>
+																<IoChevronForward
+																	size={20}
+																/>
+																{c.description}
+															</div>
+														)
+													)}
+												</div>
+											)}
+										</div>
+									)
+								}
+							)}
+						</AsyncContent>
+					</div>
+				</div>
+			</div>
 
-      <QuestionPopup
-        versionId={+versionId!}
-        isOpen={openQuestionPopup}
-        onClose={() => setOpenQuestionPopup(false)}
-        onSubmit={handleSubmitQuestion}
-      />
-    </>
-  )
+			<QuestionPopup
+				versionId={+versionId!}
+				isOpen={openQuestionPopup}
+				onClose={() => setOpenQuestionPopup(false)}
+				onSubmit={handleSubmitQuestion}
+			/>
+		</>
+	)
 }
 
 export default Questions
