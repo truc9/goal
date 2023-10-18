@@ -7,6 +7,7 @@ import questionService from '../../services/questionService'
 import useBeerStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
 import { QuestionItem } from './QuestionItem'
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 
 const Questions = () => {
 	const [loading, setLoading] = useState(false)
@@ -36,6 +37,10 @@ const Questions = () => {
 		await loadQuestions()
 	}
 
+	function handleDragEnd(e: any) {
+		console.log(e)
+	}
+
 	return (
 		<>
 			<div className='tw-flex tw-h-full tw-flex-1 tw-flex-col tw-gap-3'>
@@ -49,16 +54,51 @@ const Questions = () => {
 					</div>
 					<div className='tw-flex tw-flex-col tw-gap-2'>
 						<AsyncContent loading={loading}>
-							{store.currentVersion?.questions?.map(
-								(q: QuestionModel) => (
-									<QuestionItem
-										key={q.id}
-										question={q}
-										onEdit={handleDeleteQuestion}
-										onDelete={handleDeleteQuestion}
-									/>
-								)
-							)}
+							<DragDropContext onDragEnd={handleDragEnd}>
+								<Droppable droppableId='droppable-list'>
+									{(dropProvider) => (
+										<div
+											className='tw-flex tw-flex-col tw-gap-3'
+											ref={dropProvider.innerRef}
+											{...dropProvider.droppableProps}>
+											{store.currentVersion?.questions?.map(
+												(q: QuestionModel) => (
+													<Draggable
+														draggableId={`draggable-${q.id}`}
+														index={Number(q.id)}>
+														{(
+															dragProvider,
+															snapshot
+														) => (
+															<div
+																ref={
+																	dragProvider.innerRef
+																}
+																{...dragProvider.draggableProps}
+																{...dragProvider.dragHandleProps}>
+																<QuestionItem
+																	isDragging={
+																		snapshot.isDragging
+																	}
+																	key={q.id}
+																	question={q}
+																	onEdit={
+																		handleDeleteQuestion
+																	}
+																	onDelete={
+																		handleDeleteQuestion
+																	}
+																/>
+															</div>
+														)}
+													</Draggable>
+												)
+											)}
+											{dropProvider.placeholder}
+										</div>
+									)}
+								</Droppable>
+							</DragDropContext>
 						</AsyncContent>
 					</div>
 				</div>

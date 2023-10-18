@@ -3,16 +3,27 @@ import { AiFillQuestionCircle } from 'react-icons/ai'
 import { FiCheckSquare, FiEdit, FiTrash } from 'react-icons/fi'
 import { QuestionTypeDict } from '../../constant'
 import { QuestionModel } from './models'
+import cn from 'classnames'
 
 interface Props {
+	isDragging?: boolean
 	question: QuestionModel
 	onDelete: (q: QuestionModel) => void
 	onEdit: (q: QuestionModel) => void
 }
 
-export const QuestionItem: FC<Props> = ({ question, onDelete, onEdit }) => {
+export const QuestionItem: FC<Props> = ({
+	isDragging,
+	question,
+	onDelete,
+	onEdit
+}) => {
 	return (
-		<div className='tw-flex tw-flex-col tw-rounded tw-border-l-4 tw-border-violet-500 tw-bg-slate-100 tw-p-5 tw-transition-all hover:tw-translate-x-1 hover:tw-cursor-move'>
+		<div
+			className={cn(
+				'tw-flex tw-flex-col tw-rounded tw-border-l-4 tw-border-violet-500 tw-bg-slate-100 tw-p-5 tw-transition-all hover:tw-translate-x-1 hover:tw-cursor-move',
+				{ 'tw-bg-violet-500 tw-text-white tw-shadow': isDragging }
+			)}>
 			<div className='tw-flex tw-items-center tw-gap-3'>
 				<AiFillQuestionCircle size={25} />
 				<div className='tw-flex tw-w-full tw-justify-between'>
