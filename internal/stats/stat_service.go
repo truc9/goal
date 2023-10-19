@@ -44,3 +44,21 @@ func (sv *StatsService) GetBookingOverallStats() (model *BookingModel, err error
 		PeriodId: int64(nextPeriod.Id),
 	}, nil
 }
+
+func (sv *StatsService) GetBookingPerPeriodStats() ([]BookingPerPeriodModel, error) {
+	stats := []BookingPerPeriodModel{}
+	res := sv.db.Raw(`
+		SELECT bp.from, bp.to, COUNT(b.user_id) AS total
+		FROM bookings b	
+		JOIN booking_periods bp ON b.booking_period_id = bp.id
+		GROUP BY bp.from, bp.to
+		ORDER BY bp.from
+	`).Scan(&stats)
+
+	if res.Error != nil {
+		log.Println(res.Error)
+		return nil, res.Error
+	}
+
+	return stats, nil
+}

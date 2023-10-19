@@ -90,6 +90,7 @@ func main() {
 
 		// Stats & Analytics
 		api.GET("/stats/booking-overall", statCtrl.GetBookingStats)
+		api.GET("/stats/booking-per-periods", statCtrl.GetBookingPerPeriodStats)
 
 		// HSE Assessments
 		api.GET("/assessments", assessmentCtrl.GetAll)

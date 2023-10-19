@@ -26,3 +26,11 @@ func (ctrl *StatController) GetBookingStats(c echo.Context) (err error) {
 
 	return c.JSON(http.StatusOK, result)
 }
+
+func (ctrl *StatController) GetBookingPerPeriodStats(c echo.Context) error {
+	res, err := ctrl.statSv.GetBookingPerPeriodStats()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	}
+	return c.JSON(http.StatusOK, res)
+}
