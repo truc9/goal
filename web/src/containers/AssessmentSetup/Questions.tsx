@@ -49,12 +49,9 @@ const Questions = () => {
 		if (!e.destination) {
 			return
 		}
-		const sourceQuestionId = e.source.index
-		const destinationQuestionId = e.destination?.index
-
-		console.log(
-			`move ${sourceQuestionId} to before ${destinationQuestionId}`
-		)
+		const questions = store.currentVersion.questions
+		const sourceQuestionId = questions[e.source.index].id!
+		const destinationQuestionId = questions[e.destination.index].id!
 
 		await questionService.updateOrdinal(sourceQuestionId, {
 			destinationQuestionId
@@ -83,10 +80,13 @@ const Questions = () => {
 											ref={dropProvider.innerRef}
 											{...dropProvider.droppableProps}>
 											{store.currentVersion?.questions?.map(
-												(q: QuestionModel) => (
+												(
+													q: QuestionModel,
+													index: number
+												) => (
 													<Draggable
-														draggableId={`draggable-${q.id}`}
-														index={q.id!}>
+														draggableId={`${q.id}`}
+														index={index}>
 														{(
 															dragProvider,
 															snapshot
