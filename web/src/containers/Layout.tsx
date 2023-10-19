@@ -1,13 +1,12 @@
 import React, { FC, ReactNode, Suspense } from 'react'
 
 import {
-	FiBarChart2,
 	FiCalendar,
 	FiCheckCircle,
-	FiFile,
 	FiGrid,
 	FiLogOut,
-	FiPlus
+	FiPlus,
+	FiUsers
 } from 'react-icons/fi'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 
@@ -17,6 +16,7 @@ import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
 import useBeerStore from '../store'
 import { TopbarAction } from '../store/topbarSlice'
+import { IoBarChart } from 'react-icons/io5'
 
 const iconSize = 22
 
@@ -68,7 +68,7 @@ const Layout: React.FC = () => {
 					<>
 						<PageMenu
 							tooltip='Booking Dashboard'
-							icon={<FiBarChart2 size={iconSize} />}
+							icon={<IoBarChart size={iconSize} />}
 							path='/booking-dashboard'
 						/>
 						<PageMenu
@@ -78,8 +78,13 @@ const Layout: React.FC = () => {
 						/>
 						<PageMenu
 							tooltip='Assessment Setup'
-							icon={<FiFile size={iconSize} />}
+							icon={<FiCheckCircle size={iconSize} />}
 							path='/assessments'
+						/>
+						<PageMenu
+							tooltip='Employees'
+							icon={<FiUsers size={iconSize} />}
+							path='/employees'
 						/>
 					</>
 				)}
