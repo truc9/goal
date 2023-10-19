@@ -25,7 +25,9 @@ export const QuestionItem: FC<Props> = ({
 				{ 'tw-bg-violet-500 tw-text-white tw-shadow': isDragging }
 			)}>
 			<div className='tw-flex tw-items-center tw-gap-3'>
-				<AiFillQuestionCircle size={25} />
+				<div className='tw-flex tw-items-center tw-font-bold tw-text-violet-500'>
+					Q{question.ordinal}
+				</div>
 				<div className='tw-flex tw-w-full tw-justify-between'>
 					<div className='flex-1'>{question.description}</div>
 					<div className='tw-flex tw-w-[200px] tw-items-center tw-justify-between tw-gap-5'>
