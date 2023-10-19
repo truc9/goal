@@ -19,13 +19,13 @@ Simple Office Management System
 
 ## Screenshots
 
-![0](art/assets/goal-00.png)
+![0](art/assets/1.png)
 
-![3](art/assets/goal-01.png)
+![3](art/assets/2.png)
 
-![2](art/assets/goal-02.png)
+![2](art/assets/3.png)
 
-![3](art/assets/goal-03.png)
+![3](art/assets/4.png)
 
 
 ## Development
