@@ -34,3 +34,7 @@ type QuestionModel struct {
 	AssessmentVersionId int64               `json:"assessmentVersionId"`
 	Version             int                 `json:"version"`
 }
+
+type UpdateOrdinalModel struct {
+	DestinationQuestionId int64 `json:"destinationQuestionId"`
+}

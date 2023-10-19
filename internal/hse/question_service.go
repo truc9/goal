@@ -105,3 +105,30 @@ func (sv QuestionService) Delete(id int64) error {
 	})
 	return err
 }
+
+func (sv QuestionService) UpdateOrdinal(srcId, dstId int64) error {
+	src := &entity.Question{}
+	if err := sv.db.Find(&src, srcId).Error; err != nil {
+		return err
+	}
+
+	dst := &entity.Question{}
+	if err := sv.db.Find(&dst, dstId).Error; err != nil {
+		return err
+	}
+
+	temp := src.Ordinal
+	src.Ordinal = dst.Ordinal
+	dst.Ordinal = temp
+
+	err := sv.db.Transaction(func(tx *gorm.DB) error {
+		res := tx.Save(&src)
+		if res.Error != nil {
+			return res.Error
+		}
+		res = tx.Save(&dst)
+		return res.Error
+	})
+
+	return err
+}

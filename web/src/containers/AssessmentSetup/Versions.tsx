@@ -36,13 +36,13 @@ const Versions = () => {
 				<div className='tw-h-full'>
 					<AsyncContent loading={loading}>
 						{store.currentAssessment?.versions?.map(
-							(item: AssessmentVersionModel, index: number) => {
+							(item: AssessmentVersionModel) => {
 								return (
 									<button
-										key={index}
+										key={item.id}
 										onClick={() => onItemChange(item)}
 										className={cn(
-											' tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-gap-2 tw-border-b tw-border-violet-500 tw-border-b-slate-200 tw-p-2 tw-text-left tw-transition-all hover:tw-bg-violet-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-violet-50',
+											'tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-gap-2 tw-border-b tw-border-violet-500 tw-border-b-slate-200 tw-p-2 tw-text-left tw-transition-all hover:tw-bg-violet-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-violet-50',
 											{
 												active:
 													item.id ===

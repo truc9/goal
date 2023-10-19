@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/hse"
+	"github.com/truc9/goal/internal/utils/params"
 )
 
 type QuestionController struct {
@@ -44,5 +46,22 @@ func (ct QuestionController) Delete(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+	return c.JSON(http.StatusOK, nil)
+}
+
+func (ct QuestionController) UpdateOrdinal(c echo.Context) error {
+	questionId := params.GetIntParam(c, "id")
+	model := &hse.UpdateOrdinalModel{}
+	if err := c.Bind(&model); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	log.Printf("%v-%v", questionId, model.DestinationQuestionId)
+
+	err := ct.questionSv.UpdateOrdinal(questionId, model.DestinationQuestionId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
 	return c.JSON(http.StatusOK, nil)
 }

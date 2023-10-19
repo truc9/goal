@@ -102,6 +102,7 @@ func main() {
 		api.GET("/assessments/versions/:assessmentVersionId/questions", questionCtrl.GetByVersion)
 		api.POST("/assessments/questions", questionCtrl.Create)
 		api.DELETE("/assessments/questions/:id", questionCtrl.Delete)
+		api.PUT("/assessments/questions/:id/ordinal", questionCtrl.UpdateOrdinal)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

@@ -7,7 +7,12 @@ import questionService from '../../services/questionService'
 import useBeerStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
 import { QuestionItem } from './QuestionItem'
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
+import {
+	DragDropContext,
+	Droppable,
+	Draggable,
+	DropResult
+} from '@hello-pangea/dnd'
 
 const Questions = () => {
 	const [loading, setLoading] = useState(false)
@@ -40,8 +45,21 @@ const Questions = () => {
 		await loadQuestions()
 	}
 
-	function handleDragEnd(e: any) {
-		console.log(e)
+	async function handleDragEnd(e: DropResult) {
+		if (!e.destination) {
+			return
+		}
+		const sourceQuestionId = e.source.index
+		const destinationQuestionId = e.destination?.index
+
+		console.log(
+			`move ${sourceQuestionId} to before ${destinationQuestionId}`
+		)
+
+		await questionService.updateOrdinal(sourceQuestionId, {
+			destinationQuestionId
+		})
+		await loadQuestions()
 	}
 
 	return (
@@ -68,7 +86,7 @@ const Questions = () => {
 												(q: QuestionModel) => (
 													<Draggable
 														draggableId={`draggable-${q.id}`}
-														index={Number(q.id)}>
+														index={q.id!}>
 														{(
 															dragProvider,
 															snapshot
