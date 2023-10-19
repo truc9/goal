@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { AiFillQuestionCircle } from 'react-icons/ai'
 import { FiCheckSquare, FiEdit, FiTrash } from 'react-icons/fi'
 import { QuestionTypeDict } from '../../constant'
 import { QuestionModel } from './models'
