@@ -113,11 +113,12 @@ const Layout: React.FC = () => {
 						})}
 					</div>
 					<div className='tw-flex tw-flex-1 tw-items-center tw-justify-end tw-gap-5'>
-						<h3>{user?.name}</h3>
+						<h3 className='tw-text-sm'>Hello, {user?.name}!</h3>
 						<Tooltip placement='bottom' title='Signout'>
 							<button
-								className='btn-icon'
+								className='btn-warning'
 								onClick={handleSignOut}>
+								<span>Signout</span>
 								<FiLogOut />
 							</button>
 						</Tooltip>

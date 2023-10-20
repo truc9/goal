@@ -43,13 +43,14 @@ func main() {
 	// app.GET("/metrics", echoprometheus.NewHandler())
 
 	scheduler := di.GetScheduler()
-	iamCtrl := di.GetIAMCtrl()
-	periodCtrl := di.GetPeriodCtrl()
-	bookingCtrl := di.GetBookingCtrl()
-	statCtrl := di.GetStatCtrl()
-	websocketCtrl := di.GetWebsocketCtrl()
-	assessmentCtrl := di.GetAssessmentCtrl()
-	questionCtrl := di.GetQuestionController()
+	iamController := di.GetIAMCtrl()
+	periodController := di.GetPeriodCtrl()
+	bookingController := di.GetBookingCtrl()
+	statsController := di.GetStatCtrl()
+	wsController := di.GetWebsocketCtrl()
+	assessmentController := di.GetAssessmentCtrl()
+	questionController := di.GetQuestionController()
+	employeeController := di.GetEmployeeController()
 
 	// init & run hub in a different go routine
 	hub := ws.NewHub()
@@ -59,7 +60,7 @@ func main() {
 	go scheduler.Run()
 
 	app.GET("/ws", func(c echo.Context) error {
-		websocketCtrl.ServeWS(c, hub)
+		wsController.ServeWS(c, hub)
 		return nil
 	})
 
@@ -69,8 +70,8 @@ func main() {
 
 	anonymous := app.Group("api")
 	{
-		anonymous.POST("/register", iamCtrl.RegisterUser)
-		anonymous.POST("/login", iamCtrl.Login)
+		anonymous.POST("/register", iamController.RegisterUser)
+		anonymous.POST("/login", iamController.Login)
 	}
 
 	api := app.Group("api")
@@ -78,32 +79,35 @@ func main() {
 		api.Use(jwt.JWT([]byte(config.Secret)))
 
 		// Booking Periods
-		api.POST("/periods", periodCtrl.CreateNextPeriod, authz.RequireRoles(entity.RoleAdmin))
-		api.GET("/periods", periodCtrl.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
-		api.GET("/periods/next", periodCtrl.GetNextPeriod)
-		api.GET("/periods/:bookingPeriodId/my-bookings", bookingCtrl.GetMyBookings)
-		api.GET("/periods/:bookingPeriodId/bookings", bookingCtrl.GetBookings, authz.RequireRoles(entity.RoleAdmin))
+		api.POST("/periods", periodController.CreateNextPeriod, authz.RequireRoles(entity.RoleAdmin))
+		api.GET("/periods", periodController.GetPeriods, authz.RequireRoles(entity.RoleAdmin, entity.RoleUser))
+		api.GET("/periods/next", periodController.GetNextPeriod)
+		api.GET("/periods/:bookingPeriodId/my-bookings", bookingController.GetMyBookings)
+		api.GET("/periods/:bookingPeriodId/bookings", bookingController.GetBookings, authz.RequireRoles(entity.RoleAdmin))
 
 		// Bookings
-		api.POST("/bookings", bookingCtrl.Submit)
-		api.DELETE("/bookings/:bookingId", bookingCtrl.Delete)
+		api.POST("/bookings", bookingController.Submit)
+		api.DELETE("/bookings/:bookingId", bookingController.Delete)
 
 		// Stats & Analytics
-		api.GET("/stats/booking-overall", statCtrl.GetBookingStats)
-		api.GET("/stats/booking-per-periods", statCtrl.GetBookingPerPeriodStats)
+		api.GET("/stats/booking-overall", statsController.GetBookingStats)
+		api.GET("/stats/booking-per-periods", statsController.GetBookingPerPeriodStats)
 
 		// HSE Assessments
-		api.GET("/assessments", assessmentCtrl.GetAll)
-		api.POST("/assessments", assessmentCtrl.Create)
-		api.PUT("/assessments/:assessmentId", assessmentCtrl.Update)
-		api.DELETE("/assessments/:assessmentId", assessmentCtrl.Delete)
-		api.GET("/assessments/:assessmentId/versions", assessmentCtrl.GetVersions)
+		api.GET("/assessments", assessmentController.GetAll)
+		api.POST("/assessments", assessmentController.Create)
+		api.PUT("/assessments/:assessmentId", assessmentController.Update)
+		api.DELETE("/assessments/:assessmentId", assessmentController.Delete)
+		api.GET("/assessments/:assessmentId/versions", assessmentController.GetVersions)
 
 		// Question Setup
-		api.GET("/assessments/versions/:assessmentVersionId/questions", questionCtrl.GetByVersion)
-		api.POST("/assessments/questions", questionCtrl.Create)
-		api.DELETE("/assessments/questions/:id", questionCtrl.Delete)
-		api.PUT("/assessments/questions/:id/ordinal", questionCtrl.UpdateOrdinal)
+		api.GET("/assessments/versions/:assessmentVersionId/questions", questionController.GetByVersion)
+		api.POST("/assessments/questions", questionController.Create)
+		api.DELETE("/assessments/questions/:id", questionController.Delete)
+		api.PUT("/assessments/questions/:id/ordinal", questionController.UpdateOrdinal)
+
+		// Employees
+		api.GET("/employees", employeeController.GetAll)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))
