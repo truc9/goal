@@ -6,7 +6,11 @@ async function getAll() {
     return data
 }
 
+async function allocateEmployeeNumber(userId: number) {
+    await httpClient.put(`users/${userId}/allocate-employee-number`, {})
+}
 
 export default {
-    getAll
+    getAll,
+    allocateEmployeeNumber
 }

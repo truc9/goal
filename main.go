@@ -108,6 +108,7 @@ func main() {
 
 		// Employees
 		api.GET("/employees", employeeController.GetAll)
+		api.PUT("/users/:userId/allocate-employee-number", employeeController.AllocEmployeeNumber)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

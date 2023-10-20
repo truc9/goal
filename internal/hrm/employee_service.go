@@ -1,8 +1,11 @@
 package hrm
 
 import (
+	"log"
+
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
+	"github.com/truc9/goal/internal/utils/random"
 	"gorm.io/gorm"
 )
 
@@ -33,4 +36,30 @@ func (s EmployeeService) GetAll() ([]EmployeeModel, error) {
 	})
 
 	return employees, nil
+}
+
+func (s EmployeeService) AllocEmployeeNumber(userId int64) error {
+	user := &entity.User{}
+	if err := s.db.Find(&user, userId).Error; err != nil {
+		log.Printf("user not found with id %v", userId)
+		return err
+	}
+
+	empNumber := random.GenStringId()
+
+	var dupEmpNumber int64
+	err := s.db.Where("employee_number = ?", empNumber).Find(&entity.User{}).Count(&dupEmpNumber).Error
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if dupEmpNumber > 0 {
+		user.AllocateEmployeeNumberWithId(empNumber)
+	} else {
+		user.AllocateEmployeeNumber(empNumber)
+	}
+
+	s.db.Save(&user)
+	return nil
 }

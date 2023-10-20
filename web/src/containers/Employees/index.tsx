@@ -1,5 +1,11 @@
 import { useEffect } from 'react'
-import { FiEdit, FiTrash, FiUpload, FiUsers } from 'react-icons/fi'
+import {
+	FiChevronRight,
+	FiEdit,
+	FiTrash,
+	FiUpload,
+	FiUsers
+} from 'react-icons/fi'
 import {
 	DataGrid,
 	GridColDef,
@@ -9,7 +15,6 @@ import {
 import { PageContainer } from '../../components/PageContainer'
 import useBeerStore from '../../store'
 import employeeService from '../../services/employeeService'
-import { Chip } from '@mui/material'
 
 const Employees = () => {
 	const store = useBeerStore()
@@ -26,11 +31,39 @@ const Employees = () => {
 		console.log(id)
 	}
 
+	const handleAllocEmplNumber = async (id: number) => {
+		await employeeService.allocateEmployeeNumber(id)
+		await load()
+	}
+
 	const columns: GridColDef[] = [
 		{
 			field: 'id',
 			headerName: '#ID',
 			width: 60
+		},
+		{
+			field: 'employeeNumber',
+			headerName: 'Employee Number',
+			width: 200,
+			renderCell(params) {
+				const val = params.row.employeeNumber
+				return (
+					<div className='tw-flex tw-items-center tw-gap-2'>
+						<button
+							className='btn-secondary'
+							onClick={() =>
+								handleAllocEmplNumber(params.row.id)
+							}>
+							<FiChevronRight />
+							{val ? <span>Regen</span> : <span>Gen</span>}
+						</button>
+						<span className='tw-font-bold tw-text-emerald-500'>
+							{val}
+						</span>
+					</div>
+				)
+			}
 		},
 		{
 			field: 'fullName',
@@ -46,18 +79,6 @@ const Employees = () => {
 		},
 		{ field: 'firstName', headerName: 'First Name', flex: 1 },
 		{ field: 'lastName', headerName: 'Last Name', flex: 1 },
-		{
-			field: 'employeeNumber',
-			headerName: 'Employee Number',
-			width: 150,
-			renderCell(params) {
-				const val = params.row.employeeNumber
-				if (val) {
-					return <span>{val}</span>
-				}
-				return <Chip label='Unset' size='small' color='error'></Chip>
-			}
-		},
 		{
 			field: 'action',
 			headerName: 'Action',

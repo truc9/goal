@@ -49,6 +49,14 @@ func (u User) VerifyPassword(password string) bool {
 	return err == nil
 }
 
+func (u *User) AllocateEmployeeNumberWithId(en string) {
+	u.EmployeeNumber = fmt.Sprintf("%s%d", en, u.Id)
+}
+
+func (u *User) AllocateEmployeeNumber(en string) {
+	u.EmployeeNumber = en
+}
+
 func NewUser(firstName, lastName, email string, userName string) (*User, error) {
 	if strings.TrimSpace(email) == "" && strings.TrimSpace(userName) == "" {
 		return nil, fmt.Errorf("email or username must be provided")
