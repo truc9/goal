@@ -31,3 +31,21 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, nil)
 }
+
+func (ct EmployeeController) Deactivate(c echo.Context) error {
+	userId := params.GetIntParam(c, "userId")
+	err := ct.employeeSv.DeactivateUser(userId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, nil)
+}
+
+func (ct EmployeeController) Activate(c echo.Context) error {
+	userId := params.GetIntParam(c, "userId")
+	err := ct.employeeSv.ActivateUser(userId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, nil)
+}

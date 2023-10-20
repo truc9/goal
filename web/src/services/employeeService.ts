@@ -7,10 +7,20 @@ async function getAll() {
 }
 
 async function allocateEmployeeNumber(userId: number) {
-    await httpClient.put(`users/${userId}/allocate-employee-number`, {})
+    await httpClient.put(`employees/${userId}/employee-numbers`, {})
+}
+
+async function activate(userId: number) {
+    await httpClient.put(`employees/${userId}/activate`, {})
+}
+
+async function deactivate(userId: number) {
+    await httpClient.put(`employees/${userId}/deactivate`, {})
 }
 
 export default {
     getAll,
+    activate,
+    deactivate,
     allocateEmployeeNumber
 }

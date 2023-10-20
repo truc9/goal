@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -33,6 +34,7 @@ type User struct {
 	HashPassword   string `json:"hashPassword"`
 	RoleId         int    `json:"roleId"`
 	Role           Role   `gorm:"foreignKey:RoleId" json:"role"`
+	IsActive       bool   `json:"isActive"`
 }
 
 func (u *User) SetPassword(password string) {
@@ -57,6 +59,17 @@ func (u *User) AllocateEmployeeNumber(en string) {
 	u.EmployeeNumber = en
 }
 
+func (u *User) Activate() {
+	if u.Uid == uuid.Nil {
+		u.Uid = uuid.New()
+	}
+	u.IsActive = true
+}
+
+func (u *User) Deactivate() {
+	u.IsActive = false
+}
+
 func NewUser(firstName, lastName, email string, userName string) (*User, error) {
 	if strings.TrimSpace(email) == "" && strings.TrimSpace(userName) == "" {
 		return nil, fmt.Errorf("email or username must be provided")
@@ -68,6 +81,7 @@ func NewUser(firstName, lastName, email string, userName string) (*User, error) 
 		Email:     email,
 		UserName:  userName,
 		RoleId:    int(RoleUserId),
+		IsActive:  true,
 	}
 
 	return user, nil

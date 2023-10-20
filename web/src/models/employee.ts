@@ -4,4 +4,7 @@ export interface EmployeeModel {
     firstName: string
     lastName: string
     employeeNumber: string
+    createdDate: Date
+    updatedDate: Date
+    isActive: boolean
 }

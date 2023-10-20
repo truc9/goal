@@ -106,9 +106,11 @@ func main() {
 		api.DELETE("/assessments/questions/:id", questionController.Delete)
 		api.PUT("/assessments/questions/:id/ordinal", questionController.UpdateOrdinal)
 
-		// Employees
+		// Users & Employees
 		api.GET("/employees", employeeController.GetAll)
-		api.PUT("/users/:userId/allocate-employee-number", employeeController.AllocEmployeeNumber)
+		api.PUT("/employees/:userId/employee-numbers", employeeController.AllocEmployeeNumber)
+		api.PUT("/employees/:userId/activate", employeeController.Activate)
+		api.PUT("/employees/:userId/deactivate", employeeController.Deactivate)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

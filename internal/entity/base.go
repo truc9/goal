@@ -8,10 +8,10 @@ import (
 )
 
 type Base struct {
-	Id        int64     `gorm:"primarykey;autoIncrement;index" json:"id"`
-	Uid       uuid.UUID `json:"uid"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime:milli" json:"updatedAt"`
+	Id          int64     `gorm:"primarykey;autoIncrement;index" json:"id"`
+	Uid         uuid.UUID `json:"uid"`
+	CreatedDate time.Time `gorm:"autoCreateTime" json:"createdDate"`
+	UpdatedDate time.Time `gorm:"autoUpdateTime:milli" json:"updatedDate"`
 }
 
 func (entity *Base) BeforeCreate(tx *gorm.DB) (err error) {
@@ -20,6 +20,6 @@ func (entity *Base) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 func (entity *Base) AfterUpdate(tx *gorm.DB) (err error) {
-	entity.UpdatedAt = time.Now().UTC()
+	entity.UpdatedDate = time.Now().UTC()
 	return
 }

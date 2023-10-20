@@ -6,6 +6,7 @@ import (
 
 type EmployeeModel struct {
 	model.BaseModel
+	IsActive       bool   `json:"isActive"`
 	FirstName      string `json:"firstName"`
 	LastName       string `json:"lastName"`
 	Email          string `json:"email"`
