@@ -20,11 +20,11 @@ export const QuestionItem: FC<Props> = ({
 	return (
 		<div
 			className={cn(
-				'tw-flex tw-flex-col tw-rounded tw-border-l-4 tw-border-violet-500 tw-bg-slate-100 tw-p-5 tw-transition-all hover:tw-translate-x-1 hover:tw-cursor-move',
-				{ 'tw-bg-violet-500 tw-text-white tw-shadow': isDragging }
+				'tw-flex tw-flex-col tw-rounded tw-border-l-4 tw-border-emerald-500 tw-bg-slate-100 tw-p-5 tw-transition-all hover:tw-translate-x-1 hover:tw-cursor-move',
+				{ 'tw-bg-emerald-500 tw-text-white tw-shadow': isDragging }
 			)}>
 			<div className='tw-flex tw-items-center tw-gap-3'>
-				<div className='tw-flex tw-items-center tw-font-bold tw-text-violet-500'>
+				<div className='tw-flex tw-items-center tw-font-bold tw-text-emerald-500'>
 					Q{question.ordinal}
 				</div>
 				<div className='tw-flex tw-w-full tw-justify-between'>

@@ -105,27 +105,27 @@ const MyBooking: React.FC = () => {
 		<PageContainer icon={<IoBookOutline />} title='My Booking'>
 			<div className='tw-flex tw-flex-col tw-gap-5'>
 				<div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3'>
-					<div className='tw-flex tw-items-center tw-gap-1 tw-rounded tw-border tw-border-violet-100 tw-bg-violet-50 tw-px-1 tw-py-1'>
+					<div className='tw-flex tw-items-center tw-gap-1 tw-rounded tw-border tw-border-emerald-100 tw-bg-emerald-50 tw-px-1 tw-py-1'>
 						<button
 							disabled={index === 0}
 							onClick={goBack}
-							className='tw-rounded tw-bg-violet-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
+							className='tw-rounded tw-bg-emerald-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
 							<FiChevronLeft size='26' />
 						</button>
 						{period ? (
-							<span className='tw-flex tw-items-center tw-gap-3 tw-rounded tw-p-2 tw-text-violet-500'>
+							<span className='tw-flex tw-items-center tw-gap-3 tw-rounded tw-p-2 tw-text-emerald-500'>
 								{dayjs(period?.from).format('DD MMM YYYY')} -{' '}
 								{dayjs(period?.to).format('DD MMM YYYY')}
 							</span>
 						) : (
-							<span className='tw-rounded tw-bg-violet-50 tw-p-2 tw-text-violet-500'>
+							<span className='tw-rounded tw-bg-emerald-50 tw-p-2 tw-text-emerald-500'>
 								Period is not opened. Go back current period
 							</span>
 						)}
 						<button
 							disabled={index === periods.length - 1}
 							onClick={goNext}
-							className='tw-rounded tw-bg-violet-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
+							className='tw-rounded tw-bg-emerald-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
 							<FiChevronRight size='26' />
 						</button>
 					</div>
@@ -140,10 +140,10 @@ const MyBooking: React.FC = () => {
 											key={i}
 											className='tw-h-10 tw-items-center tw-justify-center'>
 											<div className='tw-flex tw-flex-col'>
-												<span className='tw-font-bold tw-uppercase tw-text-violet-500'>
+												<span className='tw-font-bold tw-uppercase tw-text-emerald-500'>
 													{dayjs(d).format('ddd')}
 												</span>
-												<small className='tw-text-violet-500/50'>
+												<small className='tw-text-emerald-500/50'>
 													{dayjs(d).format(
 														'DD-MMM-YYYY'
 													)}
@@ -196,7 +196,7 @@ const MyBooking: React.FC = () => {
 												<div className='tw-flex tw-h-16 tw-items-center tw-justify-center tw-transition-all'>
 													<span
 														className={cn({
-															'tw-text-violet-500':
+															'tw-text-emerald-500':
 																booking,
 															'tw-text-slate-200':
 																!booking

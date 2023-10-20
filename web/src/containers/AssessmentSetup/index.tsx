@@ -94,7 +94,7 @@ const AssessmentSetup = () => {
 										key={index}
 										onClick={() => onItemChange(item)}
 										className={cn(
-											'tw-relative tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-border-b tw-border-violet-500 tw-border-b-slate-200 tw-bg-white tw-p-2 tw-text-left tw-transition-all hover:tw-border-l-4 hover:tw-bg-violet-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-violet-50',
+											'tw-relative tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-border-b tw-border-emerald-500 tw-border-b-slate-200 tw-bg-white tw-p-2 tw-text-left tw-transition-all hover:tw-border-l-4 hover:tw-bg-emerald-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-emerald-50',
 											{
 												active:
 													item.id ===

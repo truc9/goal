@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { FiEdit, FiTrash, FiUsers } from 'react-icons/fi'
+import { FiEdit, FiTrash, FiUpload, FiUsers } from 'react-icons/fi'
 import {
 	DataGrid,
 	GridColDef,
@@ -93,7 +93,9 @@ const Employees = () => {
 			icon={<FiUsers />}
 			action={
 				<div>
-					<button className='btn-primary'>Import</button>
+					<button className='btn-primary'>
+						<FiUpload /> Import
+					</button>
 				</div>
 			}>
 			<DataGrid

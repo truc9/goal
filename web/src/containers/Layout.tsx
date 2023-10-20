@@ -32,7 +32,7 @@ const PageMenu: FC<PageMenuData> = ({ path, icon, tooltip }) => {
 		<Tooltip title={tooltip} placement='right'>
 			<NavLink
 				to={path}
-				className='tw-rounded tw-from-violet-300 tw-to-violet-500 tw-p-3 hover:tw-bg-gradient-to-r hover:tw-text-white [&.active]:tw-bg-gradient-to-r'>
+				className='tw-rounded tw-from-emerald-300 tw-to-emerald-500 tw-p-3 hover:tw-bg-gradient-to-r hover:tw-text-white [&.active]:tw-bg-gradient-to-r'>
 				{icon}
 			</NavLink>
 		</Tooltip>
@@ -53,7 +53,7 @@ const Layout: React.FC = () => {
 
 	return (
 		<div className='tw-flex tw-h-screen tw-overflow-hidden'>
-			<nav className='tw-flex tw-w-14 tw-flex-col tw-items-center tw-bg-violet-500 tw-py-5 tw-text-white'>
+			<nav className='tw-flex tw-w-14 tw-flex-col tw-items-center tw-bg-emerald-500 tw-py-5 tw-text-white'>
 				<PageMenu
 					tooltip='Dashboard & Modules'
 					icon={<FiGrid size={iconSize} />}

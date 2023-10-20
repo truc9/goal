@@ -11,7 +11,7 @@ body {
 	input[type='text'],
 	input[type='password'],
 	textarea {
-		@apply tw-w-full tw-rounded tw-border tw-px-4 tw-py-2 tw-shadow-inner focus:tw-border-none focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-violet-500;
+		@apply tw-w-full tw-rounded tw-border tw-px-4 tw-py-2 tw-shadow-inner focus:tw-border-none focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-500;
 	}
 
 	.btn {
@@ -23,7 +23,7 @@ body {
 	}
 
 	.btn-primary {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-violet-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-violet-500 active:tw-ring-2 active:tw-ring-violet-500 active:tw-ring-offset-2;
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-emerald-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-emerald-500 active:tw-ring-2 active:tw-ring-emerald-500 active:tw-ring-offset-2;
 	}
 
 	.btn-danger {
@@ -35,6 +35,6 @@ body {
 	}
 
 	.btn-icon {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-violet-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-violet-400 active:tw-ring-2 active:tw-ring-violet-400 active:tw-ring-offset-2;
+		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-emerald-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-emerald-400 active:tw-ring-2 active:tw-ring-emerald-400 active:tw-ring-offset-2;
 	}
 }
