@@ -14,6 +14,14 @@ const (
 	MultipleChoice
 )
 
+type ChoiceAnswer struct {
+	Base
+	Description       string   `json:"description"`
+	QuestionId        int64    `json:"questionId"`
+	Question          Question `gorm:"foreignKey:QuestionId" json:"question"`
+	TriggerQuestionId int64    `json:"triggerQuestionId"`
+}
+
 type Question struct {
 	Base
 	Ordinal             int64             `json:"ordinal"`
@@ -22,14 +30,6 @@ type Question struct {
 	AssessmentVersionId int64             `json:"assessmentVersionId"`
 	AssessmentVersion   AssessmentVersion `gorm:"foreignKey:AssessmentVersionId" json:"assessmentVersion"`
 	Choices             []ChoiceAnswer    `json:"choices"`
-}
-
-type ChoiceAnswer struct {
-	Base
-	Description       string   `json:"description"`
-	QuestionId        int64    `json:"questionId"`
-	Question          Question `gorm:"foreignKey:QuestionId" json:"question"`
-	TriggerQuestionId int64    `json:"triggerQuestionId"`
 }
 
 func NewQuestion(description string, questionType QuestionType, assessmentVersionId, ordinal int64) Question {
@@ -66,4 +66,10 @@ func (q *Question) SetOrdinal(ordinal int64) error {
 	}
 	q.Ordinal = ordinal
 	return nil
+}
+
+func (q *Question) SwapOrdinal(target *Question) {
+	tempOrdinal := q.Ordinal
+	q.Ordinal = target.Ordinal
+	target.Ordinal = tempOrdinal
 }
