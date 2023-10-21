@@ -119,7 +119,7 @@ export const QuestionPopup: FC<Props> = ({
 		<>
 			<Popup
 				icon={<IoSettings />}
-				isOpen={isOpen}
+				show={isOpen}
 				submitLabel='Save'
 				title='Question Details'
 				onCloseClicked={onClose}
@@ -266,7 +266,7 @@ export const QuestionPopup: FC<Props> = ({
 			</Popup>
 			<Popup
 				size='xs'
-				isOpen={openChoicePopup}
+				show={openChoicePopup}
 				submitLabel='Add'
 				title='Choice Setup'
 				onCloseClicked={() => setOpenChoicePopup(false)}

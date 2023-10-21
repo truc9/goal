@@ -5,14 +5,14 @@ import assessmentService from '../../services/assessmentService'
 import { FiFile } from 'react-icons/fi'
 import { IoListCircle } from 'react-icons/io5'
 import { AssessmentVersionModel } from './models/AssessmentVersionModel'
-import useBeerStore from '../../store'
+import useBearStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
 
 const Versions = () => {
 	const [loading, setLoading] = useState(false)
 	const navigate = useNavigate()
 	const { assessmentId } = useParams()
-	const store = useBeerStore()
+	const store = useBearStore()
 
 	useEffect(() => {
 		load()

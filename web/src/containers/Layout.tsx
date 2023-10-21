@@ -14,7 +14,7 @@ import { Tooltip } from '@mui/material'
 
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
-import useBeerStore from '../store'
+import useBearStore from '../store'
 import { TopbarAction } from '../store/topbarSlice'
 import { IoBarChart } from 'react-icons/io5'
 
@@ -40,7 +40,7 @@ const PageMenu: FC<PageMenuData> = ({ path, icon, tooltip }) => {
 }
 
 const Layout: React.FC = () => {
-	const actions = useBeerStore((state) => state.actions)
+	const actions = useBearStore((state) => state.actions)
 
 	const { user, signout } = useLocalAuth()
 	const navigate = useNavigate()

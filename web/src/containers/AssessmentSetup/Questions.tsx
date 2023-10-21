@@ -4,7 +4,7 @@ import { FiPlus } from 'react-icons/fi'
 import { QuestionPopup } from './QuestionPopup'
 import { QuestionModel } from './models/QuestionModel'
 import questionService from '../../services/questionService'
-import useBeerStore from '../../store'
+import useBearStore from '../../store'
 import { AsyncContent } from '../../components/AsyncContent'
 import { QuestionItem } from './QuestionItem'
 import {
@@ -17,7 +17,7 @@ import {
 const Questions = () => {
 	const [loading, setLoading] = useState(false)
 	const { versionId } = useParams()
-	const store = useBeerStore()
+	const store = useBearStore()
 	const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
 
 	useEffect(() => {

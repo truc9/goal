@@ -3,7 +3,7 @@ import cn from 'classnames'
 import assessmentService from '../../services/assessmentService'
 import { FiEdit, FiTriangle } from 'react-icons/fi'
 import { Outlet, useNavigate } from 'react-router-dom'
-import useBeerStore from '../../store'
+import useBearStore from '../../store'
 import { Popup } from '../../components/Popup'
 import { FormGroup, FormLabel, Tooltip } from '@mui/material'
 import { AssessmentModel } from './models/AssessmentModel'
@@ -11,7 +11,7 @@ import { AsyncContent } from '../../components/AsyncContent'
 
 const AssessmentSetup = () => {
 	const navigate = useNavigate()
-	const store = useBeerStore()
+	const store = useBearStore()
 	const [assessmentPopupOpen, setAssessmentPopupOpen] = useState(false)
 	const [assessmentModel, setAssessmentModel] = useState<AssessmentModel>(
 		new AssessmentModel()
@@ -138,7 +138,7 @@ const AssessmentSetup = () => {
 				icon={<FiTriangle />}
 				size='sm'
 				title='Create Assessment'
-				isOpen={assessmentPopupOpen}
+				show={assessmentPopupOpen}
 				onCloseClicked={() => setAssessmentPopupOpen(false)}
 				onSubmitClicked={submit}>
 				<div className='tw-flex tw-flex-col tw-items-center tw-gap-3'>

@@ -3,7 +3,7 @@ import { TopbarSlice, createTopbarSlice } from './topbarSlice'
 import { AssessmentSlice, createAssessmentSlice } from './assessmentSlice'
 import { EmployeeSlice, createEmployeeSlice } from './employeeSlice'
 
-const useBeerStore = create<
+const useBearStore = create<
     TopbarSlice &
     AssessmentSlice &
     EmployeeSlice
@@ -13,4 +13,4 @@ const useBeerStore = create<
     ...createEmployeeSlice(...a)
 }))
 
-export default useBeerStore
+export default useBearStore
