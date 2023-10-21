@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiPlus, FiUpload, FiUserPlus, FiUsers } from 'react-icons/fi'
+import { FiUpload, FiUserPlus, FiUsers } from 'react-icons/fi'
 import { PageContainer } from '../../components/PageContainer'
 import { HContainer } from '../../components/HContainer'
 import { EmployeeGrid } from './EmployeeGrid'
@@ -44,13 +44,9 @@ const Employees = () => {
 			action={
 				<HContainer>
 					<button
-						className='btn-secondary'
+						className='btn-primary'
 						onClick={() => setShow(true)}>
 						<FiUpload /> Import
-					</button>
-
-					<button className='btn-primary'>
-						<FiPlus /> Create
 					</button>
 				</HContainer>
 			}>

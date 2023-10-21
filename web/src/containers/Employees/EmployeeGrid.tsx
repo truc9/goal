@@ -1,25 +1,24 @@
-import React from 'react'
-import { Menu, MenuItem, Tooltip } from '@mui/material'
+import { useState } from 'react'
+import { Tooltip } from '@mui/material'
 import {
 	DataGrid,
 	GridColDef,
 	GridRenderCellParams,
 	GridValueGetterParams
 } from '@mui/x-data-grid'
-import {
-	FiFile,
-	FiMoreHorizontal,
-	FiPlay,
-	FiRefreshCw,
-	FiStopCircle,
-	FiTrash
-} from 'react-icons/fi'
+import { FiPlay, FiRefreshCw, FiStopCircle } from 'react-icons/fi'
 import { LabelDateTime } from '../../components/LabelDateTime'
-import { IoCheckmarkCircle, IoInformationCircle } from 'react-icons/io5'
+import {
+	IoCheckmarkCircle,
+	IoInformationCircle,
+	IoTicketOutline
+} from 'react-icons/io5'
 import employeeService from '../../services/employeeService'
 import { FC } from 'react'
 import { useSnackbar } from 'notistack'
 import useBearStore from '../../store'
+import { EmployeeModel } from '../../models/employee'
+import { EmployeeAssignments } from './EmployeeAssignments'
 
 interface Props {
 	loading: boolean
@@ -30,13 +29,15 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 	const { enqueueSnackbar } = useSnackbar()
 	const store = useBearStore()
 
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-	const onCloseMenu = () => setAnchorEl(null)
-	const onOpenRowMenu = (event: any) => {
-		setAnchorEl(event.currentTarget)
-	}
-	const openMenu = Boolean(anchorEl)
+	// Popups
+	const [showAssignmentPopup, setShowAssignmentPopup] = useState(false)
 
+	// States
+	const [selectedEmployee, setSelectedEmployee] = useState<EmployeeModel>(
+		null!
+	)
+
+	// Events
 	const deactivateUser = async (id: number) => {
 		const data = await employeeService.deactivate(id)
 		await reload()
@@ -53,9 +54,19 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 		})
 	}
 
-	const handleAllocEmplNumber = async (id: number) => {
+	const allocateEmployeeNumber = async (id: number) => {
 		await employeeService.allocateEmployeeNumber(id)
 		await reload()
+	}
+
+	const assignAssessmentClick = (e: EmployeeModel) => {
+		setSelectedEmployee(e)
+		setShowAssignmentPopup(true)
+	}
+
+	const handleAssignmentPopupClose = () => {
+		setSelectedEmployee(null!)
+		setShowAssignmentPopup(false)
 	}
 
 	const columns: GridColDef[] = [
@@ -75,7 +86,7 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 						<button
 							className='btn-secondary'
 							onClick={() =>
-								handleAllocEmplNumber(params.row.id)
+								allocateEmployeeNumber(params.row.id)
 							}>
 							<FiRefreshCw />
 							{val ? <span>Regen</span> : <span>Gen</span>}
@@ -159,46 +170,15 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 								</button>
 							</Tooltip>
 						)}
-						<div>
+						<Tooltip title='Assign assignment'>
 							<button
-								id='basic-button'
 								className='btn-secondary'
-								aria-controls={
-									openMenu ? 'basic-menu' : undefined
-								}
-								aria-haspopup='true'
-								aria-expanded={openMenu ? 'true' : undefined}
-								onClick={onOpenRowMenu}>
-								<FiMoreHorizontal />
+								onClick={() =>
+									assignAssessmentClick(params.row)
+								}>
+								<IoTicketOutline />
 							</button>
-							<Menu
-								id='demo-customized-menu'
-								MenuListProps={{
-									'aria-labelledby': 'demo-customized-button'
-								}}
-								elevation={1}
-								anchorEl={anchorEl}
-								open={openMenu}
-								onClose={onCloseMenu}
-								sx={{}}>
-								<MenuItem
-									onClick={onCloseMenu}
-									sx={{
-										display: 'flex',
-										gap: 1
-									}}>
-									<FiFile /> <span>Assign Assessment</span>
-								</MenuItem>
-								<MenuItem
-									onClick={onCloseMenu}
-									sx={{
-										display: 'flex',
-										gap: 1
-									}}>
-									<FiTrash /> Delete
-								</MenuItem>
-							</Menu>
-						</div>
+						</Tooltip>
 					</div>
 				)
 			}
@@ -206,21 +186,29 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 	]
 
 	return (
-		<DataGrid
-			key='id'
-			rows={store.employees}
-			columns={columns}
-			initialState={{
-				pagination: {
-					paginationModel: {
-						pageSize: 10
+		<>
+			<DataGrid
+				key='id'
+				rows={store.employees}
+				columns={columns}
+				initialState={{
+					pagination: {
+						paginationModel: {
+							pageSize: 10
+						}
 					}
-				}
-			}}
-			checkboxSelection={true}
-			pageSizeOptions={[10, 20, 50, 100]}
-			disableRowSelectionOnClick
-			loading={loading}
-		/>
+				}}
+				checkboxSelection={true}
+				pageSizeOptions={[10, 20, 50, 100]}
+				disableRowSelectionOnClick
+				loading={loading}
+			/>
+
+			<EmployeeAssignments
+				onClose={handleAssignmentPopupClose}
+				employee={selectedEmployee}
+				show={showAssignmentPopup}
+			/>
+		</>
 	)
 }
