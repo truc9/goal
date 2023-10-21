@@ -50,7 +50,7 @@ func (s EmployeeService) Create(model EmployeeCreateModel) error {
 		return fmt.Errorf("%s is already registered for another user", model.Email)
 	}
 
-	us, _ := entity.NewUser(model.FirstName, model.LastName, model.Email, fmt.Sprintf("%s.%s", model.FirstName, model.LastName))
+	us, _ := entity.NewUser(model.FirstName, model.LastName, model.Email, "")
 	us.EmployeeNumber = random.GenStringId()
 	res := s.db.Create(&us)
 	return res.Error
@@ -58,7 +58,7 @@ func (s EmployeeService) Create(model EmployeeCreateModel) error {
 
 func (s EmployeeService) BulkCreate(models []EmployeeCreateModel) error {
 	users := lo.Map[EmployeeCreateModel, *entity.User](models, func(m EmployeeCreateModel, _ int) *entity.User {
-		us, _ := entity.NewUser(m.FirstName, m.LastName, m.Email, fmt.Sprintf("%s.%s", m.FirstName, m.LastName))
+		us, _ := entity.NewUser(m.FirstName, m.LastName, m.Email, "")
 		us.EmployeeNumber = random.GenStringId()
 		return us
 	})
