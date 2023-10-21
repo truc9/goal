@@ -10,10 +10,13 @@ import {
 	IoLockClosedSharp
 } from 'react-icons/io5'
 
+import { enqueueSnackbar } from 'notistack'
+
 import { PageContainer } from '../../components/PageContainer'
 import useWebSocket from '../../hooks/useWebSocket'
 import { BookingPeriod } from '../../models/booking'
 import bookingService from '../../services/bookingService'
+import dateUtil from '../../utils/DateUtil'
 
 dayjs.extend(weekday)
 
@@ -24,13 +27,9 @@ interface BookingDate {
 
 const MyBooking: React.FC = () => {
 	const [periods, setPeriods] = useState<BookingPeriod[]>([])
-
 	const [period, setPeriod] = useState<BookingPeriod>()
-
 	const [dates, setDates] = useState<Date[]>([])
-
-	const [bookingDates, setBookingDates] = useState<BookingDate[]>([])
-
+	const [bookings, setBookings] = useState<BookingDate[]>([])
 	const [index, setIndex] = useState(0)
 
 	const ws = useWebSocket()
@@ -45,7 +44,7 @@ const MyBooking: React.FC = () => {
 				dayjs(period.from).add(d, 'day')
 			)
 			setDates(days.map((dd) => dd.toDate()))
-			loadMyBookings(period.id)
+			load(period.id)
 		}
 	}, [period])
 
@@ -68,24 +67,26 @@ const MyBooking: React.FC = () => {
 		setIndex(index)
 	}
 
-	const loadMyBookings = async (periodId: number) => {
+	const load = async (periodId: number) => {
 		const bookings = await bookingService.getMyBookings(periodId)
 		const dates = bookings.map((booking) => ({
 			date: dayjs(booking.date).date(),
 			bookingId: booking.id
 		}))
-		setBookingDates(dates)
+		setBookings(dates)
 	}
 
 	const createBooking = async (periodId: number, d: Date) => {
+		enqueueSnackbar(`Booked ${dateUtil.format(d)}`, { variant: 'success' })
 		await bookingService.createBooking(periodId, d)
-		loadMyBookings(periodId)
+		await load(periodId)
 		ws.send('booking_updated')
 	}
 
 	const cancelBooking = async (periodId: number, bookingId: number) => {
+		enqueueSnackbar('Unbooked successfully')
 		await bookingService.deleteBooking(bookingId)
-		loadMyBookings(periodId)
+		await load(periodId)
 		ws.send('booking_updated')
 	}
 
@@ -157,7 +158,7 @@ const MyBooking: React.FC = () => {
 						<tbody>
 							<tr className='tw-table-row'>
 								{dates.map((date, i) => {
-									const booking = bookingDates.find(
+									const booking = bookings.find(
 										(bd) => bd.date == dayjs(date).date()
 									)
 									return (

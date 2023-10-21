@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	FiPlay,
 	FiPlus,
@@ -13,34 +13,50 @@ import {
 	GridValueGetterParams,
 	GridRenderCellParams
 } from '@mui/x-data-grid'
+import { useSnackbar } from 'notistack'
 import { PageContainer } from '../../components/PageContainer'
 import useBeerStore from '../../store'
 import employeeService from '../../services/employeeService'
-import dayjs from 'dayjs'
 import { Tooltip } from '@mui/material'
 import { IoCheckmarkCircle, IoInformationCircle } from 'react-icons/io5'
 import { HContainer } from '../../components/HContainer'
+import { LabelDateTime } from '../../components/LabelDateTime'
 
 const Employees = () => {
 	const store = useBeerStore()
+	const [loading, setLoading] = useState(false)
+	const { enqueueSnackbar } = useSnackbar()
 
 	useEffect(() => {
 		load()
 	}, [])
 
 	const deactivateUser = async (id: number) => {
-		await employeeService.deactivate(id)
+		const data = await employeeService.deactivate(id)
 		await load()
+		enqueueSnackbar(`Employee ${data.firstName} is deactivated`, {
+			variant: 'warning'
+		})
 	}
 
 	const activateUser = async (id: number) => {
-		await employeeService.activate(id)
+		const data = await employeeService.activate(id)
 		await load()
+		enqueueSnackbar(`Employee ${data.firstName} is activated`, {
+			variant: 'success'
+		})
 	}
 
 	const handleAllocEmplNumber = async (id: number) => {
 		await employeeService.allocateEmployeeNumber(id)
 		await load()
+	}
+
+	const load = async () => {
+		setLoading(true)
+		const employees = await employeeService.getAll()
+		store.loadEmployees(employees)
+		setLoading(false)
 	}
 
 	const columns: GridColDef[] = [
@@ -84,6 +100,7 @@ const Employees = () => {
 				return fullName
 			}
 		},
+		{ field: 'email', headerName: 'Email', width: 200 },
 		{ field: 'firstName', headerName: 'First Name', width: 100 },
 		{ field: 'lastName', headerName: 'Last Name', width: 100 },
 		{
@@ -108,16 +125,16 @@ const Employees = () => {
 			field: 'createdDate',
 			headerName: 'Created Date',
 			flex: 1,
-			valueFormatter(params) {
-				return dayjs(params.value).format('DD.MMM.YYYY hh:mm')
+			renderCell(params) {
+				return <LabelDateTime value={params.value} />
 			}
 		},
 		{
 			field: 'updatedDate',
 			headerName: 'Updated Date',
 			flex: 1,
-			valueFormatter(params) {
-				return dayjs(params.value).format('DD.MMM.YYYY hh:mm')
+			renderCell(params) {
+				return <LabelDateTime value={params.value} />
 			}
 		},
 		{
@@ -152,11 +169,6 @@ const Employees = () => {
 		}
 	]
 
-	const load = async () => {
-		const employees = await employeeService.getAll()
-		store.loadEmployees(employees)
-	}
-
 	return (
 		<PageContainer
 			title='Employee Management'
@@ -186,6 +198,7 @@ const Employees = () => {
 				checkboxSelection={true}
 				pageSizeOptions={[5]}
 				disableRowSelectionOnClick
+				loading={loading}
 			/>
 		</PageContainer>
 	)

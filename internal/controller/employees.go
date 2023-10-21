@@ -34,18 +34,18 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 
 func (ct EmployeeController) Deactivate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	err := ct.employeeSv.DeactivateUser(userId)
+	res, err := ct.employeeSv.DeactivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusOK, res)
 }
 
 func (ct EmployeeController) Activate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	err := ct.employeeSv.ActivateUser(userId)
+	res, err := ct.employeeSv.ActivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusOK, res)
 }

@@ -7,6 +7,7 @@ import { Loading } from './components/Loading.tsx'
 import { WebSocketProvider } from './context/WebSocketContext.tsx'
 import { ThemeProvider, createTheme } from '@mui/material'
 import './main.css'
+import { SnackbarProvider } from 'notistack'
 
 const theme = createTheme({
 	typography: {
@@ -19,9 +20,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 		<ThemeProvider theme={theme}>
 			<WebSocketProvider>
 				<AuthProvider>
-					<Suspense fallback={<Loading />}>
-						<App />
-					</Suspense>
+					<SnackbarProvider>
+						<Suspense fallback={<Loading />}>
+							<App />
+						</Suspense>
+					</SnackbarProvider>
 				</AuthProvider>
 			</WebSocketProvider>
 		</ThemeProvider>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SkeletonLoading } from '../components/SkeletonLoading'
+import { LoadingSkeleton } from '../components/LoadingSkeleton'
 import authService from '../services/authService'
 
 const Register = () => {
@@ -35,7 +35,7 @@ const Register = () => {
 			<h3 className='tw-text-4xl'>Create Account</h3>
 			{loading ? (
 				<div className='tw-flex tw-w-[500px] tw-flex-col tw-gap-3'>
-					<SkeletonLoading number={5} />
+					<LoadingSkeleton number={5} />
 				</div>
 			) : (
 				<div className='tw-flex tw-w-[500px] tw-flex-col tw-gap-3'>

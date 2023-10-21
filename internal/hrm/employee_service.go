@@ -35,6 +35,7 @@ func (s EmployeeService) GetAll() ([]EmployeeModel, error) {
 		e.LastName = item.LastName
 		e.CreatedDate = item.CreatedDate
 		e.UpdatedDate = item.UpdatedDate
+		e.Email = item.Email
 		return e
 	})
 
@@ -65,28 +66,36 @@ func (s EmployeeService) AllocEmployeeNumber(userId int64) error {
 	return nil
 }
 
-func (s EmployeeService) ActivateUser(userId int64) error {
+func (s EmployeeService) ActivateUser(userId int64) (*EmployeeResponse, error) {
 	user, err := s.getUser(userId)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	user.Activate()
 	s.db.Save(&user)
 
-	return nil
+	return &EmployeeResponse{
+		Id:        user.Id,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+	}, nil
 }
 
-func (s EmployeeService) DeactivateUser(userId int64) error {
+func (s EmployeeService) DeactivateUser(userId int64) (*EmployeeResponse, error) {
 	user, err := s.getUser(userId)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	user.Deactivate()
 	s.db.Save(&user)
 
-	return nil
+	return &EmployeeResponse{
+		Id:        user.Id,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+	}, nil
 }
 
 func (s EmployeeService) getUser(userId int64) (*entity.User, error) {

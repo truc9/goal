@@ -1,4 +1,4 @@
-import { EmployeeModel } from "../models/employee"
+import { EmployeeModel, EmployeeResponse } from "../models/employee"
 import httpClient from "./httpClient"
 
 async function getAll() {
@@ -10,12 +10,12 @@ async function allocateEmployeeNumber(userId: number) {
     await httpClient.put(`employees/${userId}/employee-numbers`, {})
 }
 
-async function activate(userId: number) {
-    await httpClient.put(`employees/${userId}/activate`, {})
+async function activate(userId: number): Promise<EmployeeResponse> {
+    return await httpClient.put(`employees/${userId}/activate`, {})
 }
 
-async function deactivate(userId: number) {
-    await httpClient.put(`employees/${userId}/deactivate`, {})
+async function deactivate(userId: number): Promise<EmployeeResponse> {
+    return await httpClient.put(`employees/${userId}/deactivate`, {})
 }
 
 export default {
