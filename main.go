@@ -111,6 +111,7 @@ func main() {
 		api.PUT("/employees/:userId/employee-numbers", employeeController.AllocEmployeeNumber)
 		api.PUT("/employees/:userId/activate", employeeController.Activate)
 		api.PUT("/employees/:userId/deactivate", employeeController.Deactivate)
+		api.POST("/employees/import", employeeController.Import)
 	}
 
 	app.Logger.Fatal(app.Start(":8000"))

@@ -1,14 +1,20 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { FiFile } from 'react-icons/fi'
 
 interface Props {
-	onChange: (e: any) => void
+	onChange: (files: File[]) => void
 	multiple?: boolean
 }
 
 export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
 	const ref = useRef<any>(null!)
 	const [fileNames, setFileNames] = useState('')
+
+	useEffect(() => {
+		return () => {
+			ref.current = null
+		}
+	}, [])
 
 	const browseFile = () => {
 		ref.current.click()
@@ -26,7 +32,7 @@ export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
 				)
 			)
 		}
-		onChange(e)
+		onChange(e.target.files)
 	}
 
 	return (
@@ -48,7 +54,7 @@ export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
 			/>
 
 			<button
-				aria-label='fileUploader'
+				aria-label='Browse Files'
 				className='btn-warning'
 				onClick={browseFile}>
 				<FiFile /> Browse...

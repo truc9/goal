@@ -1,7 +1,10 @@
 package controller
 
 import (
+	"encoding/csv"
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/hrm"
@@ -48,4 +51,36 @@ func (ct EmployeeController) Activate(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, res)
+}
+
+func (ct EmployeeController) Import(c echo.Context) error {
+	formFile, err := c.FormFile("file")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	arr := strings.Split(formFile.Filename, ".")
+	if arr[1] != "csv" {
+		return c.JSON(http.StatusBadRequest, "Not supported file type. Please use .csv file.")
+	}
+
+	f, err := formFile.Open()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	defer f.Close()
+
+	csvReader := csv.NewReader(f)
+	data, err := csvReader.ReadAll()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	log.Println(data)
+
+	for _, row := range data {
+		log.Printf("%v %v %v\n", row[0], row[1], row[2])
+	}
+
+	return c.JSON(http.StatusOK, nil)
 }
