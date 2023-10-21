@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/csv"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -81,13 +82,17 @@ func (ct EmployeeController) Import(c echo.Context) error {
 			continue
 		}
 
-		ct.employeeSv.Create(hrm.EmployeeCreateModel{
+		err := ct.employeeSv.Create(hrm.EmployeeCreateModel{
 			FirstName: row[0],
 			LastName:  row[1],
 			Email:     row[2],
 		})
 
-		log.Printf("imported %v %v %v\n", row[0], row[1], row[2])
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, fmt.Errorf("import %v %v %v failed due to %s", row[0], row[1], row[2], err.Error()))
+		}
+
+		log.Printf("import %v %v %v successfully\n", row[0], row[1], row[2])
 	}
 
 	return c.JSON(http.StatusOK, nil)

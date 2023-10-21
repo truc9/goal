@@ -19,7 +19,7 @@ const get = async <T = any>(resource: string) => {
 
 const post = async <T = any>(resource: string, body?: T) => {
     const url = `${config.apiUrl}/${resource}`
-    await axios.post<T>(url, body, {
+    return await axios.post<T>(url, body, {
         headers: getHeader()
     })
 }

@@ -30,6 +30,7 @@ const Employees = () => {
 			await employeeService.upload(files[0])
 			enqueueSnackbar('Import successfully', { variant: 'success' })
 		} catch (e: any) {
+			console.log(e)
 			enqueueSnackbar('Failed to import employee', { variant: 'error' })
 		}
 		await load()

@@ -21,7 +21,7 @@ async function deactivate(userId: number): Promise<EmployeeResponse> {
 async function upload(file: File) {
     const form = new FormData()
     form.append("file", file)
-    await httpClient.post('employees/import', form)
+    return await httpClient.post('employees/import', form)
 }
 
 export default {

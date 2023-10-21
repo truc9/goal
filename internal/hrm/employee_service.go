@@ -44,6 +44,12 @@ func (s EmployeeService) GetAll() ([]EmployeeModel, error) {
 }
 
 func (s EmployeeService) Create(model EmployeeCreateModel) error {
+	var dupEmail int64
+	s.db.Where("email = ?", model.Email).Find(&entity.User{}).Count(&dupEmail)
+	if dupEmail > 0 {
+		return fmt.Errorf("%s is already registered for another user", model.Email)
+	}
+
 	us, _ := entity.NewUser(model.FirstName, model.LastName, model.Email, fmt.Sprintf("%s.%s", model.FirstName, model.LastName))
 	us.EmployeeNumber = random.GenStringId()
 	res := s.db.Create(&us)
