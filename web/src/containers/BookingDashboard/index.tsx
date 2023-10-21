@@ -22,7 +22,7 @@ import {
 } from 'recharts'
 import { AsyncContent } from '../../components/AsyncContent'
 import { LoadingSkeleton } from '../../components/LoadingSkeleton'
-import dateUtil from '../../utils/DateUtil'
+import dateTimeUtil from '../../utils/datetimeUtil'
 
 const BookingDashboard: React.FC = () => {
 	const [userBookings, setUserBookings] = useState<UserBooking[]>([])
@@ -54,9 +54,9 @@ const BookingDashboard: React.FC = () => {
 			setDates(days.map((dd) => dd.toDate()))
 			loadBookings()
 			setTitle(
-				`(${dateUtil.format(nextPeriod?.from)} - ${dateUtil.format(
-					nextPeriod?.to
-				)})`
+				`(${dateTimeUtil.format(
+					nextPeriod?.from
+				)} - ${dateTimeUtil.format(nextPeriod?.to)})`
 			)
 		}
 	}, [nextPeriod])

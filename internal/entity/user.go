@@ -71,15 +71,21 @@ func (u *User) Deactivate() {
 }
 
 func NewUser(firstName, lastName, email string, userName string) (*User, error) {
-	if strings.TrimSpace(email) == "" && strings.TrimSpace(userName) == "" {
-		return nil, fmt.Errorf("email or username must be provided")
+	if strings.TrimSpace(email) == "" {
+		return nil, fmt.Errorf("email must be provided")
+	}
+
+	un := userName
+
+	if len(un) == 0 {
+		un = fmt.Sprintf("%s.%s", strings.ToLower(firstName), strings.ToLower(lastName))
 	}
 
 	user := &User{
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
-		UserName:  userName,
+		UserName:  un,
 		RoleId:    int(RoleUserId),
 		IsActive:  true,
 	}

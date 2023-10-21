@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import dateUtil from '../utils/DateUtil'
+import dateTimeUtil from '../utils/datetimeUtil'
 
 interface Props {
 	value: Date
@@ -10,5 +10,5 @@ export const LabelDateTime: FC<Props> = ({
 	value,
 	format = 'DD MMM YYYY hh:mm:ss'
 }) => {
-	return dateUtil.format(value, format)
+	return dateTimeUtil.format(value, format)
 }

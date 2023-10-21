@@ -9,9 +9,9 @@ function formatDateTime(date: Date) {
 }
 
 
-const dateUtil = {
+const dateTimeUtil = {
     format,
     formatDateTime
 }
 
-export default dateUtil
+export default dateTimeUtil

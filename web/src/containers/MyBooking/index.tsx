@@ -16,7 +16,7 @@ import { PageContainer } from '../../components/PageContainer'
 import useWebSocket from '../../hooks/useWebSocket'
 import { BookingPeriod } from '../../models/booking'
 import bookingService from '../../services/bookingService'
-import dateUtil from '../../utils/DateUtil'
+import dateTimeUtil from '../../utils/datetimeUtil'
 
 dayjs.extend(weekday)
 
@@ -77,7 +77,9 @@ const MyBooking: React.FC = () => {
 	}
 
 	const createBooking = async (periodId: number, d: Date) => {
-		enqueueSnackbar(`Booked ${dateUtil.format(d)}`, { variant: 'success' })
+		enqueueSnackbar(`Booked ${dateTimeUtil.format(d)}`, {
+			variant: 'success'
+		})
 		await bookingService.createBooking(periodId, d)
 		await load(periodId)
 		ws.send('booking_updated')
