@@ -1,11 +1,19 @@
-import { Tooltip } from '@mui/material'
+import React from 'react'
+import { Menu, MenuItem, Tooltip } from '@mui/material'
 import {
 	DataGrid,
 	GridColDef,
 	GridRenderCellParams,
 	GridValueGetterParams
 } from '@mui/x-data-grid'
-import { FiPlay, FiRefreshCw, FiStopCircle } from 'react-icons/fi'
+import {
+	FiFile,
+	FiMoreHorizontal,
+	FiPlay,
+	FiRefreshCw,
+	FiStopCircle,
+	FiTrash
+} from 'react-icons/fi'
 import { LabelDateTime } from '../../components/LabelDateTime'
 import { IoCheckmarkCircle, IoInformationCircle } from 'react-icons/io5'
 import employeeService from '../../services/employeeService'
@@ -21,6 +29,13 @@ interface Props {
 export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 	const { enqueueSnackbar } = useSnackbar()
 	const store = useBearStore()
+
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+	const onCloseMenu = () => setAnchorEl(null)
+	const onOpenRowMenu = (event: any) => {
+		setAnchorEl(event.currentTarget)
+	}
+	const openMenu = Boolean(anchorEl)
 
 	const deactivateUser = async (id: number) => {
 		const data = await employeeService.deactivate(id)
@@ -123,11 +138,11 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 		},
 		{
 			field: 'action',
-			headerName: 'Action',
-			width: 100,
+			headerName: '',
+			width: 120,
 			renderCell(params: GridRenderCellParams) {
 				return (
-					<div className='tw-flex tw-items-center tw-gap-2'>
+					<div className='tw-flex tw-w-full tw-items-center tw-justify-center tw-gap-2 tw-text-center tw-align-middle'>
 						{params.row.isActive ? (
 							<Tooltip title='Deactivate user'>
 								<button
@@ -147,6 +162,46 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 								</button>
 							</Tooltip>
 						)}
+						<div>
+							<button
+								id='basic-button'
+								className='btn-secondary'
+								aria-controls={
+									openMenu ? 'basic-menu' : undefined
+								}
+								aria-haspopup='true'
+								aria-expanded={openMenu ? 'true' : undefined}
+								onClick={onOpenRowMenu}>
+								<FiMoreHorizontal />
+							</button>
+							<Menu
+								id='demo-customized-menu'
+								MenuListProps={{
+									'aria-labelledby': 'demo-customized-button'
+								}}
+								elevation={1}
+								anchorEl={anchorEl}
+								open={openMenu}
+								onClose={onCloseMenu}
+								sx={{}}>
+								<MenuItem
+									onClick={onCloseMenu}
+									sx={{
+										display: 'flex',
+										gap: 1
+									}}>
+									<FiFile /> <span>Assign Assessment</span>
+								</MenuItem>
+								<MenuItem
+									onClick={onCloseMenu}
+									sx={{
+										display: 'flex',
+										gap: 1
+									}}>
+									<FiTrash /> Delete
+								</MenuItem>
+							</Menu>
+						</div>
 					</div>
 				)
 			}

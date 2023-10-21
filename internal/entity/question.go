@@ -20,6 +20,7 @@ type ChoiceAnswer struct {
 	QuestionId        int64    `json:"questionId"`
 	Question          Question `gorm:"foreignKey:QuestionId" json:"question"`
 	TriggerQuestionId int64    `json:"triggerQuestionId"`
+	Score             int64    `json:"score"`
 }
 
 type Question struct {
