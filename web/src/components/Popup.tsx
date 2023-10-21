@@ -44,6 +44,7 @@ interface Props {
 	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 	onCloseClicked: () => void
 	onSubmitClicked?: () => void
+	showFooter?: boolean
 }
 
 export const Popup: FC<Props> = ({
@@ -56,6 +57,7 @@ export const Popup: FC<Props> = ({
 	size,
 	onCloseClicked,
 	onSubmitClicked,
+	showFooter = true,
 	children
 }) => {
 	const handleClose = () => {
@@ -85,27 +87,37 @@ export const Popup: FC<Props> = ({
 				style={{
 					cursor: 'move',
 					display: 'flex',
+					justifyContent: 'space-between',
 					alignItems: 'center',
 					gap: '10px'
 				}}
 				id='draggable-header'>
-				{icon && <span>{icon}</span>}
-				<span>{title}</span>
+				<div className='tw-flex tw-items-center tw-gap-2'>
+					{icon && <span>{icon}</span>}
+					<span>{title}</span>
+				</div>
+				<button
+					className='tw-text-red-500 hover:tw-rounded-full hover:tw-bg-red-500 hover:tw-text-white'
+					onClick={handleClose}>
+					<FiXCircle />
+				</button>
 			</DialogTitle>
 			<DialogContent>{children}</DialogContent>
-			<DialogActions
-				sx={{
-					px: '25px',
-					pb: '25px'
-				}}>
-				<button className='btn-secondary' onClick={handleClose}>
-					<FiXCircle /> {cancelLabel || 'Cancel'}
-				</button>
-				<button className='btn-primary' onClick={handleSubmit}>
-					{submitIcon || <FiSave />}
-					{submitLabel || 'Submit'}
-				</button>
-			</DialogActions>
+			{showFooter && (
+				<DialogActions
+					sx={{
+						px: '25px',
+						pb: '25px'
+					}}>
+					<button className='btn-secondary' onClick={handleClose}>
+						<FiXCircle /> {cancelLabel || 'Cancel'}
+					</button>
+					<button className='btn-primary' onClick={handleSubmit}>
+						{submitIcon || <FiSave />}
+						{submitLabel || 'Submit'}
+					</button>
+				</DialogActions>
+			)}
 		</Dialog>
 	)
 }

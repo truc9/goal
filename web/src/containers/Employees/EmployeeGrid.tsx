@@ -161,12 +161,12 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 			initialState={{
 				pagination: {
 					paginationModel: {
-						pageSize: 5
+						pageSize: 10
 					}
 				}
 			}}
 			checkboxSelection={true}
-			pageSizeOptions={[5]}
+			pageSizeOptions={[10, 20, 50, 100]}
 			disableRowSelectionOnClick
 			loading={loading}
 		/>

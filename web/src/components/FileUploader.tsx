@@ -1,14 +1,19 @@
 import { FC, useEffect, useRef, useState } from 'react'
-import { FiFile } from 'react-icons/fi'
+import { FiUpload } from 'react-icons/fi'
+import { enqueueSnackbar } from 'notistack'
+
+type FileExt = 'text/csv'
 
 interface Props {
-	onChange: (files: File[]) => void
 	multiple?: boolean
+	onUpload?: (files: File[]) => Promise<void>
+	extensions: FileExt[]
 }
 
-export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
+export const FileUploader: FC<Props> = ({ multiple, extensions, onUpload }) => {
 	const ref = useRef<any>(null!)
 	const [fileNames, setFileNames] = useState('')
+	const [files, setFiles] = useState<File[]>([])
 
 	useEffect(() => {
 		return () => {
@@ -16,31 +21,56 @@ export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
 		}
 	}, [])
 
-	const browseFile = () => {
-		ref.current.click()
+	const browseFiles = () => {
+		ref.current?.click()
 	}
 
 	const handleChange = (e: any) => {
 		const hasFile = e.target.files && e.target.files[0]
 		if (!hasFile) return
-		if (!multiple) {
-			setFileNames(e.target.files[0].name)
-		} else {
-			setFileNames(
-				e.target.files.reduce(
-					(prev: any, cur: any) => `${prev.name}, ${cur.name}`
-				)
-			)
+
+		const files = e.target.files
+
+		let fileNames = ''
+		for (let i = 0; i < files.length; i++) {
+			fileNames += `${files[i].name},`
+			if (!extensions.includes(files[i].type)) {
+				enqueueSnackbar(`${files[i].type} is not supported.`, {
+					variant: 'error'
+				})
+				setFileNames('')
+				setFiles([])
+				return
+			}
 		}
-		onChange(e.target.files)
+		fileNames = fileNames.substring(0, fileNames.length - 1)
+
+		setFileNames(fileNames)
+		setFiles(e.target.files)
+	}
+
+	const handleSubmit = async () => {
+		if (!files || !files.length) {
+			enqueueSnackbar('No file to upload', { variant: 'error' })
+			return
+		}
+
+		if (onUpload) {
+			await onUpload(files)
+			ref.current.value = null
+			setFileNames('')
+			setFiles([])
+		}
 	}
 
 	return (
-		<div className='tw-flex tw-items-center tw-gap-2'>
+		<div className='tw-flex tw-items-center tw-gap-2 tw-py-2'>
 			<input
+				role='button'
 				value={fileNames}
-				className='tw-w-full tw-rounded tw-bg-slate-100 tw-px-4 tw-py-2'
+				className='tw-w-full tw-rounded tw-bg-slate-100 tw-px-4 tw-py-2 hover:tw-ring-2 hover:tw-ring-emerald-500'
 				placeholder='Browse CSV file...'
+				onClick={browseFiles}
 				readOnly
 			/>
 
@@ -55,9 +85,9 @@ export const FileUploader: FC<Props> = ({ onChange, multiple }) => {
 
 			<button
 				aria-label='Browse Files'
-				className='btn-warning'
-				onClick={browseFile}>
-				<FiFile /> Browse...
+				className='btn-primary'
+				onClick={handleSubmit}>
+				<FiUpload /> Upload
 			</button>
 		</div>
 	)

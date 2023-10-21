@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiPlus, FiUpload, FiUsers } from 'react-icons/fi'
+import { FiPlus, FiUpload, FiUserPlus, FiUsers } from 'react-icons/fi'
 import { PageContainer } from '../../components/PageContainer'
 import { HContainer } from '../../components/HContainer'
 import { EmployeeGrid } from './EmployeeGrid'
@@ -13,7 +13,6 @@ const Employees = () => {
 	const store = useBearStore()
 	const [loading, setLoading] = useState(false)
 	const [show, setShow] = useState(false)
-	const [csv, setCsv] = useState<File>(null!)
 
 	useEffect(() => {
 		load()
@@ -26,18 +25,15 @@ const Employees = () => {
 		setLoading(false)
 	}
 
-	const onFileChange = (files: File[]) => {
-		setCsv(files[0])
-	}
-
-	const importFile = async () => {
+	const handleUpload = async (files: File[]) => {
 		try {
-			await employeeService.upload(csv)
+			await employeeService.upload(files[0])
 			enqueueSnackbar('Import successfully', { variant: 'success' })
 		} catch (e: any) {
 			enqueueSnackbar('Failed to import employee', { variant: 'error' })
 		}
 		await load()
+		setShow(false)
 	}
 
 	return (
@@ -64,10 +60,14 @@ const Employees = () => {
 				submitLabel='Import'
 				submitIcon={<FiUpload />}
 				size='sm'
-				title='Import Employee'
+				icon={<FiUserPlus />}
+				title='Import Employees'
 				onCloseClicked={() => setShow(false)}
-				onSubmitClicked={importFile}>
-				<FileUploader onChange={onFileChange} />
+				showFooter={false}>
+				<FileUploader
+					extensions={['text/csv']}
+					onUpload={handleUpload}
+				/>
 			</Popup>
 		</PageContainer>
 	)

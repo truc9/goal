@@ -59,7 +59,7 @@ export const Confirm: FC<Props> = ({ isOpen, text, onYes, onNo }) => {
           Cancel
         </button>
         <button className="btn-primary" onClick={onYes}>
-          <FiSave />
+        <FiSave />
           Confirm
         </button>
       </DialogActions>
