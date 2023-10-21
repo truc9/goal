@@ -26,4 +26,10 @@ type (
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
 	}
+
+	EmployeeCreateModel struct {
+		FirstName string `json:"firstName"`
+		LastName  string `json:"lastName"`
+		Email     string `json:"email"`
+	}
 )

@@ -27,7 +27,6 @@ const Employees = () => {
 	}
 
 	const onFileChange = (files: File[]) => {
-		console.log(files)
 		setCsv(files[0])
 	}
 
@@ -38,6 +37,7 @@ const Employees = () => {
 		} catch (e: any) {
 			enqueueSnackbar('Failed to import employee', { variant: 'error' })
 		}
+		await load()
 	}
 
 	return (

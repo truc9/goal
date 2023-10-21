@@ -76,10 +76,18 @@ func (ct EmployeeController) Import(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	log.Println(data)
+	for index, row := range data {
+		if index == 0 {
+			continue
+		}
 
-	for _, row := range data {
-		log.Printf("%v %v %v\n", row[0], row[1], row[2])
+		ct.employeeSv.Create(hrm.EmployeeCreateModel{
+			FirstName: row[0],
+			LastName:  row[1],
+			Email:     row[2],
+		})
+
+		log.Printf("imported %v %v %v\n", row[0], row[1], row[2])
 	}
 
 	return c.JSON(http.StatusOK, nil)

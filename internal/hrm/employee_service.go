@@ -1,6 +1,7 @@
 package hrm
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/samber/lo"
@@ -40,6 +41,23 @@ func (s EmployeeService) GetAll() ([]EmployeeModel, error) {
 	})
 
 	return employees, nil
+}
+
+func (s EmployeeService) Create(model EmployeeCreateModel) error {
+	us, _ := entity.NewUser(model.FirstName, model.LastName, model.Email, fmt.Sprintf("%s.%s", model.FirstName, model.LastName))
+	us.EmployeeNumber = random.GenStringId()
+	res := s.db.Create(&us)
+	return res.Error
+}
+
+func (s EmployeeService) BulkCreate(models []EmployeeCreateModel) error {
+	users := lo.Map[EmployeeCreateModel, *entity.User](models, func(m EmployeeCreateModel, _ int) *entity.User {
+		us, _ := entity.NewUser(m.FirstName, m.LastName, m.Email, fmt.Sprintf("%s.%s", m.FirstName, m.LastName))
+		us.EmployeeNumber = random.GenStringId()
+		return us
+	})
+	res := s.db.CreateInBatches(users, len(users))
+	return res.Error
 }
 
 func (s EmployeeService) AllocEmployeeNumber(userId int64) error {
