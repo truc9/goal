@@ -7,9 +7,9 @@ interface Props {
 }
 
 const colorsDict = {
-	success: 'tw-bg-emerald-500',
-	warning: 'tw-bg-orange-500',
-	error: 'tw-bg-red-500'
+	success: 'bg-emerald-500',
+	warning: 'bg-orange-500',
+	error: 'bg-red-500'
 }
 
 export const Badge: FC<Props> = ({ children, variant }) => {
@@ -17,7 +17,7 @@ export const Badge: FC<Props> = ({ children, variant }) => {
 	return (
 		<div
 			className={cn(
-				'tw-flex tw-items-center tw-gap-2 tw-rounded tw-bg-red-500 tw-p-1 tw-text-xs tw-text-white',
+				'flex items-center gap-2 rounded bg-red-500 p-1 text-xs text-white',
 				classes
 			)}>
 			{children}

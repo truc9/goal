@@ -31,14 +31,14 @@ const Register = () => {
 	}
 
 	return (
-		<div className='tw-flex tw-h-screen tw-w-screen tw-flex-col tw-items-center tw-gap-10 tw-py-60'>
-			<h3 className='tw-text-4xl'>Create Account</h3>
+		<div className='flex h-screen w-screen flex-col items-center gap-10 py-60'>
+			<h3 className='text-4xl'>Create Account</h3>
 			{loading ? (
-				<div className='tw-flex tw-w-[500px] tw-flex-col tw-gap-3'>
+				<div className='flex w-[500px] flex-col gap-3'>
 					<LoadingSkeleton number={5} />
 				</div>
 			) : (
-				<div className='tw-flex tw-w-[500px] tw-flex-col tw-gap-3'>
+				<div className='flex w-[500px] flex-col gap-3'>
 					<input
 						type='text'
 						name='email'

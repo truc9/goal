@@ -19,14 +19,14 @@ export const ClickableCard: React.FC<Props> = ({
 	const content = (
 		<>
 			<span>{icon}</span>
-			<h3 className='tw-text-2xl'>{title}</h3>
-			<h5 className='tw-text-xs tw-text-black/40'>{subTitle}</h5>
+			<h3 className='text-2xl'>{title}</h3>
+			<h5 className='text-xs text-black/40'>{subTitle}</h5>
 		</>
 	)
 
 	if (disabled) {
 		return (
-			<div className='tw-flex tw-flex-col tw-items-center tw-gap-3 tw-rounded tw-bg-slate-200 tw-p-5 tw-text-center tw-text-black/40'>
+			<div className='flex flex-col items-center gap-3 rounded bg-slate-200 p-5 text-center text-black/40'>
 				{content}
 			</div>
 		)
@@ -35,7 +35,7 @@ export const ClickableCard: React.FC<Props> = ({
 	return (
 		<Link
 			to={link}
-			className='tw-flex tw-flex-col tw-items-center tw-gap-3 tw-rounded tw-border tw-border-slate-200 tw-bg-slate-50 tw-p-5 tw-text-center hover:tw-bg-slate-100'>
+			className='flex flex-col items-center gap-3 rounded border border-slate-200 bg-slate-50 p-5 text-center hover:bg-slate-100'>
 			{content}
 		</Link>
 	)

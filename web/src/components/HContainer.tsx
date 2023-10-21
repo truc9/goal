@@ -6,8 +6,6 @@ interface Props {
 
 export const HContainer: FC<Props> = ({ children }) => {
 	return (
-		<div className='tw-flex tw-items-center tw-justify-start tw-gap-2'>
-			{children}
-		</div>
+		<div className='flex items-center justify-start gap-2'>{children}</div>
 	)
 }

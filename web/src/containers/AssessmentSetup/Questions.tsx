@@ -61,22 +61,22 @@ const Questions = () => {
 
 	return (
 		<>
-			<div className='tw-flex tw-h-full tw-flex-1 tw-flex-col tw-gap-3'>
-				<div className='tw-flex tw-flex-col tw-gap-3 tw-p-3 md:tw-w-full'>
-					<div className='tw-flex tw-items-center tw-gap-2'>
+			<div className='flex h-full flex-1 flex-col gap-3'>
+				<div className='flex flex-col gap-3 p-3 md:w-full'>
+					<div className='flex items-center gap-2'>
 						<button
 							className='btn-secondary'
 							onClick={() => setOpenQuestionPopup(true)}>
 							<FiPlus /> Add Question
 						</button>
 					</div>
-					<div className='tw-flex tw-flex-col tw-gap-2'>
+					<div className='flex flex-col gap-2'>
 						<AsyncContent loading={loading}>
 							<DragDropContext onDragEnd={handleDragEnd}>
 								<Droppable droppableId='droppable-list'>
 									{(dropProvider) => (
 										<div
-											className='tw-flex tw-flex-col tw-gap-3'
+											className='flex flex-col gap-3'
 											ref={dropProvider.innerRef}
 											{...dropProvider.droppableProps}>
 											{store.currentVersion?.questions?.map(

@@ -106,47 +106,47 @@ const MyBooking: React.FC = () => {
 
 	return (
 		<PageContainer icon={<IoBookOutline />} title='My Booking'>
-			<div className='tw-flex tw-flex-col tw-gap-5'>
-				<div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3'>
-					<div className='tw-flex tw-items-center tw-gap-1 tw-rounded tw-border tw-border-emerald-100 tw-bg-emerald-50 tw-px-1 tw-py-1'>
+			<div className='flex flex-col gap-5'>
+				<div className='flex flex-col items-center justify-center gap-3'>
+					<div className='flex items-center gap-1 rounded border border-emerald-100 bg-emerald-50 px-1 py-1'>
 						<button
 							disabled={index === 0}
 							onClick={goBack}
-							className='tw-rounded tw-bg-emerald-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
+							className='rounded bg-emerald-500 p-1 text-white shadow-lg disabled:bg-slate-200'>
 							<FiChevronLeft size='26' />
 						</button>
 						{period ? (
-							<span className='tw-flex tw-items-center tw-gap-3 tw-rounded tw-p-2 tw-text-emerald-500'>
+							<span className='flex items-center gap-3 rounded p-2 text-emerald-500'>
 								{dayjs(period?.from).format('DD MMM YYYY')} -{' '}
 								{dayjs(period?.to).format('DD MMM YYYY')}
 							</span>
 						) : (
-							<span className='tw-rounded tw-bg-emerald-50 tw-p-2 tw-text-emerald-500'>
+							<span className='rounded bg-emerald-50 p-2 text-emerald-500'>
 								Period is not opened. Go back current period
 							</span>
 						)}
 						<button
 							disabled={index === periods.length - 1}
 							onClick={goNext}
-							className='tw-rounded tw-bg-emerald-500 tw-p-1 tw-text-white tw-shadow-lg disabled:tw-bg-slate-200'>
+							className='rounded bg-emerald-500 p-1 text-white shadow-lg disabled:bg-slate-200'>
 							<FiChevronRight size='26' />
 						</button>
 					</div>
 				</div>
 				{period && (
-					<table className='tw-table tw-w-full'>
+					<table className='table w-full'>
 						<thead>
 							<tr>
 								{dates.map((d, i) => {
 									return (
 										<th
 											key={i}
-											className='tw-h-10 tw-items-center tw-justify-center'>
-											<div className='tw-flex tw-flex-col'>
-												<span className='tw-font-bold tw-uppercase tw-text-emerald-500'>
+											className='h-10 items-center justify-center'>
+											<div className='flex flex-col'>
+												<span className='font-bold uppercase text-emerald-500'>
 													{dayjs(d).format('ddd')}
 												</span>
-												<small className='tw-text-emerald-500/50'>
+												<small className='text-emerald-500/50'>
 													{dayjs(d).format(
 														'DD-MMM-YYYY'
 													)}
@@ -158,7 +158,7 @@ const MyBooking: React.FC = () => {
 							</tr>
 						</thead>
 						<tbody>
-							<tr className='tw-table-row'>
+							<tr className='table-row'>
 								{dates.map((date, i) => {
 									const booking = bookings.find(
 										(bd) => bd.date == dayjs(date).date()
@@ -166,7 +166,7 @@ const MyBooking: React.FC = () => {
 									return (
 										<td key={i}>
 											{period.isCurrentPeriod ? (
-												<div className='tw-flex tw-h-16 tw-items-center tw-justify-center tw-transition-all'>
+												<div className='flex h-16 items-center justify-center transition-all'>
 													{booking ? (
 														<button
 															onClick={() =>
@@ -175,7 +175,7 @@ const MyBooking: React.FC = () => {
 																	booking.bookingId
 																)
 															}
-															className='tw-rounded-full tw-text-green-500 tw-ring-green-500 tw-transition-all hover:tw-cursor-pointer hover:tw-ring-2 active:tw-ring-offset-2'>
+															className='rounded-full text-green-500 ring-green-500 transition-all hover:cursor-pointer hover:ring-2 active:ring-offset-2'>
 															<IoCheckmarkCircle
 																size={40}
 															/>
@@ -188,7 +188,7 @@ const MyBooking: React.FC = () => {
 																	date
 																)
 															}
-															className='tw-rounded-full tw-text-slate-200 tw-ring-slate-200 tw-transition-all hover:tw-cursor-pointer hover:tw-ring-2 active:tw-ring-offset-2'>
+															className='rounded-full text-slate-200 ring-slate-200 transition-all hover:cursor-pointer hover:ring-2 active:ring-offset-2'>
 															<IoCheckmarkCircle
 																size={40}
 															/>
@@ -196,12 +196,12 @@ const MyBooking: React.FC = () => {
 													)}
 												</div>
 											) : (
-												<div className='tw-flex tw-h-16 tw-items-center tw-justify-center tw-transition-all'>
+												<div className='flex h-16 items-center justify-center transition-all'>
 													<span
 														className={cn({
-															'tw-text-emerald-500':
+															'text-emerald-500':
 																booking,
-															'tw-text-slate-200':
+															'text-slate-200':
 																!booking
 														})}>
 														<IoLockClosedSharp

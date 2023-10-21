@@ -92,12 +92,12 @@ export const Popup: FC<Props> = ({
 					gap: '10px'
 				}}
 				id='draggable-header'>
-				<div className='tw-flex tw-items-center tw-gap-2'>
+				<div className='flex items-center gap-2'>
 					{icon && <span>{icon}</span>}
 					<span>{title}</span>
 				</div>
 				<button
-					className='tw-text-red-500 hover:tw-rounded-full hover:tw-bg-red-500 hover:tw-text-white'
+					className='text-red-500 hover:rounded-full hover:bg-red-500 hover:text-white'
 					onClick={handleClose}>
 					<FiXCircle />
 				</button>

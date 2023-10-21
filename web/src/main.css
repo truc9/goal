@@ -11,30 +11,30 @@ body {
 	input[type='text'],
 	input[type='password'],
 	textarea {
-		@apply tw-w-full tw-rounded tw-border tw-px-4 tw-py-2 tw-shadow-inner focus:tw-border-none focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-emerald-500;
+		@apply w-full rounded border px-4 py-2 shadow-inner focus:border-none focus:outline-none focus:ring-2 focus:ring-emerald-500;
 	}
 
 	.btn {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-slate-200 tw-px-3 tw-py-2 tw-text-sm tw-text-slate-900 tw-transition-all hover:tw-bg-slate-100 active:tw-ring-2 active:tw-ring-slate-100 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-3 py-2 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
 	}
 
 	.btn-secondary {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-slate-200 tw-px-3 tw-py-2 tw-text-sm tw-text-slate-900 tw-transition-all hover:tw-bg-slate-100 active:tw-ring-2 active:tw-ring-slate-100 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-3 py-2 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
 	}
 
 	.btn-primary {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-emerald-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-emerald-500 active:tw-ring-2 active:tw-ring-emerald-500 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-3 py-2 text-sm text-white transition-all hover:bg-emerald-500 active:ring-2 active:ring-emerald-500 active:ring-offset-2;
 	}
 
 	.btn-danger {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-red-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-red-400 active:tw-ring-2 active:tw-ring-red-400 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-red-500 px-3 py-2 text-sm text-white transition-all hover:bg-red-400 active:ring-2 active:ring-red-400 active:ring-offset-2;
 	}
 
 	.btn-warning {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-orange-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-orange-400 active:tw-ring-2 active:tw-ring-orange-400 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-orange-500 px-3 py-2 text-sm text-white transition-all hover:bg-orange-400 active:ring-2 active:ring-orange-400 active:ring-offset-2;
 	}
 
 	.btn-icon {
-		@apply tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded tw-bg-emerald-500 tw-px-3 tw-py-2 tw-text-sm tw-text-white tw-transition-all hover:tw-bg-emerald-400 active:tw-ring-2 active:tw-ring-emerald-400 active:tw-ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-3 py-2 text-sm text-white transition-all hover:bg-emerald-400 active:ring-2 active:ring-emerald-400 active:ring-offset-2;
 	}
 }

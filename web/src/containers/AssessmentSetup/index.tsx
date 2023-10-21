@@ -83,9 +83,9 @@ const AssessmentSetup = () => {
 	}
 
 	return (
-		<div className='tw-flex tw-h-full tw-border tw-p-2'>
-			<div className='tw-flex tw-h-full tw-w-[300px] tw-flex-grow-0 tw-flex-col tw-border-r tw-shadow'>
-				<div className='tw-h-full tw-overflow-auto'>
+		<div className='flex h-full border p-2'>
+			<div className='flex h-full w-[300px] flex-grow-0 flex-col border-r shadow'>
+				<div className='h-full overflow-auto'>
 					<AsyncContent loading={loading}>
 						{store.assessments.map(
 							(item: AssessmentModel, index: number) => {
@@ -94,7 +94,7 @@ const AssessmentSetup = () => {
 										key={index}
 										onClick={() => onItemChange(item)}
 										className={cn(
-											'tw-relative tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-border-b tw-border-emerald-500 tw-border-b-slate-200 tw-bg-white tw-p-2 tw-text-left tw-transition-all hover:tw-border-l-4 hover:tw-bg-emerald-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-emerald-50',
+											'relative flex h-28 w-full flex-col justify-center border-b border-emerald-500 border-b-slate-200 bg-white p-2 text-left transition-all hover:border-l-4 hover:bg-emerald-50 [&.active]:border-l-4 [&.active]:bg-emerald-50',
 											{
 												active:
 													item.id ===
@@ -104,18 +104,18 @@ const AssessmentSetup = () => {
 										<Tooltip
 											title={item.name}
 											placement='right'>
-											<div className='tw-h-2/5 tw-w-full tw-overflow-hidden tw-truncate tw-font-bold'>
+											<div className='h-2/5 w-full overflow-hidden truncate font-bold'>
 												{item.name}
 											</div>
 										</Tooltip>
 										<Tooltip
 											title={item.description}
 											placement='right'>
-											<div className='tw-line-clamp-3 tw-h-3/5 tw-w-full tw-justify-between tw-overflow-hidden tw-text-xs tw-text-slate-400'>
+											<div className='line-clamp-3 h-3/5 w-full justify-between overflow-hidden text-xs text-slate-400'>
 												{item.description}
 											</div>
 										</Tooltip>
-										<div className='tw-flex tw-w-full tw-items-center tw-justify-end tw-gap-3'>
+										<div className='flex w-full items-center justify-end gap-3'>
 											<button
 												onClick={() =>
 													editAssessment(item)
@@ -130,7 +130,7 @@ const AssessmentSetup = () => {
 					</AsyncContent>
 				</div>
 			</div>
-			<main className='tw-flex-1'>
+			<main className='flex-1'>
 				<Outlet />
 			</main>
 
@@ -141,7 +141,7 @@ const AssessmentSetup = () => {
 				show={assessmentPopupOpen}
 				onCloseClicked={() => setAssessmentPopupOpen(false)}
 				onSubmitClicked={submit}>
-				<div className='tw-flex tw-flex-col tw-items-center tw-gap-3'>
+				<div className='flex flex-col items-center gap-3'>
 					<FormGroup sx={{ width: '100%' }}>
 						<FormLabel>Name</FormLabel>
 						<input

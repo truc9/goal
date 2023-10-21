@@ -42,23 +42,23 @@ const Login = () => {
 	}
 
 	return (
-		<div className='tw-flex tw-h-screen tw-w-screen'>
-			<div className='tw-flex tw-h-full tw-w-1/2'>
+		<div className='flex h-screen w-screen'>
+			<div className='flex h-full w-1/2'>
 				<img
 					src={backgroundImage}
 					alt='Background'
-					className='tw-w-full tw-object-cover'
+					className='w-full object-cover'
 				/>
 			</div>
-			<div className='tw-align-items-center tw-flex tw-flex-1 tw-flex-col tw-items-center'>
-				<div className='tw-align-items-center tw-flex tw-flex-1 tw-flex-col tw-items-center tw-py-28'>
+			<div className='align-items-center flex flex-1 flex-col items-center'>
+				<div className='align-items-center flex flex-1 flex-col items-center py-28'>
 					<img src='logo-color.svg' alt='Logo' width={250} />
 					{loading ? (
-						<div className='tw-flex tw-w-[400px] tw-flex-col'>
+						<div className='flex w-[400px] flex-col'>
 							<LoadingSkeleton number={4} />
 						</div>
 					) : (
-						<div className='tw-flex tw-w-[400px] tw-flex-col tw-gap-3'>
+						<div className='flex w-[400px] flex-col gap-3'>
 							<input
 								type='text'
 								name='email'
@@ -84,7 +84,7 @@ const Login = () => {
 						</div>
 					)}
 				</div>
-				<span className='tw-p-5'>
+				<span className='p-5'>
 					Copyright © GOAL {new Date().getFullYear()}
 				</span>
 			</div>

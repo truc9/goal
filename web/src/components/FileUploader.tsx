@@ -64,11 +64,11 @@ export const FileUploader: FC<Props> = ({ multiple, extensions, onUpload }) => {
 	}
 
 	return (
-		<div className='tw-flex tw-items-center tw-gap-2 tw-py-2'>
+		<div className='flex items-center gap-2 py-2'>
 			<input
 				role='button'
 				value={fileNames}
-				className='tw-w-full tw-rounded tw-bg-slate-100 tw-px-4 tw-py-2 hover:tw-ring-2 hover:tw-ring-emerald-500'
+				className='w-full rounded bg-slate-100 px-4 py-2 hover:ring-2 hover:ring-emerald-500'
 				placeholder='Browse CSV file...'
 				onClick={browseFiles}
 				readOnly

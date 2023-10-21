@@ -31,9 +31,9 @@ const Versions = () => {
 	}
 
 	return (
-		<div className='tw-flex tw-h-full tw-flex-1'>
-			<div className='tw-flex tw-h-full tw-w-[300px] tw-flex-col tw-overflow-auto tw-border-r tw-bg-white'>
-				<div className='tw-h-full'>
+		<div className='flex h-full flex-1'>
+			<div className='flex h-full w-[300px] flex-col overflow-auto border-r bg-white'>
+				<div className='h-full'>
 					<AsyncContent loading={loading}>
 						{store.currentAssessment?.versions?.map(
 							(item: AssessmentVersionModel) => {
@@ -42,21 +42,21 @@ const Versions = () => {
 										key={item.id}
 										onClick={() => onItemChange(item)}
 										className={cn(
-											'tw-flex tw-h-28 tw-w-full tw-flex-col tw-justify-center tw-gap-2 tw-border-b tw-border-emerald-500 tw-border-b-slate-200 tw-p-2 tw-text-left tw-transition-all hover:tw-bg-emerald-50 [&.active]:tw-border-l-4 [&.active]:tw-bg-emerald-50',
+											'flex h-28 w-full flex-col justify-center gap-2 border-b border-emerald-500 border-b-slate-200 p-2 text-left transition-all hover:bg-emerald-50 [&.active]:border-l-4 [&.active]:bg-emerald-50',
 											{
 												active:
 													item.id ===
 													store.currentVersion?.id
 											}
 										)}>
-										<div className='tw-flex tw-items-center tw-gap-2 tw-text-left'>
+										<div className='flex items-center gap-2 text-left'>
 											<span>
 												<FiFile size={16} />
 											</span>
 											<span>Version {item.version}</span>
 										</div>
-										<div className='tw-flex tw-w-full tw-justify-between'>
-											<span className='tw-flex tw-items-center tw-gap-2 tw-text-xs tw-text-slate-400'>
+										<div className='flex w-full justify-between'>
+											<span className='flex items-center gap-2 text-xs text-slate-400'>
 												<IoListCircle />
 												{item.id ===
 												store.currentVersion.id
@@ -73,7 +73,7 @@ const Versions = () => {
 					</AsyncContent>
 				</div>
 			</div>
-			<main className='tw-flex-1 tw-bg-white'>
+			<main className='flex-1 bg-white'>
 				<Outlet />
 			</main>
 		</div>

@@ -71,7 +71,7 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 			renderCell(params) {
 				const val = params.row.employeeNumber
 				return (
-					<div className='tw-flex tw-items-center tw-gap-2'>
+					<div className='flex items-center gap-2'>
 						<button
 							className='btn-secondary'
 							onClick={() =>
@@ -80,7 +80,7 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 							<FiRefreshCw />
 							{val ? <span>Regen</span> : <span>Gen</span>}
 						</button>
-						<span className='tw-font-bold tw-text-emerald-500'>
+						<span className='font-bold text-emerald-500'>
 							{val}
 						</span>
 					</div>
@@ -108,14 +108,11 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 			width: 40,
 			renderCell(params) {
 				return params.value ? (
-					<IoCheckmarkCircle
-						size={30}
-						className='tw-text-green-500'
-					/>
+					<IoCheckmarkCircle size={30} className='text-green-500' />
 				) : (
 					<IoInformationCircle
 						size={30}
-						className='tw-text-orange-500'
+						className='text-orange-500'
 					/>
 				)
 			}
@@ -142,7 +139,7 @@ export const EmployeeGrid: FC<Props> = ({ loading, reload }) => {
 			width: 120,
 			renderCell(params: GridRenderCellParams) {
 				return (
-					<div className='tw-flex tw-w-full tw-items-center tw-justify-center tw-gap-2 tw-text-center tw-align-middle'>
+					<div className='flex w-full items-center justify-center gap-2 text-center align-middle'>
 						{params.row.isActive ? (
 							<Tooltip title='Deactivate user'>
 								<button

@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
 		flex: 1,
 		renderCell: (params) =>
 			params?.value ? (
-				<IoCheckmarkCircle size={36} className='tw-text-green-500' />
+				<IoCheckmarkCircle size={36} className='text-green-500' />
 			) : null
 	}
 ]
@@ -60,7 +60,7 @@ const BookingPeriods: React.FC = () => {
 			title='Office Booking Periods'
 			action={
 				<button className='btn-secondary' onClick={loadNextPeriod}>
-					<FiRefreshCw className='tw-animate-spin' />
+					<FiRefreshCw className='animate-spin' />
 					<span>Refresh</span>
 				</button>
 			}>

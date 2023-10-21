@@ -56,7 +56,7 @@ const Home = () => {
 
 	return (
 		<PageContainer icon={<FiGrid />} title='Apps'>
-			<div className='tw-grid tw-grid-cols-3 tw-gap-5'>
+			<div className='grid grid-cols-3 gap-5'>
 				<ClickableCard
 					title='My Booking'
 					subTitle='Booking Office Visit'
@@ -78,11 +78,11 @@ const Home = () => {
 					link='/booking-periods'
 				/>
 			</div>
-			<div className='tw-mt-3 tw-grid tw-grid-cols-3 tw-gap-5'>
+			<div className='mt-3 grid grid-cols-3 gap-5'>
 				<Card title='Total Employee'>
 					{isLoading}
 					<AsyncContent loading={isLoading}>
-						<h3 className='tw-text-8xl'>{totalEmployee}</h3>
+						<h3 className='text-8xl'>{totalEmployee}</h3>
 					</AsyncContent>
 				</Card>
 				<Card title='Booking Overall Status'>

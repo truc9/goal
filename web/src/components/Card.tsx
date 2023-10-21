@@ -1,17 +1,17 @@
 import { FC, ReactNode } from 'react'
 
 interface Props {
-  children: ReactNode
-  title?: string
+	children: ReactNode
+	title?: string
 }
 
 export const Card: FC<Props> = ({ children, title }) => {
-  return (
-    <div className="tw-flex tw-flex-col tw-items-center tw-gap-3 tw-rounded tw-border tw-bg-slate-50 tw-p-5 tw-text-center tw-text-slate-500">
-      <div className="tw-flex tw-flex-1 tw-flex-col tw-items-center tw-justify-center">
-        {children}
-      </div>
-      <div className="tw-font-bold">{title}</div>
-    </div>
-  )
+	return (
+		<div className='flex flex-col items-center gap-3 rounded border bg-slate-50 p-5 text-center text-slate-500'>
+			<div className='flex flex-1 flex-col items-center justify-center'>
+				{children}
+			</div>
+			<div className='font-bold'>{title}</div>
+		</div>
+	)
 }

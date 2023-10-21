@@ -85,7 +85,7 @@ const BookingDashboard: React.FC = () => {
 	return (
 		<div>
 			<PageContainer icon={<FiBarChart2 />} title='Booking By Period'>
-				<div className='tw-mb-3 tw-h-[250px] tw-w-full'>
+				<div className='mb-3 h-[250px] w-full'>
 					<AsyncContent loading={loadingBookingPerPeriods}>
 						<ResponsiveContainer width='100%' height='100%'>
 							<AreaChart
@@ -144,15 +144,15 @@ const BookingDashboard: React.FC = () => {
 				{loadingAllBookings ? (
 					<LoadingSkeleton number={3} />
 				) : (
-					<table className='tw-table tw-w-full'>
+					<table className='table w-full'>
 						<thead>
 							<tr>
-								<th className='tw-w-[200px]'>Employee</th>
+								<th className='w-[200px]'>Employee</th>
 								{dates.map((d, i) => {
 									return (
 										<th
 											key={i}
-											className='tw-h-10 tw-w-[130px] tw-items-center tw-justify-center'>
+											className='h-10 w-[130px] items-center justify-center'>
 											{dayjs(d).format('ddd')}
 										</th>
 									)
@@ -164,10 +164,10 @@ const BookingDashboard: React.FC = () => {
 								(ub: UserBooking, idx: number) => {
 									return (
 										<tr
-											className='tw-table-row tw-border-b-2 tw-border-dashed'
+											className='table-row border-b-2 border-dashed'
 											key={idx}>
 											<td>
-												<span className='tw-flex tw-items-center tw-justify-start tw-px-5'>
+												<span className='flex items-center justify-start px-5'>
 													{ub.userDisplayName}
 												</span>
 											</td>
@@ -181,15 +181,13 @@ const BookingDashboard: React.FC = () => {
 															dayjs(date).date()
 													)
 												return (
-													<td
-														key={i}
-														className='tw-p-2'>
+													<td key={i} className='p-2'>
 														{booking ? (
-															<span className='tw-flex tw-items-center tw-justify-center tw-text-green-500'>
+															<span className='flex items-center justify-center text-green-500'>
 																<IoCheckmarkCircle size='40' />
 															</span>
 														) : (
-															<span className='tw-flex tw-items-center tw-justify-center tw-text-slate-200'>
+															<span className='flex items-center justify-center text-slate-200'>
 																<IoCheckmarkCircle size='40' />
 															</span>
 														)}

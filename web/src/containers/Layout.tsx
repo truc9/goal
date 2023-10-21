@@ -32,7 +32,7 @@ const PageMenu: FC<PageMenuData> = ({ path, icon, tooltip }) => {
 		<Tooltip title={tooltip} placement='right'>
 			<NavLink
 				to={path}
-				className='tw-rounded tw-from-emerald-300 tw-to-emerald-500 tw-p-3 hover:tw-bg-gradient-to-r hover:tw-text-white [&.active]:tw-bg-gradient-to-r'>
+				className='rounded from-emerald-300 to-emerald-500 p-3 hover:bg-gradient-to-r hover:text-white [&.active]:bg-gradient-to-r'>
 				{icon}
 			</NavLink>
 		</Tooltip>
@@ -52,8 +52,8 @@ const Layout: React.FC = () => {
 	}
 
 	return (
-		<div className='tw-flex tw-h-screen tw-overflow-hidden'>
-			<nav className='tw-flex tw-w-14 tw-flex-col tw-items-center tw-bg-emerald-500 tw-py-5 tw-text-white'>
+		<div className='flex h-screen overflow-hidden'>
+			<nav className='flex w-14 flex-col items-center bg-emerald-500 py-5 text-white'>
 				<PageMenu
 					tooltip='Dashboard & Modules'
 					icon={<FiGrid size={iconSize} />}
@@ -89,16 +89,16 @@ const Layout: React.FC = () => {
 					</>
 				)}
 			</nav>
-			<main className='tw-flex tw-flex-1 tw-flex-col tw-bg-slate-100'>
-				<div className='tw-flex tw-h-16 tw-shrink-0 tw-grow-0 tw-items-center tw-justify-between tw-gap-3 tw-bg-white tw-px-2 tw-shadow'>
-					<div className='tw-w-60'>
+			<main className='flex flex-1 flex-col bg-slate-100'>
+				<div className='flex h-16 shrink-0 grow-0 items-center justify-between gap-3 bg-white px-2 shadow'>
+					<div className='w-60'>
 						<input
 							type='text'
-							className='tw-w-[300px]'
+							className='w-[300px]'
 							placeholder='Search...'
 						/>
 					</div>
-					<div className='tw-flex tw-items-center'>
+					<div className='flex items-center'>
 						{actions.map((action: TopbarAction) => {
 							return (
 								<button
@@ -112,8 +112,8 @@ const Layout: React.FC = () => {
 							)
 						})}
 					</div>
-					<div className='tw-flex tw-flex-1 tw-items-center tw-justify-end tw-gap-5'>
-						<h3 className='tw-text-sm'>Hello, {user?.name}!</h3>
+					<div className='flex flex-1 items-center justify-end gap-5'>
+						<h3 className='text-sm'>Hello, {user?.name}!</h3>
 						<Tooltip placement='bottom' title='Signout'>
 							<button
 								className='btn-warning'
@@ -124,10 +124,10 @@ const Layout: React.FC = () => {
 						</Tooltip>
 					</div>
 				</div>
-				<div className='tw-flex-1 tw-overflow-y-auto'>
+				<div className='flex-1 overflow-y-auto'>
 					<Suspense
 						fallback={
-							<div className='tw-flex tw-items-center tw-gap-3 tw-p-10'>
+							<div className='flex items-center gap-3 p-10'>
 								<Loading />
 							</div>
 						}>

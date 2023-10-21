@@ -64,7 +64,7 @@ export const QuestionPopup: FC<Props> = ({
 			renderCell: (e) => {
 				return (
 					<IconButton onClick={() => removeChoice(e.value)}>
-						<IoTrash className='tw-text-red-500' />
+						<IoTrash className='text-red-500' />
 					</IconButton>
 				)
 			}
@@ -134,7 +134,7 @@ export const QuestionPopup: FC<Props> = ({
 					</Tabs>
 				</Box>
 				<TabContent value={tabIndex} index={0}>
-					<div className='tw-flex tw-flex-col tw-gap-3'>
+					<div className='flex flex-col gap-3'>
 						<FormGroup>
 							<FormLabel
 								id='question-label'

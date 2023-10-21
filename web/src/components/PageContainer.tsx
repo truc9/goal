@@ -20,22 +20,22 @@ export const PageContainer: React.FC<Props> = ({
 	const navigate = useNavigate()
 
 	return (
-		<div className='tw-m-2 tw-flex tw-flex-col tw-gap-5 tw-rounded tw-border tw-bg-white tw-p-5 tw-shadow'>
-			<div className='tw-flex tw-items-center tw-justify-between'>
+		<div className='m-2 flex flex-col gap-5 rounded border bg-white p-5 shadow'>
+			<div className='flex items-center justify-between'>
 				{showGoBack && (
 					<button
-						className='tw-flex tw-items-center tw-gap-2 tw-rounded tw-p-2 tw-transition-all hover:tw-bg-slate-100 active:-tw-translate-x-2'
+						className='flex items-center gap-2 rounded p-2 transition-all hover:bg-slate-100 active:-translate-x-2'
 						onClick={() => navigate(-1)}>
 						<FiChevronLeft /> <span>Back</span>
 					</button>
 				)}
-				<div className='tw-flex tw-items-center tw-gap-3 tw-font-bold'>
-					{icon && <span className='tw-text-lg'>{icon}</span>}
-					<h3 className='tw-text-lg'>{title}</h3>
+				<div className='flex items-center gap-3 font-bold'>
+					{icon && <span className='text-lg'>{icon}</span>}
+					<h3 className='text-lg'>{title}</h3>
 				</div>
 				{action}
 			</div>
-			<div className='tw-flex tw-flex-col tw-gap-3'>{children}</div>
+			<div className='flex flex-col gap-3'>{children}</div>
 		</div>
 	)
 }

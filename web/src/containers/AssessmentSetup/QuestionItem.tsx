@@ -20,17 +20,17 @@ export const QuestionItem: FC<Props> = ({
 	return (
 		<div
 			className={cn(
-				'tw-flex tw-flex-col tw-rounded tw-border-l-4 tw-border-emerald-500 tw-bg-slate-100 tw-p-5 tw-transition-all hover:tw-translate-x-1 hover:tw-cursor-move',
-				{ 'tw-bg-emerald-500 tw-text-white tw-shadow': isDragging }
+				'flex flex-col rounded border-l-4 border-emerald-500 bg-slate-100 p-5 transition-all hover:translate-x-1 hover:cursor-move',
+				{ 'bg-emerald-500 text-white shadow': isDragging }
 			)}>
-			<div className='tw-flex tw-items-center tw-gap-3'>
-				<div className='tw-flex tw-items-center tw-font-bold tw-text-emerald-500'>
+			<div className='flex items-center gap-3'>
+				<div className='flex items-center font-bold text-emerald-500'>
 					Q{question.ordinal}
 				</div>
-				<div className='tw-flex tw-w-full tw-justify-between'>
+				<div className='flex w-full justify-between'>
 					<div className='flex-1'>{question.description}</div>
-					<div className='tw-flex tw-w-[200px] tw-items-center tw-justify-between tw-gap-5'>
-						<span className='tw-w-[150px]'>
+					<div className='flex w-[200px] items-center justify-between gap-5'>
+						<span className='w-[150px]'>
 							{QuestionTypeDict[question.type]}
 						</span>
 						<button onClick={() => onDelete(question)}>
@@ -43,12 +43,12 @@ export const QuestionItem: FC<Props> = ({
 				</div>
 			</div>
 			{question.choices!.length > 0 && (
-				<span className='tw-mt-2 tw-px-4'>Choices</span>
+				<span className='mt-2 px-4'>Choices</span>
 			)}
 			{question.choices!.map((ch, i: number) => (
 				<div
 					key={i}
-					className='tw-flex tw-items-center tw-justify-start tw-gap-2 tw-px-8 tw-py-2'>
+					className='flex items-center justify-start gap-2 px-8 py-2'>
 					<FiCheckSquare />
 					{ch.description}
 				</div>
