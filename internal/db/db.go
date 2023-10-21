@@ -32,6 +32,7 @@ func createSingleInstanceDb() *gorm.DB {
 			&entity.AssessmentVersion{},
 			&entity.Question{},
 			&entity.ChoiceAnswer{},
+			&entity.UserPreference{},
 		)
 
 		seeder := &Seeder{
