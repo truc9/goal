@@ -58,6 +58,15 @@ func (ct AssessmentController) GetAll(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, assessments)
 }
 
+// TODO: swagger doc
+func (ct AssessmentController) GetAssessmentPairItems(c echo.Context) (err error) {
+	items, err := ct.assessmentSv.GetAssessmentPairItems()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, items)
+}
+
 // Delete Assessment By ID
 //
 //	@Summary		Delete Assessment

@@ -1,21 +1,11 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Popup } from '../../components/Popup'
 import { FiFile } from 'react-icons/fi'
-import { Box, Chip, MenuItem, OutlinedInput, Select } from '@mui/material'
 import { EmployeeModel } from '../../models/employee'
-
-const names = [
-	'Oliver Hansen',
-	'Van Henry',
-	'April Tucker',
-	'Ralph Hubbard',
-	'Omar Alexander',
-	'Carlos Abbott',
-	'Miriam Wagner',
-	'Bradley Wilkerson',
-	'Virginia Andrews',
-	'Kelly Snyder'
-]
+import { PairItem } from '../../models/pairItem'
+import assessmentService from '../../services/assessmentService'
+import { IoCheckmarkCircle } from 'react-icons/io5'
+import cn from 'classnames'
 
 interface Props {
 	show: boolean
@@ -24,21 +14,29 @@ interface Props {
 }
 
 export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
-	const [assessments, setAssessments] = useState<string[]>([])
+	const [selectedItems, setSelectedItems] = useState<PairItem[]>([])
+	const [assessmentOptions, setAssessmentOptions] = useState<PairItem[]>([])
 
-	const handleChange = (event: any) => {
-		const {
-			target: { value }
-		} = event
+	useEffect(() => {
+		load()
+	}, [])
 
-		setAssessments(
-			// On autofill we get a stringified value.
-			typeof value === 'string' ? value.split(',') : value
-		)
+	const load = async () => {
+		const assessmentOptions =
+			await assessmentService.getAssessmentPairItems()
+		setAssessmentOptions(assessmentOptions)
+	}
+
+	const onItemClick = (item: PairItem) => {
+		if (selectedItems.some((s) => s.id === item.id)) {
+			setSelectedItems(selectedItems.filter((si) => si.id !== item.id))
+		} else {
+			setSelectedItems([...selectedItems, item])
+		}
 	}
 
 	const handleClose = () => {
-		setAssessments([])
+		setSelectedItems([])
 		onClose()
 	}
 
@@ -50,36 +48,29 @@ export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
 			size='sm'
 			title='Assign Assessment'>
 			<div className='flex flex-col gap-5'>
-				<h3 className='text-center font-bold text-3xl'>
+				<h3 className='text-center text-3xl font-bold'>
 					{employee?.firstName} {employee?.lastName}
 				</h3>
-				<Select
-					labelId='demo-multiple-chip-label'
-					id='demo-multiple-chip'
-					multiple
-					value={assessments}
-					onChange={handleChange}
-					input={
-						<OutlinedInput id='select-multiple-chip' label='Chip' />
-					}
-					renderValue={(selected) => (
-						<Box
-							sx={{
-								display: 'flex',
-								flexWrap: 'wrap',
-								gap: 0.5
-							}}>
-							{selected.map((value) => (
-								<Chip key={value} label={value} />
-							))}
-						</Box>
-					)}>
-					{names.map((name) => (
-						<MenuItem key={name} value={name}>
-							{name}
-						</MenuItem>
-					))}
-				</Select>
+				<div className='h-[300px] overflow-auto'>
+					{assessmentOptions.map((option) => {
+						const isSelected = selectedItems.some(
+							(s) => s.id === option.id
+						)
+						return (
+							<button
+								onClick={() => onItemClick(option)}
+								className='flex items-center gap-2 hover:font-bold active:translate-x-1 active:translate-y-1'>
+								<IoCheckmarkCircle
+									size={26}
+									className={cn({
+										'text-emerald-500': isSelected
+									})}
+								/>
+								<span>{option.name}</span>
+							</button>
+						)
+					})}
+				</div>
 			</div>
 		</Popup>
 	)

@@ -38,7 +38,7 @@ const AssessmentSetup = () => {
 
 	async function loadAssessments() {
 		setLoading(true)
-		const assessments = await assessmentService.getAll()
+		const assessments = await assessmentService.getAssessments()
 		store.loadAssessments(assessments)
 		setLoading(false)
 	}

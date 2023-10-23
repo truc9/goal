@@ -5,6 +5,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
+	"github.com/truc9/goal/internal/shared/model"
 	"gorm.io/gorm"
 )
 
@@ -75,6 +76,18 @@ func (sv AssessmentService) GetAll() ([]AssessmentModel, error) {
 	})
 
 	return assessments, nil
+}
+
+func (sv AssessmentService) GetAssessmentPairItems() ([]model.PairItem, error) {
+	pairItems := []model.PairItem{}
+
+	res := sv.db.Raw(`
+		SELECT asm.name, v.id
+		FROM assessment_versions v
+		JOIN assessments asm ON v.assessment_id = asm.id
+	`).Scan(&pairItems)
+
+	return pairItems, res.Error
 }
 
 func (sv AssessmentService) Delete(id int64) error {

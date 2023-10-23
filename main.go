@@ -95,12 +95,11 @@ func main() {
 
 		// HSE Assessments
 		api.GET("/assessments", assessmentController.GetAll)
+		api.GET("/assessments/pair-items", assessmentController.GetAssessmentPairItems)
 		api.POST("/assessments", assessmentController.Create)
 		api.PUT("/assessments/:assessmentId", assessmentController.Update)
 		api.DELETE("/assessments/:assessmentId", assessmentController.Delete)
 		api.GET("/assessments/:assessmentId/versions", assessmentController.GetVersions)
-
-		// Question Setup
 		api.GET("/assessments/versions/:assessmentVersionId/questions", questionController.GetByVersion)
 		api.POST("/assessments/questions", questionController.Create)
 		api.DELETE("/assessments/questions/:id", questionController.Delete)

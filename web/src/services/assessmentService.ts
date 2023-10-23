@@ -1,5 +1,6 @@
 import { AssessmentModel } from '../containers/AssessmentSetup/models/AssessmentModel'
 import { AssessmentVersionModel } from '../containers/AssessmentSetup/models/AssessmentVersionModel'
+import { PairItem } from '../models/pairItem'
 import httpClient from './httpClient'
 
 async function create(name: string, description: string) {
@@ -13,8 +14,13 @@ async function update(id: number, model: AssessmentModel) {
     await httpClient.put(`assessments/${id}`, model)
 }
 
-async function getAll(): Promise<AssessmentModel[]> {
+async function getAssessments(): Promise<AssessmentModel[]> {
     const result = await httpClient.get<AssessmentModel[]>('assessments')
+    return result
+}
+
+async function getAssessmentPairItems(): Promise<PairItem[]> {
+    const result = await httpClient.get<PairItem[]>("assessments/pair-items")
     return result
 }
 
@@ -23,6 +29,7 @@ async function getVersions(assessmentId: number) {
     return result
 }
 
+
 async function deleteById(id: number): Promise<void> {
     await httpClient.remove(`assessments/${id}`)
 }
@@ -30,7 +37,8 @@ async function deleteById(id: number): Promise<void> {
 export default {
     create,
     update,
-    getAll,
+    getAssessments,
+    getAssessmentPairItems,
     getVersions,
     deleteById
 }

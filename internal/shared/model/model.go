@@ -14,3 +14,8 @@ type BaseModel struct {
 	CreatedDate time.Time `json:"createdDate"`
 	UpdatedDate time.Time `json:"updatedDate"`
 }
+
+type PairItem struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
