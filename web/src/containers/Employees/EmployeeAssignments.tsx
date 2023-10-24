@@ -8,6 +8,7 @@ import { IoCheckmarkCircle } from 'react-icons/io5'
 import cn from 'classnames'
 import { enqueueSnackbar } from 'notistack'
 import { Alert } from '@mui/material'
+import employeeService from '../../services/employeeService'
 
 interface Props {
 	show: boolean
@@ -20,11 +21,7 @@ export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
 	const [items, setItems] = useState<PairItem[]>([])
 
 	useEffect(() => {
-		loadAllItems()
-	}, [])
-
-	useEffect(() => {
-		if (items.length) {
+		if (items.length > 0) {
 			loadSelectedItems()
 		}
 	}, [items])
@@ -35,23 +32,28 @@ export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
 	}
 
 	const loadSelectedItems = async () => {
-		const assignments = await assessmentService.getAssignments()
-
-		const selected = items.filter((o) =>
-			assignments.some(
-				(d: any) => d.versionId === o.id && d.userId == employee!.id
+		if (employee) {
+			const assignments = await employeeService.getAssignments(
+				employee.id
 			)
-		)
-		setSelectedItems(selected)
+
+			setSelectedItems(
+				items.filter((item) =>
+					assignments.map((a) => a.versionId).includes(item.id)
+				)
+			)
+		}
 	}
 
 	const onItemClick = async (item: PairItem) => {
 		if (selectedItems.some((s) => s.id === item.id)) {
 			await assessmentService.unassign(employee!.id, item.id)
 			enqueueSnackbar(`Unselect ${item.name}`, { variant: 'warning' })
+			setSelectedItems(selectedItems.filter((s) => s.id !== item.id))
 		} else {
 			await assessmentService.assign(employee!.id, item.id)
 			enqueueSnackbar(`Select ${item.name}`, { variant: 'success' })
+			setSelectedItems([...selectedItems, item])
 		}
 
 		await loadSelectedItems()
@@ -63,7 +65,7 @@ export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
 	}
 
 	const onShow = async () => {
-		await loadSelectedItems()
+		await loadAllItems()
 	}
 
 	return (

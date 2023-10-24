@@ -106,12 +106,12 @@ func main() {
 		api.PUT("/assessments/questions/:id/ordinal", questionController.UpdateOrdinal)
 
 		// HSE Assessment Assignments
-		api.GET("/assignments", assessmentController.GetAssignments)
 		api.PUT("/assignments/:versionId/assign", assessmentController.Assign)
 		api.PUT("/assignments/:versionId/unassign", assessmentController.Unassign)
 
 		// Users & Employees
 		api.GET("/employees", employeeController.GetAll)
+		api.GET("/employees/:userId/assignments", assessmentController.GetAssignments)
 		api.PUT("/employees/:userId/employee-numbers", employeeController.AllocEmployeeNumber)
 		api.PUT("/employees/:userId/activate", employeeController.Activate)
 		api.PUT("/employees/:userId/deactivate", employeeController.Deactivate)

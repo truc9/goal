@@ -3,6 +3,7 @@ package hse
 import (
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
@@ -163,7 +164,10 @@ func (sv AssessmentService) Assign(userId, versionId int64) error {
 	sv.db.Debug().
 		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
 		Select("id").
+		Find(&[]entity.AssessmentAssignment{}).
 		Count(&c)
+
+	log.Printf("found %v", c)
 
 	if c > 0 {
 		return fmt.Errorf("assessment version %v already assigned to %v", versionId, userId)
@@ -179,25 +183,28 @@ func (sv AssessmentService) Assign(userId, versionId int64) error {
 
 func (sv AssessmentService) Unassign(userId, versionId int64) error {
 	var c int64
+
+	deletingItems := []entity.AssessmentAssignment{}
 	sv.db.Debug().
 		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
 		Select("id").
+		Find(&deletingItems).
 		Count(&c)
 
 	if c == 0 {
 		return fmt.Errorf("empty assignment %v", versionId)
 	}
 
-	r := sv.db.
-		Where("user_id = ? AND assessment_version_id = ?", userId, versionId).
-		Delete(&entity.AssessmentAssignment{})
+	r := sv.db.Debug().Delete(&deletingItems)
+
+	log.Println(r.Error)
 
 	return r.Error
 }
 
-func (sv AssessmentService) GetAssignments() []AssignmentModel {
+func (sv AssessmentService) GetAssignments(userId int64) []AssignmentModel {
 	entities := []entity.AssessmentAssignment{}
-	sv.db.Find(&entities)
+	sv.db.Where("user_id = ?", userId).Find(&entities)
 	return lo.Map(entities, func(item entity.AssessmentAssignment, _ int) AssignmentModel {
 		return AssignmentModel{
 			UserId:    item.UserId,

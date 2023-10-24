@@ -38,10 +38,6 @@ function unassign(userId: number, versionId: number) {
     httpClient.put(`assignments/${versionId}/unassign`, { userId })
 }
 
-function getAssignments() {
-    return httpClient.get('assignments')
-}
-
 export default {
     create,
     update,
@@ -51,5 +47,4 @@ export default {
     deleteById,
     assign,
     unassign,
-    getAssignments
 }

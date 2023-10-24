@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -150,8 +149,6 @@ func (ct AssessmentController) Assign(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	log.Println(model)
-
 	err := ct.assessmentSv.Assign(model.UserId, versionId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
@@ -171,15 +168,18 @@ func (ct AssessmentController) Assign(c echo.Context) error {
 //	@Router			/api/assignments/:versionId/unassign [PUT]
 func (ct AssessmentController) Unassign(c echo.Context) error {
 	versionId := params.GetIntParam(c, "versionId")
-	model := &hse.AssignmentModel{}
+	model := &hse.AssignmentModel{
+		VersionId: versionId,
+	}
 
 	if err := c.Bind(model); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	err := ct.assessmentSv.Unassign(model.UserId, versionId)
+
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, nil)
@@ -194,6 +194,7 @@ func (ct AssessmentController) Unassign(c echo.Context) error {
 //	@Success		200
 //	@Router			/api/assignments [GET]
 func (ct AssessmentController) GetAssignments(c echo.Context) error {
-	result := ct.assessmentSv.GetAssignments()
+	userId := params.GetIntParam(c, "userId")
+	result := ct.assessmentSv.GetAssignments(userId)
 	return c.JSON(http.StatusOK, result)
 }

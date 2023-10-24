@@ -1,3 +1,4 @@
+import { AssignmentModel } from "../containers/AssessmentSetup/models/AssignmentModel"
 import { EmployeeModel, EmployeeResponse } from "../models/employee"
 import httpClient from "./httpClient"
 
@@ -24,10 +25,15 @@ async function upload(file: File) {
     return await httpClient.post('employees/import', form)
 }
 
+const getAssignments = async (userId: number) => {
+    return await httpClient.get<AssignmentModel[]>(`employees/${userId}/assignments`)
+}
+
 export default {
     getAll,
     activate,
     deactivate,
     upload,
-    allocateEmployeeNumber
+    allocateEmployeeNumber,
+    getAssignments
 }
