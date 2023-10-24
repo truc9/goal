@@ -23,6 +23,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Get all assessments",
                 "responses": {
                     "200": {
@@ -45,6 +48,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Delete Assessment",
                 "responses": {
                     "200": {
@@ -61,6 +67,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Get versions",
                 "responses": {
                     "200": {
@@ -75,6 +84,28 @@
                 }
             }
         },
+        "/api/asessments/pair-items": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "GetAssessmentPairItems",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
         "/api/assessments": {
             "post": {
                 "consumes": [
@@ -82,6 +113,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Assessments"
                 ],
                 "summary": "Create Assessment",
                 "parameters": [
@@ -110,8 +144,71 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Update Assessment",
                 "responses": {}
+            }
+        },
+        "/api/assignments/:versionId/assign": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "Assign",
+                "parameters": [
+                    {
+                        "description": "AssignmentModel",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hse.AssignmentModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/assignments/:versionId/unassign": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "Unassign",
+                "parameters": [
+                    {
+                        "description": "Assign",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hse.AssignmentModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
             }
         },
         "/api/bookings": {
@@ -123,7 +220,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Get all bookings",
                 "responses": {
@@ -146,7 +243,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Submit booking",
                 "parameters": [
@@ -179,7 +276,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Delete booking",
                 "parameters": [
@@ -207,7 +304,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Get all bookings by Period ID",
                 "parameters": [
@@ -271,7 +368,7 @@
                 "bookingPeriodId": {
                     "type": "integer"
                 },
-                "createdAt": {
+                "createdDate": {
                     "type": "string"
                 },
                 "date": {
@@ -283,7 +380,7 @@
                 "uid": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updatedDate": {
                     "type": "string"
                 },
                 "user": {
@@ -311,7 +408,7 @@
         "entity.User": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "createdDate": {
                     "type": "string"
                 },
                 "email": {
@@ -329,6 +426,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "isActive": {
+                    "type": "boolean"
+                },
                 "lastName": {
                     "type": "string"
                 },
@@ -341,7 +441,7 @@
                 "uid": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updatedDate": {
                     "type": "string"
                 },
                 "username": {
@@ -354,6 +454,9 @@
             "properties": {
                 "createdBy": {
                     "type": "integer"
+                },
+                "createdDate": {
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
@@ -369,6 +472,9 @@
                 },
                 "updatedBy": {
                     "type": "integer"
+                },
+                "updatedDate": {
+                    "type": "string"
                 }
             }
         },
@@ -382,6 +488,14 @@
                     "type": "integer"
                 },
                 "version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "hse.AssignmentModel": {
+            "type": "object",
+            "properties": {
+                "userId": {
                     "type": "integer"
                 }
             }

@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -10,11 +11,13 @@ import (
 var (
 	Secret           string
 	ConnectionString string
+	SeedData         bool
 )
 
 const (
-	SECRET_KEY = "SECRET_KEY"
-	DATABASE   = "DATABASE"
+	secretKey = "SECRET_KEY"
+	database  = "DATABASE"
+	seedData  = "SEED_DATA"
 )
 
 func init() {
@@ -24,9 +27,9 @@ func init() {
 		log.Println("Environment .env does not exist. env variables getting from pipeline")
 	}
 
-	Secret = os.Getenv(SECRET_KEY)
-	ConnectionString = os.Getenv(DATABASE)
+	Secret = os.Getenv(secretKey)
+	ConnectionString = os.Getenv(database)
+	SeedData, _ = strconv.ParseBool(os.Getenv(seedData))
 
-	log.Printf("Found secret %s\n", Secret)
-	log.Printf("Found connection string %s\n", ConnectionString)
+	log.Println("env variables loaded")
 }

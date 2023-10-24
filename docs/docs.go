@@ -30,6 +30,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Get all assessments",
                 "responses": {
                     "200": {
@@ -52,6 +55,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Delete Assessment",
                 "responses": {
                     "200": {
@@ -68,6 +74,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Get versions",
                 "responses": {
                     "200": {
@@ -82,6 +91,28 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/asessments/pair-items": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "GetAssessmentPairItems",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
         "/api/assessments": {
             "post": {
                 "consumes": [
@@ -89,6 +120,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Assessments"
                 ],
                 "summary": "Create Assessment",
                 "parameters": [
@@ -117,8 +151,71 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Assessments"
+                ],
                 "summary": "Update Assessment",
                 "responses": {}
+            }
+        },
+        "/api/assignments/:versionId/assign": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "Assign",
+                "parameters": [
+                    {
+                        "description": "AssignmentModel",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hse.AssignmentModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/assignments/:versionId/unassign": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "Unassign",
+                "parameters": [
+                    {
+                        "description": "Assign",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hse.AssignmentModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
             }
         },
         "/api/bookings": {
@@ -130,7 +227,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Get all bookings",
                 "responses": {
@@ -153,7 +250,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Submit booking",
                 "parameters": [
@@ -186,7 +283,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Delete booking",
                 "parameters": [
@@ -214,7 +311,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "bookings"
+                    "Bookings"
                 ],
                 "summary": "Get all bookings by Period ID",
                 "parameters": [
@@ -278,7 +375,7 @@ const docTemplate = `{
                 "bookingPeriodId": {
                     "type": "integer"
                 },
-                "createdAt": {
+                "createdDate": {
                     "type": "string"
                 },
                 "date": {
@@ -290,7 +387,7 @@ const docTemplate = `{
                 "uid": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updatedDate": {
                     "type": "string"
                 },
                 "user": {
@@ -318,7 +415,7 @@ const docTemplate = `{
         "entity.User": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "createdDate": {
                     "type": "string"
                 },
                 "email": {
@@ -336,6 +433,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "isActive": {
+                    "type": "boolean"
+                },
                 "lastName": {
                     "type": "string"
                 },
@@ -348,7 +448,7 @@ const docTemplate = `{
                 "uid": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updatedDate": {
                     "type": "string"
                 },
                 "username": {
@@ -361,6 +461,9 @@ const docTemplate = `{
             "properties": {
                 "createdBy": {
                     "type": "integer"
+                },
+                "createdDate": {
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
@@ -376,6 +479,9 @@ const docTemplate = `{
                 },
                 "updatedBy": {
                     "type": "integer"
+                },
+                "updatedDate": {
+                    "type": "string"
                 }
             }
         },
@@ -389,6 +495,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "hse.AssignmentModel": {
+            "type": "object",
+            "properties": {
+                "userId": {
                     "type": "integer"
                 }
             }

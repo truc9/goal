@@ -24,7 +24,7 @@ definitions:
     properties:
       bookingPeriodId:
         type: integer
-      createdAt:
+      createdDate:
         type: string
       date:
         type: string
@@ -32,7 +32,7 @@ definitions:
         type: integer
       uid:
         type: string
-      updatedAt:
+      updatedDate:
         type: string
       user:
         $ref: '#/definitions/entity.User'
@@ -50,7 +50,7 @@ definitions:
     type: object
   entity.User:
     properties:
-      createdAt:
+      createdDate:
         type: string
       email:
         type: string
@@ -62,6 +62,8 @@ definitions:
         type: string
       id:
         type: integer
+      isActive:
+        type: boolean
       lastName:
         type: string
       role:
@@ -70,7 +72,7 @@ definitions:
         type: integer
       uid:
         type: string
-      updatedAt:
+      updatedDate:
         type: string
       username:
         type: string
@@ -79,6 +81,8 @@ definitions:
     properties:
       createdBy:
         type: integer
+      createdDate:
+        type: string
       description:
         type: string
       id:
@@ -89,6 +93,8 @@ definitions:
         type: string
       updatedBy:
         type: integer
+      updatedDate:
+        type: string
     type: object
   hse.AssessmentVersionModel:
     properties:
@@ -97,6 +103,11 @@ definitions:
       questionCount:
         type: integer
       version:
+        type: integer
+    type: object
+  hse.AssignmentModel:
+    properties:
+      userId:
         type: integer
     type: object
 info:
@@ -124,6 +135,8 @@ paths:
               $ref: '#/definitions/entity.Booking'
             type: array
       summary: Get all assessments
+      tags:
+      - Assessments
   /api/asessments/:assessmentId:
     delete:
       consumes:
@@ -136,6 +149,8 @@ paths:
           schema:
             type: integer
       summary: Delete Assessment
+      tags:
+      - Assessments
   /api/asessments/:assessmentId/versions:
     get:
       produces:
@@ -148,6 +163,22 @@ paths:
               $ref: '#/definitions/hse.AssessmentVersionModel'
             type: array
       summary: Get versions
+      tags:
+      - Assessments
+  /api/asessments/pair-items:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: GetAssessmentPairItems
+      tags:
+      - Assessments
   /api/assessments:
     post:
       consumes:
@@ -167,12 +198,54 @@ paths:
           schema:
             type: string
       summary: Create Assessment
+      tags:
+      - Assessments
   /api/assessments/:assessmentId:
     put:
       produces:
       - application/json
       responses: {}
       summary: Update Assessment
+      tags:
+      - Assessments
+  /api/assignments/:versionId/assign:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: AssignmentModel
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssignmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Assign
+      tags:
+      - Assessments
+  /api/assignments/:versionId/unassign:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Assign
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssignmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Unassign
+      tags:
+      - Assessments
   /api/bookings:
     get:
       consumes:
@@ -188,7 +261,7 @@ paths:
             type: array
       summary: Get all bookings
       tags:
-      - bookings
+      - Bookings
     post:
       consumes:
       - application/json
@@ -208,7 +281,7 @@ paths:
             $ref: '#/definitions/entity.Booking'
       summary: Submit booking
       tags:
-      - bookings
+      - Bookings
   /api/bookings/{bookingId}:
     delete:
       consumes:
@@ -226,7 +299,7 @@ paths:
           description: OK
       summary: Delete booking
       tags:
-      - bookings
+      - Bookings
   /api/bookings/{bookingPeriodId}:
     get:
       consumes:
@@ -248,5 +321,5 @@ paths:
             type: array
       summary: Get all bookings by Period ID
       tags:
-      - bookings
+      - Bookings
 swagger: "2.0"

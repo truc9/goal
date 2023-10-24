@@ -23,7 +23,7 @@ func NewBookingController(bookingSv booking.BookingService) BookingController {
 // Submit Booking godoc
 //
 //	@Summary		Submit booking
-//	@Tags			bookings
+//	@Tags			Bookings
 //	@Accept			json
 //	@Produce		json
 //	@Param			model body		entity.Booking true "Submit Booking"
@@ -44,7 +44,7 @@ func (ctrl *BookingController) Submit(c echo.Context) (err error) {
 // Delete Booking godoc
 //
 //	@Summary		Delete booking
-//	@Tags			bookings
+//	@Tags			Bookings
 //	@Accept			json
 //	@Produce		json
 //	@Param			bookingId path int true "Booking ID"
@@ -59,7 +59,7 @@ func (ctrl BookingController) Delete(c echo.Context) (err error) {
 // Get All Bookings godoc
 //
 //	@Summary		Get all bookings
-//	@Tags			bookings
+//	@Tags			Bookings
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{array}	booking.GrouppedUserBooking
@@ -73,7 +73,7 @@ func (ctrl BookingController) GetBookings(c echo.Context) (err error) {
 // Get All Bookings by Period ID
 //
 //	@Summary		Get all bookings by Period ID
-//	@Tags			bookings
+//	@Tags			Bookings
 //	@Accept			json
 //	@Produce		json
 //	@Param			bookingPeriodId path int true "Booking Period ID"

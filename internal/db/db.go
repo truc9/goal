@@ -30,16 +30,19 @@ func createSingleInstanceDb() *gorm.DB {
 			&entity.BookingPeriod{},
 			&entity.Assessment{},
 			&entity.AssessmentVersion{},
+			&entity.AssessmentAssignment{},
 			&entity.Question{},
 			&entity.ChoiceAnswer{},
 			&entity.UserPreference{},
 		)
 
-		seeder := &Seeder{
-			DB: dbCtx,
+		if config.SeedData {
+			seeder := &Seeder{
+				DB: dbCtx,
+			}
+			seeder.Seed()
 		}
 
-		seeder.Seed()
 		db = dbCtx
 	})
 

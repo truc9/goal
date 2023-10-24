@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useEffect } from 'react'
 
 import Draggable from 'react-draggable'
 import { FiSave, FiXCircle } from 'react-icons/fi'
@@ -45,6 +45,7 @@ interface Props {
 	onCloseClicked: () => void
 	onSubmitClicked?: () => void
 	showFooter?: boolean
+	onShow?: () => void
 }
 
 export const Popup: FC<Props> = ({
@@ -58,17 +59,22 @@ export const Popup: FC<Props> = ({
 	onCloseClicked,
 	onSubmitClicked,
 	showFooter = true,
+	onShow,
 	children
 }) => {
+	useEffect(() => {
+		if (show) {
+			onShow && onShow()
+		}
+	}, [show])
+
 	const handleClose = () => {
-		console.log('Popup closed')
 		if (onCloseClicked) {
 			onCloseClicked()
 		}
 	}
 
 	const handleSubmit = () => {
-		console.log('Popup submited')
 		if (onSubmitClicked) {
 			onSubmitClicked()
 		}

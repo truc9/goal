@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -23,11 +24,12 @@ func NewAssessmentController(assessmentSv hse.AssessmentService) AssessmentContr
 // Create assessment
 //
 //	@Summary		Create Assessment
+//	@Tags			Assessments
 //	@Accept			json
 //	@Produce		json
 //	@Param			model body		hse.AssessmentModel true "Create Assessment"
 //	@Success		200	{object}	uuid.UUID
-//	@Router			/api/assessments [post]
+//	@Router			/api/assessments [POST]
 func (ct AssessmentController) Create(c echo.Context) (err error) {
 	userId := httpcontext.GetUserId(c)
 	model := &hse.AssessmentModel{}
@@ -46,10 +48,11 @@ func (ct AssessmentController) Create(c echo.Context) (err error) {
 // Get all assessments
 //
 //	@Summary		Get all assessments
+//	@Tags			Assessments
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{array}	entity.Booking
-//	@Router			/api/asessments [get]
+//	@Router			/api/asessments [GET]
 func (ct AssessmentController) GetAll(c echo.Context) (err error) {
 	assessments, err := ct.assessmentSv.GetAll()
 	if err != nil {
@@ -58,7 +61,14 @@ func (ct AssessmentController) GetAll(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, assessments)
 }
 
-// TODO: swagger doc
+// GetAssessmentPairItems
+//
+//	@Summary		GetAssessmentPairItems
+//	@Tags			Assessments
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	int64
+//	@Router			/api/asessments/pair-items [GET]
 func (ct AssessmentController) GetAssessmentPairItems(c echo.Context) (err error) {
 	items, err := ct.assessmentSv.GetAssessmentPairItems()
 	if err != nil {
@@ -70,11 +80,12 @@ func (ct AssessmentController) GetAssessmentPairItems(c echo.Context) (err error
 // Delete Assessment By ID
 //
 //	@Summary		Delete Assessment
+//	@Tags			Assessments
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	int64
-//	@Router			/api/asessments/:assessmentId [delete]
-func (ct AssessmentController) Delete(c echo.Context) (err error) {
+//	@Router			/api/asessments/:assessmentId [DELETE]
+func (ct AssessmentController) Delete(c echo.Context) error {
 	assessmentId, _ := strconv.ParseInt(c.Param("assessmentId"), 10, 64)
 	deleteError := ct.assessmentSv.Delete(assessmentId)
 
@@ -87,10 +98,11 @@ func (ct AssessmentController) Delete(c echo.Context) (err error) {
 // Get verions by assessment id
 //
 //	@Summary		Get versions
+//	@Tags			Assessments
 //	@Produce		json
 //	@Success		200	{object}	[]hse.AssessmentVersionModel
-//	@Router			/api/asessments/:assessmentId/versions [get]
-func (ct AssessmentController) GetVersions(c echo.Context) (err error) {
+//	@Router			/api/asessments/:assessmentId/versions [GET]
+func (ct AssessmentController) GetVersions(c echo.Context) error {
 	assessmentId, _ := strconv.ParseInt(c.Param("assessmentId"), 10, 64)
 	versions, _ := ct.assessmentSv.GetVersions(assessmentId)
 	return c.JSON(http.StatusOK, versions)
@@ -99,9 +111,10 @@ func (ct AssessmentController) GetVersions(c echo.Context) (err error) {
 // Update single assessment
 //
 // @Summary		Update Assessment
+// @Tags		Assessments
 // @Produce 	json
-// @Router 		/api/assessments/:assessmentId [put]
-func (ct AssessmentController) Update(c echo.Context) (err error) {
+// @Router 		/api/assessments/:assessmentId [PUT]
+func (ct AssessmentController) Update(c echo.Context) error {
 	id := params.GetIntParam(c, "assessmentId")
 	userId := httpcontext.GetUserId(c)
 	model := &hse.AssessmentModel{}
@@ -112,10 +125,75 @@ func (ct AssessmentController) Update(c echo.Context) (err error) {
 
 	model.UpdatedBy = userId
 
-	err = ct.assessmentSv.Update(id, model)
+	err := ct.assessmentSv.Update(id, model)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, nil)
+}
+
+// Assign
+//
+//	@Summary		Assign
+//	@Tags			Assessments
+//	@Accept			json
+//	@Produce		json
+//	@Param			model body		hse.AssignmentModel true "AssignmentModel"
+//	@Success		200
+//	@Router			/api/assignments/:versionId/assign [PUT]
+func (ct AssessmentController) Assign(c echo.Context) error {
+	versionId := params.GetIntParam(c, "versionId")
+	model := &hse.AssignmentModel{}
+
+	if err := c.Bind(model); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	log.Println(model)
+
+	err := ct.assessmentSv.Assign(model.UserId, versionId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return c.JSON(http.StatusCreated, nil)
+}
+
+// Unassign
+//
+//	@Summary		Unassign
+//	@Tags			Assessments
+//	@Accept			json
+//	@Produce		json
+//	@Param			model body		hse.AssignmentModel true "Assign"
+//	@Success		200
+//	@Router			/api/assignments/:versionId/unassign [PUT]
+func (ct AssessmentController) Unassign(c echo.Context) error {
+	versionId := params.GetIntParam(c, "versionId")
+	model := &hse.AssignmentModel{}
+
+	if err := c.Bind(model); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	err := ct.assessmentSv.Unassign(model.UserId, versionId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return c.JSON(http.StatusCreated, nil)
+}
+
+// GetAssignments
+//
+//	@Summary		GetAssignments
+//	@Tags			Assessments
+//	@Accept			json
+//	@Produce		json
+//	@Success		200
+//	@Router			/api/assignments [GET]
+func (ct AssessmentController) GetAssignments(c echo.Context) error {
+	result := ct.assessmentSv.GetAssignments()
+	return c.JSON(http.StatusOK, result)
 }

@@ -2,6 +2,7 @@ package hse
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
@@ -82,9 +83,10 @@ func (sv AssessmentService) GetAssessmentPairItems() ([]model.PairItem, error) {
 	pairItems := []model.PairItem{}
 
 	res := sv.db.Raw(`
-		SELECT asm.name, v.id
+		SELECT CONCAT(asm.name, '(version ', v.version, ')') AS name, v.id
 		FROM assessment_versions v
 		JOIN assessments asm ON v.assessment_id = asm.id
+		ORDER BY asm.name
 	`).Scan(&pairItems)
 
 	return pairItems, res.Error
@@ -154,4 +156,52 @@ func (sv AssessmentService) Update(id int64, model *AssessmentModel) error {
 	}
 
 	return sv.db.Save(&assessment).Error
+}
+
+func (sv AssessmentService) Assign(userId, versionId int64) error {
+	var c int64
+	sv.db.Debug().
+		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
+		Select("id").
+		Count(&c)
+
+	if c > 0 {
+		return fmt.Errorf("assessment version %v already assigned to %v", versionId, userId)
+	}
+
+	r := sv.db.Create(&entity.AssessmentAssignment{
+		UserId:              userId,
+		AssessmentVersionId: versionId,
+	})
+
+	return r.Error
+}
+
+func (sv AssessmentService) Unassign(userId, versionId int64) error {
+	var c int64
+	sv.db.Debug().
+		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
+		Select("id").
+		Count(&c)
+
+	if c == 0 {
+		return fmt.Errorf("empty assignment %v", versionId)
+	}
+
+	r := sv.db.
+		Where("user_id = ? AND assessment_version_id = ?", userId, versionId).
+		Delete(&entity.AssessmentAssignment{})
+
+	return r.Error
+}
+
+func (sv AssessmentService) GetAssignments() []AssignmentModel {
+	entities := []entity.AssessmentAssignment{}
+	sv.db.Find(&entities)
+	return lo.Map(entities, func(item entity.AssessmentAssignment, _ int) AssignmentModel {
+		return AssignmentModel{
+			UserId:    item.UserId,
+			VersionId: item.AssessmentVersionId,
+		}
+	})
 }

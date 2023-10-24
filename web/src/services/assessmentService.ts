@@ -3,35 +3,43 @@ import { AssessmentVersionModel } from '../containers/AssessmentSetup/models/Ass
 import { PairItem } from '../models/pairItem'
 import httpClient from './httpClient'
 
-async function create(name: string, description: string) {
-    await httpClient.post('assessments', {
+function create(name: string, description: string) {
+    httpClient.post('assessments', {
         name,
         description
     })
 }
 
-async function update(id: number, model: AssessmentModel) {
-    await httpClient.put(`assessments/${id}`, model)
+function update(id: number, model: AssessmentModel) {
+    httpClient.put(`assessments/${id}`, model)
 }
 
-async function getAssessments(): Promise<AssessmentModel[]> {
-    const result = await httpClient.get<AssessmentModel[]>('assessments')
-    return result
+function getAssessments(): Promise<AssessmentModel[]> {
+    return httpClient.get<AssessmentModel[]>('assessments')
 }
 
-async function getAssessmentPairItems(): Promise<PairItem[]> {
-    const result = await httpClient.get<PairItem[]>("assessments/pair-items")
-    return result
+function getAssessmentPairItems(): Promise<PairItem[]> {
+    return httpClient.get<PairItem[]>("assessments/pair-items")
 }
 
-async function getVersions(assessmentId: number) {
-    const result = await httpClient.get<AssessmentVersionModel[]>(`assessments/${assessmentId}/versions`)
-    return result
+function getVersions(assessmentId: number) {
+    return httpClient.get<AssessmentVersionModel[]>(`assessments/${assessmentId}/versions`)
 }
 
+function deleteById(id: number) {
+    return httpClient.remove(`assessments/${id}`)
+}
 
-async function deleteById(id: number): Promise<void> {
-    await httpClient.remove(`assessments/${id}`)
+function assign(userId: number, versionId: number) {
+    httpClient.put(`assignments/${versionId}/assign`, { userId })
+}
+
+function unassign(userId: number, versionId: number) {
+    httpClient.put(`assignments/${versionId}/unassign`, { userId })
+}
+
+function getAssignments() {
+    return httpClient.get('assignments')
 }
 
 export default {
@@ -40,5 +48,8 @@ export default {
     getAssessments,
     getAssessmentPairItems,
     getVersions,
-    deleteById
+    deleteById,
+    assign,
+    unassign,
+    getAssignments
 }

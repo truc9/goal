@@ -12,6 +12,11 @@ type AssessmentModel struct {
 	Description string `json:"description"`
 }
 
+type AssignmentModel struct {
+	UserId    int64 `json:"userId"`
+	VersionId int64 `json:"versionId"`
+}
+
 type AssessmentVersionModel struct {
 	Id            int64 `json:"id"`
 	Version       int   `json:"version"`
