@@ -45,18 +45,17 @@ func (sv BookingService) DeleteBooking(bookingId int64) error {
 func (sv BookingService) GetBookingsByPeriod(periodId int64) []GrouppedUserBooking {
 	var userBookingItems []UserBookingItem
 
-	// Split select fields to multiple row for readability
-	columns := "bookings.id as booking_id, " +
-		"bookings.booking_period_id, " +
-		"bookings.user_id, " +
-		"CONCAT(users.first_name, ' ', users.last_name) as user_display_name , " +
-		"bookings.date as booking_date"
-
 	// Query statement
 	sv.db.
 		Table("users").
 		Order("users.first_name asc").
-		Select(columns).
+		Select(`
+			bookings.id AS booking_id,
+			bookings.booking_period_id,
+			bookings.user_id,
+			CONCAT(users.first_name, ' ', users.last_name) AS user_display_name, 
+			bookings.date AS booking_date
+		`).
 		Joins("LEFT JOIN bookings ON bookings.user_id = users.id AND bookings.booking_period_id = ?", periodId).
 		Scan(&userBookingItems)
 
