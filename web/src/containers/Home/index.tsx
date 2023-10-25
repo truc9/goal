@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
-
 import { FiBarChart2, FiCalendar, FiCheckCircle, FiGrid } from 'react-icons/fi'
 import { Legend, Pie, PieChart, Tooltip } from 'recharts'
-
 import { Card } from '../../components/Card'
 import { ClickableCard } from '../../components/ClickableCard'
 import { PageContainer } from '../../components/PageContainer'
 import { NotificationEvents } from '../../constant'
+import { AsyncContent } from '../../components/AsyncContent'
 import useLocalAuth from '../../hooks/useLocalAuth'
 import useWebSocket from '../../hooks/useWebSocket'
 import httpService from '../../services/httpClient'
-import { AsyncContent } from '../../components/AsyncContent'
 
 const Home = () => {
 	const [totalEmployee, setTotalEmployee] = useState(0)
+	const [myAssignmentCount, setMyAssignmentCount] = useState(0)
 	const [stats, setStats] = useState<any[]>([])
 	const [data, setData] = useState<{
 		total: number
@@ -22,20 +21,19 @@ const Home = () => {
 	}>({ total: 0, unbooked: 0, booked: 0 })
 	const { user } = useLocalAuth()
 	const socket = useWebSocket()
-	const [isLoading, setIsLoading] = useState(true)
+	const [loadingBookingStat, setLoadingBookingStat] = useState(false)
+	const [loadingAssignment, setLoadingAssignment] = useState(false)
 
 	socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
-		setIsLoading(true)
-		console.log(
-			`${new Date()} dashboard updated with data ${JSON.stringify(data)}`
-		)
+		setLoadingBookingStat(true)
 		const { total, booked, unbooked } = data.payload.stat
 		setData({ total, booked, unbooked })
-		setIsLoading(false)
+		setLoadingBookingStat(false)
 	})
 
 	useEffect(() => {
-		handleLoad()
+		loadBookingStat()
+		loadingAssignmentStat()
 	}, [])
 
 	useEffect(() => {
@@ -46,12 +44,22 @@ const Home = () => {
 		])
 	}, [data])
 
-	const handleLoad = async () => {
+	const loadBookingStat = async () => {
+		setLoadingBookingStat(true)
 		const { booked, unbooked, total } = await httpService.get(
 			'stats/booking-overall'
 		)
 		setData({ total, booked, unbooked })
-		setIsLoading(false)
+		setLoadingBookingStat(false)
+	}
+
+	const loadingAssignmentStat = async () => {
+		setLoadingAssignment(true)
+		const count = await httpService.get<number>(
+			'stats/my-assignments/count'
+		)
+		setMyAssignmentCount(count)
+		setLoadingAssignment(false)
 	}
 
 	return (
@@ -79,15 +87,19 @@ const Home = () => {
 				/>
 			</div>
 			<div className='mt-3 grid grid-cols-3 gap-5'>
+				<Card title='My Assignment'>
+					<AsyncContent loading={loadingAssignment}>
+						<h3 className='text-8xl'>{myAssignmentCount}</h3>
+					</AsyncContent>
+				</Card>
 				<Card title='Total Employee'>
-					{isLoading}
-					<AsyncContent loading={isLoading}>
+					<AsyncContent loading={loadingBookingStat}>
 						<h3 className='text-8xl'>{totalEmployee}</h3>
 					</AsyncContent>
 				</Card>
 				<Card title='Booking Overall Status'>
 					<div>
-						<AsyncContent loading={isLoading}>
+						<AsyncContent loading={loadingBookingStat}>
 							<PieChart width={300} height={300}>
 								<Pie
 									dataKey='value'

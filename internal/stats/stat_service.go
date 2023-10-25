@@ -1,8 +1,6 @@
 package stats
 
 import (
-	"log"
-
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
@@ -27,7 +25,6 @@ func (sv *StatsService) GetBookingOverallStats() (model *BookingModel, err error
 
 	nextPeriod, err := sv.periodSv.GetNextPeriod()
 	if err != nil {
-		log.Printf("err %v", err)
 		return nil, err
 	}
 
@@ -56,9 +53,14 @@ func (sv *StatsService) GetBookingPerPeriodStats() ([]BookingPerPeriodModel, err
 	`).Scan(&stats)
 
 	if res.Error != nil {
-		log.Println(res.Error)
 		return nil, res.Error
 	}
 
 	return stats, nil
+}
+
+func (sv *StatsService) GetEmployeeAsignmentCount(employeeId int64) int64 {
+	var count int64
+	sv.db.Where("user_id = ?", employeeId).Find(&[]entity.AssessmentAssignment{}).Count(&count)
+	return count
 }

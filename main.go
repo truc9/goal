@@ -92,6 +92,7 @@ func main() {
 		// Stats & Analytics
 		api.GET("/stats/booking-overall", statsController.GetBookingStats)
 		api.GET("/stats/booking-per-periods", statsController.GetBookingPerPeriodStats)
+		api.GET("/stats/my-assignments/count", statsController.GetMyAssignmentCount)
 
 		// HSE Assessments
 		api.GET("/assessments", assessmentController.GetAll)

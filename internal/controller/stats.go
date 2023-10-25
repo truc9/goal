@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/stats"
+	"github.com/truc9/goal/internal/utils/httpcontext"
 )
 
 type StatController struct {
@@ -17,8 +18,8 @@ func NewStatController(statSv stats.StatsService) StatController {
 	}
 }
 
-func (ctrl *StatController) GetBookingStats(c echo.Context) (err error) {
-	result, err := ctrl.statSv.GetBookingOverallStats()
+func (ct *StatController) GetBookingStats(c echo.Context) (err error) {
+	result, err := ct.statSv.GetBookingOverallStats()
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, nil)
@@ -27,10 +28,16 @@ func (ctrl *StatController) GetBookingStats(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, result)
 }
 
-func (ctrl *StatController) GetBookingPerPeriodStats(c echo.Context) error {
-	res, err := ctrl.statSv.GetBookingPerPeriodStats()
+func (ct *StatController) GetBookingPerPeriodStats(c echo.Context) error {
+	res, err := ct.statSv.GetBookingPerPeriodStats()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, nil)
 	}
 	return c.JSON(http.StatusOK, res)
+}
+
+func (ct *StatController) GetMyAssignmentCount(c echo.Context) error {
+	userId := httpcontext.GetUserId(c)
+	count := ct.statSv.GetEmployeeAsignmentCount(userId)
+	return c.JSON(http.StatusOK, count)
 }
