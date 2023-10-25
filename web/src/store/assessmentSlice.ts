@@ -51,7 +51,6 @@ export const createAssessmentSlice: StateCreator<AssessmentSlice> = (set) => ({
     loadQuestions: (questions: QuestionModel[]) => set((state) => {
         return produce(state, draft => {
             draft.currentVersion.questions = questions
-            draft.currentVersion.questionCount = questions?.length
         })
     }),
     addAssessment: (model: AssessmentModel) => set((state) => {
