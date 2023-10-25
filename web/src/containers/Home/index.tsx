@@ -6,13 +6,13 @@ import { ClickableCard } from '../../components/ClickableCard'
 import { PageContainer } from '../../components/PageContainer'
 import { NotificationEvents } from '../../constant'
 import { AsyncContent } from '../../components/AsyncContent'
+import { useQuery } from '@tanstack/react-query'
 import useLocalAuth from '../../hooks/useLocalAuth'
 import useWebSocket from '../../hooks/useWebSocket'
 import httpService from '../../services/httpClient'
 
 const Home = () => {
 	const [totalEmployee, setTotalEmployee] = useState(0)
-	const [myAssignmentCount, setMyAssignmentCount] = useState(0)
 	const [stats, setStats] = useState<any[]>([])
 	const [data, setData] = useState<{
 		total: number
@@ -22,7 +22,11 @@ const Home = () => {
 	const { user } = useLocalAuth()
 	const socket = useWebSocket()
 	const [loadingBookingStat, setLoadingBookingStat] = useState(false)
-	const [loadingAssignment, setLoadingAssignment] = useState(false)
+
+	const assignmentQuery = useQuery({
+		queryKey: ['assignmentCount'],
+		queryFn: () => httpService.get<number>('stats/my-assignments/count')
+	})
 
 	socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
 		setLoadingBookingStat(true)
@@ -33,7 +37,6 @@ const Home = () => {
 
 	useEffect(() => {
 		loadBookingStat()
-		loadingAssignmentStat()
 	}, [])
 
 	useEffect(() => {
@@ -51,15 +54,6 @@ const Home = () => {
 		)
 		setData({ total, booked, unbooked })
 		setLoadingBookingStat(false)
-	}
-
-	const loadingAssignmentStat = async () => {
-		setLoadingAssignment(true)
-		const count = await httpService.get<number>(
-			'stats/my-assignments/count'
-		)
-		setMyAssignmentCount(count)
-		setLoadingAssignment(false)
 	}
 
 	return (
@@ -88,8 +82,8 @@ const Home = () => {
 			</div>
 			<div className='mt-3 grid grid-cols-3 gap-5'>
 				<Card title='My Assignment'>
-					<AsyncContent loading={loadingAssignment}>
-						<h3 className='text-8xl'>{myAssignmentCount}</h3>
+					<AsyncContent loading={assignmentQuery.isLoading}>
+						<h3 className='text-8xl'>{assignmentQuery.data}</h3>
 					</AsyncContent>
 				</Card>
 				<Card title='Total Employee'>
