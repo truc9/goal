@@ -55,8 +55,6 @@ export const EmployeeAssignments: FC<Props> = ({ show, onClose, employee }) => {
 			enqueueSnackbar(`Select ${item.name}`, { variant: 'success' })
 			setSelectedItems([...selectedItems, item])
 		}
-
-		await loadSelectedItems()
 	}
 
 	const handleClose = () => {
