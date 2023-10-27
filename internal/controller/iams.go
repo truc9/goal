@@ -27,7 +27,7 @@ func (ctrl IamController) RegisterUser(c echo.Context) (err error) {
 	user, err := ctrl.iamSv.RegisterUser(r)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, user)

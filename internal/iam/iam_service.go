@@ -53,9 +53,15 @@ func (s IamService) GetAll() []UserModel {
 }
 
 func (sv IamService) RegisterUser(r *RegisterModel) (*entity.User, error) {
-	dup := sv.db.Where("email = ?", r.Email, r.UserName).First(&entity.User{})
-	if dup.RowsAffected != 0 {
+	var c int64
+	sv.db.Where("email = ?", r.Email).First(&entity.User{}).Count(&c)
+	if c != 0 {
 		return nil, errors.New("email already in use")
+	}
+
+	sv.db.Where("user_name = ?", r.UserName).First(&entity.User{}).Count(&c)
+	if c != 0 {
+		return nil, errors.New("user name already in use")
 	}
 
 	user, err := entity.NewUser(r.FirstName, r.LastName, r.Email, r.UserName)
