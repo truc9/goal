@@ -1,17 +1,16 @@
 import React, { FC, ReactNode, Suspense } from 'react'
-
 import {
 	FiCalendar,
 	FiCheckCircle,
+	FiFileText,
 	FiGrid,
 	FiLogOut,
 	FiPlus,
+	FiTarget,
 	FiUsers
 } from 'react-icons/fi'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-
 import { Tooltip } from '@mui/material'
-
 import { Loading } from '../components/Loading'
 import useLocalAuth from '../hooks/useLocalAuth'
 import useBearStore from '../store'
@@ -64,6 +63,11 @@ const Layout: React.FC = () => {
 					icon={<FiCheckCircle size={iconSize} />}
 					path='/my-booking'
 				/>
+				<PageMenu
+					tooltip='My Assessment'
+					icon={<FiTarget size={iconSize} />}
+					path='/my-assessment'
+				/>
 				{user.role == 'admin' && (
 					<>
 						<PageMenu
@@ -78,7 +82,7 @@ const Layout: React.FC = () => {
 						/>
 						<PageMenu
 							tooltip='Assessment Setup'
-							icon={<FiCheckCircle size={iconSize} />}
+							icon={<FiFileText size={iconSize} />}
 							path='/assessments'
 						/>
 						<PageMenu

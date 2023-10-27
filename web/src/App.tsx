@@ -1,12 +1,9 @@
 import { lazy } from 'react'
-
 import { Route, Routes } from 'react-router-dom'
-
 import RequireAuth from './components/RequireAuth'
 import Layout from './containers/Layout'
 import PageNotFound from './containers/PageNotFound'
 
-const MyBooking = lazy(() => import('./containers/MyBooking'))
 const BookingDashboard = lazy(() => import('./containers/BookingDashboard'))
 const BookingPeriods = lazy(() => import('./containers/BookingPeriods'))
 const Home = lazy(() => import('./containers/Home'))
@@ -16,6 +13,8 @@ const AssessmentSetup = lazy(() => import('./containers/AssessmentSetup'))
 const ASVersions = lazy(() => import('./containers/AssessmentSetup/Versions'))
 const ASQuestions = lazy(() => import('./containers/AssessmentSetup/Questions'))
 const Employees = lazy(() => import('./containers/Employees'))
+const MyBooking = lazy(() => import('./containers/MyBooking'))
+const MyAssessment = lazy(() => import('./containers/MyAssessment'))
 
 function App() {
 	return (
@@ -29,6 +28,7 @@ function App() {
 				}>
 				<Route index element={<Home />} />
 				<Route path='my-booking' element={<MyBooking />} />
+				<Route path='my-assessment' element={<MyAssessment />} />
 				<Route path='booking-periods' element={<BookingPeriods />} />
 				<Route
 					path='booking-dashboard'

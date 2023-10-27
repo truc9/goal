@@ -30,8 +30,8 @@ export const PageContainer: React.FC<Props> = ({
 					</button>
 				)}
 				<div className='flex items-center gap-3 font-bold'>
-					{icon && <span className='text-lg'>{icon}</span>}
-					<h3 className='text-lg'>{title}</h3>
+					{icon && <span className='text-xl'>{icon}</span>}
+					<h3 className='text-lg uppercase'>{title}</h3>
 				</div>
 				{action}
 			</div>
