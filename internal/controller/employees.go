@@ -3,7 +3,6 @@ package controller
 import (
 	"encoding/csv"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
@@ -13,23 +12,23 @@ import (
 )
 
 type EmployeeController struct {
-	employeeSv hrm.EmployeeService
+	service hrm.EmployeeService
 }
 
 func NewEmployeeController(employeeSv hrm.EmployeeService) EmployeeController {
 	return EmployeeController{
-		employeeSv: employeeSv,
+		service: employeeSv,
 	}
 }
 
 func (ct EmployeeController) GetAll(c echo.Context) (err error) {
-	result, _ := ct.employeeSv.GetAll()
+	result, _ := ct.service.GetAll()
 	return c.JSON(http.StatusOK, result)
 }
 
 func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	err := ct.employeeSv.AllocEmployeeNumber(userId)
+	err := ct.service.AllocEmployeeNumber(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -38,7 +37,7 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 
 func (ct EmployeeController) Deactivate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	res, err := ct.employeeSv.DeactivateUser(userId)
+	res, err := ct.service.DeactivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -47,7 +46,7 @@ func (ct EmployeeController) Deactivate(c echo.Context) error {
 
 func (ct EmployeeController) Activate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	res, err := ct.employeeSv.ActivateUser(userId)
+	res, err := ct.service.ActivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -82,7 +81,7 @@ func (ct EmployeeController) Import(c echo.Context) error {
 			continue
 		}
 
-		err := ct.employeeSv.Create(hrm.EmployeeCreateModel{
+		err := ct.service.Create(hrm.EmployeeCreateModel{
 			FirstName: row[0],
 			LastName:  row[1],
 			Email:     row[2],
@@ -91,8 +90,6 @@ func (ct EmployeeController) Import(c echo.Context) error {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, fmt.Errorf("import %v %v %v failed due to %s", row[0], row[1], row[2], err.Error()))
 		}
-
-		log.Printf("import %v %v %v successfully\n", row[0], row[1], row[2])
 	}
 
 	return c.JSON(http.StatusOK, nil)

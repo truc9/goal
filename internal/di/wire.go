@@ -11,37 +11,37 @@ import (
 	"github.com/truc9/goal/internal/scheduler"
 )
 
-func GetBookingCtrl() controller.BookingController {
-	wire.Build(bookingSet)
-	return controller.BookingController{}
-}
-
-func GetPeriodCtrl() controller.PeriodController {
-	wire.Build(periodSet)
-	return controller.PeriodController{}
-}
-
-func GetIAMCtrl() controller.IamController {
-	wire.Build(iamSet)
-	return controller.IamController{}
-}
-
-func GetStatCtrl() controller.StatController {
-	wire.Build(statSet)
-	return controller.StatController{}
-}
-
 func GetScheduler() scheduler.DailyScheduler {
 	wire.Build(scheduler.NewDailyScheduler, booking.NewPeriodService, db.New)
 	return scheduler.DailyScheduler{}
 }
 
-func GetWebsocketCtrl() controller.WebSocketController {
+func GetBookingController() controller.BookingController {
+	wire.Build(bookingSet)
+	return controller.BookingController{}
+}
+
+func GetPeriodController() controller.PeriodController {
+	wire.Build(periodSet)
+	return controller.PeriodController{}
+}
+
+func GetIamController() controller.IamController {
+	wire.Build(iamSet)
+	return controller.IamController{}
+}
+
+func GetStatController() controller.StatController {
+	wire.Build(statSet)
+	return controller.StatController{}
+}
+
+func GetWSController() controller.WebSocketController {
 	wire.Build(websocketSet)
 	return controller.WebSocketController{}
 }
 
-func GetAssessmentCtrl() controller.AssessmentController {
+func GetAssessmentController() controller.AssessmentController {
 	wire.Build(assessmentSet)
 	return controller.AssessmentController{}
 }
@@ -54,4 +54,9 @@ func GetQuestionController() controller.QuestionController {
 func GetEmployeeController() controller.EmployeeController {
 	wire.Build(employeeSet)
 	return controller.EmployeeController{}
+}
+
+func GetUserController() controller.UserController {
+	wire.Build(userSet)
+	return controller.UserController{}
 }

@@ -15,38 +15,10 @@ import (
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/scheduler"
 	"github.com/truc9/goal/internal/stats"
+	"github.com/truc9/goal/internal/users"
 )
 
 // Injectors from wire.go:
-
-func GetBookingCtrl() controller.BookingController {
-	gormDB := db.New()
-	bookingService := booking.NewBookingService(gormDB)
-	bookingController := controller.NewBookingController(bookingService)
-	return bookingController
-}
-
-func GetPeriodCtrl() controller.PeriodController {
-	gormDB := db.New()
-	periodService := booking.NewPeriodService(gormDB)
-	periodController := controller.NewPeriodController(periodService)
-	return periodController
-}
-
-func GetIAMCtrl() controller.IamController {
-	gormDB := db.New()
-	iamService := iam.NewIamService(gormDB)
-	iamController := controller.NewIamController(iamService)
-	return iamController
-}
-
-func GetStatCtrl() controller.StatController {
-	gormDB := db.New()
-	periodService := booking.NewPeriodService(gormDB)
-	statsService := stats.NewStatService(gormDB, periodService)
-	statController := controller.NewStatController(statsService)
-	return statController
-}
 
 func GetScheduler() scheduler.DailyScheduler {
 	gormDB := db.New()
@@ -55,7 +27,36 @@ func GetScheduler() scheduler.DailyScheduler {
 	return dailyScheduler
 }
 
-func GetWebsocketCtrl() controller.WebSocketController {
+func GetBookingController() controller.BookingController {
+	gormDB := db.New()
+	bookingService := booking.NewBookingService(gormDB)
+	bookingController := controller.NewBookingController(bookingService)
+	return bookingController
+}
+
+func GetPeriodController() controller.PeriodController {
+	gormDB := db.New()
+	periodService := booking.NewPeriodService(gormDB)
+	periodController := controller.NewPeriodController(periodService)
+	return periodController
+}
+
+func GetIamController() controller.IamController {
+	gormDB := db.New()
+	iamService := iam.NewIamService(gormDB)
+	iamController := controller.NewIamController(iamService)
+	return iamController
+}
+
+func GetStatController() controller.StatController {
+	gormDB := db.New()
+	periodService := booking.NewPeriodService(gormDB)
+	statsService := stats.NewStatService(gormDB, periodService)
+	statController := controller.NewStatController(statsService)
+	return statController
+}
+
+func GetWSController() controller.WebSocketController {
 	gormDB := db.New()
 	periodService := booking.NewPeriodService(gormDB)
 	statsService := stats.NewStatService(gormDB, periodService)
@@ -64,7 +65,7 @@ func GetWebsocketCtrl() controller.WebSocketController {
 	return webSocketController
 }
 
-func GetAssessmentCtrl() controller.AssessmentController {
+func GetAssessmentController() controller.AssessmentController {
 	gormDB := db.New()
 	assessmentService := hse.NewAssessmentService(gormDB)
 	assessmentController := controller.NewAssessmentController(assessmentService)
@@ -83,4 +84,11 @@ func GetEmployeeController() controller.EmployeeController {
 	employeeService := hrm.NewEmployeeService(gormDB)
 	employeeController := controller.NewEmployeeController(employeeService)
 	return employeeController
+}
+
+func GetUserController() controller.UserController {
+	gormDB := db.New()
+	userService := users.NewUserService(gormDB)
+	userController := controller.NewUserController(userService)
+	return userController
 }

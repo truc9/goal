@@ -43,12 +43,12 @@ func main() {
 	// app.GET("/metrics", echoprometheus.NewHandler())
 
 	scheduler := di.GetScheduler()
-	iamController := di.GetIAMCtrl()
-	periodController := di.GetPeriodCtrl()
-	bookingController := di.GetBookingCtrl()
-	statsController := di.GetStatCtrl()
-	wsController := di.GetWebsocketCtrl()
-	assessmentController := di.GetAssessmentCtrl()
+	iamController := di.GetIamController()
+	periodController := di.GetPeriodController()
+	bookingController := di.GetBookingController()
+	statsController := di.GetStatController()
+	wsController := di.GetWSController()
+	assessmentController := di.GetAssessmentController()
 	questionController := di.GetQuestionController()
 	employeeController := di.GetEmployeeController()
 

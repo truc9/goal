@@ -9,6 +9,7 @@ import (
 	"github.com/truc9/goal/internal/hse"
 	"github.com/truc9/goal/internal/iam"
 	"github.com/truc9/goal/internal/stats"
+	"github.com/truc9/goal/internal/users"
 )
 
 var bookingSet = wire.NewSet(controller.NewBookingController, booking.NewBookingService, booking.NewPeriodService, db.New)
@@ -19,3 +20,4 @@ var websocketSet = wire.NewSet(controller.NewWebSocketController, stats.NewStatS
 var assessmentSet = wire.NewSet(controller.NewAssessmentController, hse.NewAssessmentService, db.New)
 var questionSet = wire.NewSet(controller.NewQuestionController, hse.NewQuestionService, db.New)
 var employeeSet = wire.NewSet(controller.NewEmployeeController, hrm.NewEmployeeService, db.New)
+var userSet = wire.NewSet(controller.NewUserController, users.NewUserService, db.New)
