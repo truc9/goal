@@ -19,5 +19,5 @@ var statSet = wire.NewSet(controller.NewStatController, stats.NewStatService, bo
 var websocketSet = wire.NewSet(controller.NewWebSocketController, stats.NewStatService, booking.NewBookingService, booking.NewPeriodService, db.New)
 var assessmentSet = wire.NewSet(controller.NewAssessmentController, hse.NewAssessmentService, db.New)
 var questionSet = wire.NewSet(controller.NewQuestionController, hse.NewQuestionService, db.New)
-var employeeSet = wire.NewSet(controller.NewEmployeeController, hrm.NewEmployeeService, db.New)
+var employeeSet = wire.NewSet(controller.NewEmployeeController, hrm.NewEmployeeService, users.NewUserService, db.New)
 var userSet = wire.NewSet(controller.NewUserController, users.NewUserService, db.New)

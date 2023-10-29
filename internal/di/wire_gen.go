@@ -81,7 +81,8 @@ func GetQuestionController() controller.QuestionController {
 
 func GetEmployeeController() controller.EmployeeController {
 	gormDB := db.New()
-	employeeService := hrm.NewEmployeeService(gormDB)
+	userService := users.NewUserService(gormDB)
+	employeeService := hrm.NewEmployeeService(gormDB, userService)
 	employeeController := controller.NewEmployeeController(employeeService)
 	return employeeController
 }

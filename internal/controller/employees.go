@@ -12,23 +12,23 @@ import (
 )
 
 type EmployeeController struct {
-	service hrm.EmployeeService
+	employeeSv hrm.EmployeeService
 }
 
 func NewEmployeeController(employeeSv hrm.EmployeeService) EmployeeController {
 	return EmployeeController{
-		service: employeeSv,
+		employeeSv: employeeSv,
 	}
 }
 
 func (ct EmployeeController) GetAll(c echo.Context) (err error) {
-	result, _ := ct.service.GetAll()
+	result, _ := ct.employeeSv.GetAll()
 	return c.JSON(http.StatusOK, result)
 }
 
 func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	err := ct.service.AllocEmployeeNumber(userId)
+	err := ct.employeeSv.AllocEmployeeNumber(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -37,7 +37,7 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 
 func (ct EmployeeController) Deactivate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	res, err := ct.service.DeactivateUser(userId)
+	res, err := ct.employeeSv.DeactivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -46,7 +46,7 @@ func (ct EmployeeController) Deactivate(c echo.Context) error {
 
 func (ct EmployeeController) Activate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
-	res, err := ct.service.ActivateUser(userId)
+	res, err := ct.employeeSv.ActivateUser(userId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -81,7 +81,7 @@ func (ct EmployeeController) Import(c echo.Context) error {
 			continue
 		}
 
-		err := ct.service.Create(hrm.EmployeeCreateModel{
+		err := ct.employeeSv.Create(hrm.EmployeeCreateModel{
 			FirstName: row[0],
 			LastName:  row[1],
 			Email:     row[2],

@@ -6,17 +6,20 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
+	"github.com/truc9/goal/internal/users"
 	"github.com/truc9/goal/internal/utils/random"
 	"gorm.io/gorm"
 )
 
 type EmployeeService struct {
-	db *gorm.DB
+	db     *gorm.DB
+	userSv *users.UserService
 }
 
-func NewEmployeeService(db *gorm.DB) EmployeeService {
+func NewEmployeeService(db *gorm.DB, userSv *users.UserService) EmployeeService {
 	return EmployeeService{
-		db: db,
+		db:     db,
+		userSv: userSv,
 	}
 }
 
@@ -67,7 +70,7 @@ func (s EmployeeService) BulkCreate(models []EmployeeCreateModel) error {
 }
 
 func (s EmployeeService) AllocEmployeeNumber(userId int64) error {
-	user, err := s.getUser(userId)
+	user, err := s.userSv.GetUser(userId)
 	if err != nil {
 		return err
 	}
@@ -91,7 +94,7 @@ func (s EmployeeService) AllocEmployeeNumber(userId int64) error {
 }
 
 func (s EmployeeService) ActivateUser(userId int64) (*EmployeeResponse, error) {
-	user, err := s.getUser(userId)
+	user, err := s.userSv.GetUser(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +110,7 @@ func (s EmployeeService) ActivateUser(userId int64) (*EmployeeResponse, error) {
 }
 
 func (s EmployeeService) DeactivateUser(userId int64) (*EmployeeResponse, error) {
-	user, err := s.getUser(userId)
+	user, err := s.userSv.GetUser(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -120,13 +123,4 @@ func (s EmployeeService) DeactivateUser(userId int64) (*EmployeeResponse, error)
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 	}, nil
-}
-
-func (s EmployeeService) getUser(userId int64) (*entity.User, error) {
-	user := &entity.User{}
-	if err := s.db.Find(&user, userId).Error; err != nil {
-		log.Printf("user not found with id %v", userId)
-		return nil, err
-	}
-	return user, nil
 }
