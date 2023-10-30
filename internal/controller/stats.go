@@ -37,7 +37,7 @@ func (ct *StatController) GetBookingPerPeriodStats(c echo.Context) error {
 }
 
 func (ct *StatController) GetMyAssignmentCount(c echo.Context) error {
-	userId := httpcontext.GetUserId(c)
+	userId := httpcontext.CurrentUserId(c)
 	count := ct.statSv.GetEmployeeAsignmentCount(userId)
 	return c.JSON(http.StatusOK, count)
 }

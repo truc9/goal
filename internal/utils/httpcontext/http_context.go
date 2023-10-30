@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetUserId(c echo.Context) (id int64) {
+func CurrentUserId(c echo.Context) (id int64) {
 	token := c.Get("user").(*jwt.Token)
 	claims, _ := token.Claims.(jwt.MapClaims)
 	userId := claims["jti"].(string)
@@ -15,7 +15,7 @@ func GetUserId(c echo.Context) (id int64) {
 	return result
 }
 
-func GetUserRole(c echo.Context) string {
+func CurrentRole(c echo.Context) string {
 	token := c.Get("user").(*jwt.Token)
 	claims, _ := token.Claims.(jwt.MapClaims)
 	role := claims["role"].(string)

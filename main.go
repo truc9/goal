@@ -112,6 +112,7 @@ func main() {
 
 		// Users & Employees
 		api.GET("/employees", employeeController.GetAll)
+		api.GET("/employees/my-assignments", employeeController.GetMyAssignments)
 		api.GET("/employees/:userId/assignments", assessmentController.GetAssignments)
 		api.PUT("/employees/:userId/employee-numbers", employeeController.AllocEmployeeNumber)
 		api.PUT("/employees/:userId/activate", employeeController.Activate)

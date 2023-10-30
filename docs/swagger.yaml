@@ -77,6 +77,19 @@ definitions:
       username:
         type: string
     type: object
+  hrm.AssessmentAssignmentModel:
+    properties:
+      assessmentId:
+        type: integer
+      assessmentName:
+        type: string
+      description:
+        type: string
+      version:
+        type: integer
+      version_id:
+        type: integer
+    type: object
   hse.AssessmentModel:
     properties:
       createdBy:
@@ -108,6 +121,8 @@ definitions:
   hse.AssignmentModel:
     properties:
       userId:
+        type: integer
+      versionId:
         type: integer
     type: object
 info:
@@ -206,6 +221,18 @@ paths:
       - application/json
       responses: {}
       summary: Update Assessment
+      tags:
+      - Assessments
+  /api/assignments:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetAssignments
       tags:
       - Assessments
   /api/assignments/:versionId/assign:
@@ -322,4 +349,16 @@ paths:
       summary: Get all bookings by Period ID
       tags:
       - Bookings
+  /api/employees/my-assignments:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/hrm.AssessmentAssignmentModel'
+            type: array
+      summary: Get my assignments
+      tags:
+      - Employees
 swagger: "2.0"

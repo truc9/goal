@@ -30,7 +30,7 @@ func NewAssessmentController(assessmentSv hse.AssessmentService) AssessmentContr
 //	@Success		200	{object}	uuid.UUID
 //	@Router			/api/assessments [POST]
 func (ct AssessmentController) Create(c echo.Context) (err error) {
-	userId := httpcontext.GetUserId(c)
+	userId := httpcontext.CurrentUserId(c)
 	model := &hse.AssessmentModel{}
 	if err := c.Bind(model); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
@@ -115,7 +115,7 @@ func (ct AssessmentController) GetVersions(c echo.Context) error {
 // @Router 		/api/assessments/:assessmentId [PUT]
 func (ct AssessmentController) Update(c echo.Context) error {
 	id := params.GetIntParam(c, "assessmentId")
-	userId := httpcontext.GetUserId(c)
+	userId := httpcontext.CurrentUserId(c)
 	model := &hse.AssessmentModel{}
 
 	if err := c.Bind(&model); err != nil {

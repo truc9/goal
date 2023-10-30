@@ -6,6 +6,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/truc9/goal/internal/entity"
+	"github.com/truc9/goal/internal/hse"
 	"github.com/truc9/goal/internal/users"
 	"github.com/truc9/goal/internal/utils/random"
 	"gorm.io/gorm"
@@ -123,4 +124,16 @@ func (s EmployeeService) DeactivateUser(userId int64) (*EmployeeResponse, error)
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 	}, nil
+}
+
+func (s EmployeeService) GetAssessments(userId int64) ([]hse.AssessmentModel, error) {
+	var assessments []hse.AssessmentModel
+	res := s.db.Raw(`
+		SELECT a.id AS assessment_id, a.name as assessment_name, a.description, vs.id AS version_id, vs.version
+		FROM assessment_assignments aa
+		JOIN assessment_versions vs ON aa.assessment_version_id = vs.id
+		JOIN assessments a on a.id = vs.assessment_id
+		WHERE aa.user_id = ?
+	`, userId).Scan(&assessments)
+	return assessments, res.Error
 }

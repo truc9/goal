@@ -8,6 +8,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/truc9/goal/internal/hrm"
+	"github.com/truc9/goal/internal/utils/httpcontext"
 	"github.com/truc9/goal/internal/utils/params"
 )
 
@@ -33,6 +34,21 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, nil)
+}
+
+// Get get my assignments
+//
+//	@Summary		Get my assignments
+//	@Tags			Employees
+//	@Success		200	{array}	hrm.AssessmentAssignmentModel
+//	@Router			/api/employees/my-assignments [GET]
+func (ct EmployeeController) GetMyAssignments(c echo.Context) error {
+	userId := httpcontext.CurrentUserId(c)
+	assessments, err := ct.employeeSv.GetAssessments(userId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, assessments)
 }
 
 func (ct EmployeeController) Deactivate(c echo.Context) error {

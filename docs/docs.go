@@ -158,6 +158,25 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/assignments": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "GetAssignments",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/assignments/:versionId/assign": {
             "put": {
                 "consumes": [
@@ -335,6 +354,25 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/employees/my-assignments": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Get my assignments",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/hrm.AssessmentAssignmentModel"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -456,6 +494,26 @@ const docTemplate = `{
                 }
             }
         },
+        "hrm.AssessmentAssignmentModel": {
+            "type": "object",
+            "properties": {
+                "assessmentId": {
+                    "type": "integer"
+                },
+                "assessmentName": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "integer"
+                },
+                "version_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "hse.AssessmentModel": {
             "type": "object",
             "properties": {
@@ -503,6 +561,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "userId": {
+                    "type": "integer"
+                },
+                "versionId": {
                     "type": "integer"
                 }
             }

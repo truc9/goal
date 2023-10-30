@@ -32,4 +32,12 @@ type (
 		LastName  string `json:"lastName"`
 		Email     string `json:"email"`
 	}
+
+	AssessmentAssignmentModel struct {
+		AssessmentId   int64  `json:"assessmentId"`
+		AssessmentName string `json:"assessmentName"`
+		Description    string `json:"description"`
+		VersionId      int64  `json:"version_id"`
+		Version        int64  `json:"version"`
+	}
 )

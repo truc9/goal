@@ -12,7 +12,7 @@ import (
 func RequireRoles(roleTypes ...entity.RoleNameType) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			role := httpcontext.GetUserRole(c)
+			role := httpcontext.CurrentRole(c)
 			if lo.Contains(roleTypes, entity.RoleNameType(role)) {
 				return next(c)
 			}

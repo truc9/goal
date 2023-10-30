@@ -30,7 +30,7 @@ func NewBookingController(bookingSv booking.BookingService) BookingController {
 //	@Success		200	{object}	entity.Booking
 //	@Router			/api/bookings [post]
 func (ctrl *BookingController) Submit(c echo.Context) (err error) {
-	userId := httpcontext.GetUserId(c)
+	userId := httpcontext.CurrentUserId(c)
 	model := &entity.Booking{}
 	if err := c.Bind(model); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
@@ -80,7 +80,7 @@ func (ctrl BookingController) GetBookings(c echo.Context) (err error) {
 //	@Success		200	{array}	entity.Booking
 //	@Router			/api/bookings/{bookingPeriodId} [get]
 func (h BookingController) GetMyBookings(c echo.Context) (err error) {
-	userId := httpcontext.GetUserId(c)
+	userId := httpcontext.CurrentUserId(c)
 	periodId, _ := strconv.ParseInt(c.Param("bookingPeriodId"), 10, 64)
 	bookings := h.bookingSv.GetMyBookings(userId, periodId)
 	return c.JSON(http.StatusOK, bookings)
