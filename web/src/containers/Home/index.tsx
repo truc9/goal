@@ -9,7 +9,8 @@ import { AsyncContent } from '../../components/AsyncContent'
 import { useQuery } from '@tanstack/react-query'
 import useLocalAuth from '../../hooks/useLocalAuth'
 import useWebSocket from '../../hooks/useWebSocket'
-import httpService from '../../services/httpClient'
+import httpClient from '../../services/httpClient'
+import dateTimeUtil from '../../utils/datetimeUtil'
 
 const Home = () => {
 	const [totalEmployee, setTotalEmployee] = useState(0)
@@ -25,7 +26,7 @@ const Home = () => {
 
 	const assignmentQuery = useQuery({
 		queryKey: ['assignmentCount'],
-		queryFn: () => httpService.get<number>('stats/my-assignments/count')
+		queryFn: () => httpClient.get<number>('stats/my-assignments/count')
 	})
 
 	socket.handleEvent(NotificationEvents.BookingUpdated, (data) => {
@@ -49,7 +50,7 @@ const Home = () => {
 
 	const loadBookingStat = async () => {
 		setLoadingBookingStat(true)
-		const { booked, unbooked, total } = await httpService.get(
+		const { booked, unbooked, total } = await httpClient.get(
 			'stats/booking-overall'
 		)
 		setData({ total, booked, unbooked })
@@ -57,7 +58,15 @@ const Home = () => {
 	}
 
 	return (
-		<PageContainer icon={<FiGrid />} title='Apps'>
+		<PageContainer
+			icon={<FiGrid />}
+			title='Dashboard'
+			action={
+				<span className='text-xl'>
+					{dateTimeUtil.greeting()},{' '}
+					<span className='font-bold'>{user.name}</span> !
+				</span>
+			}>
 			<div className='grid grid-cols-3 gap-5'>
 				<ClickableCard
 					title='My Booking'

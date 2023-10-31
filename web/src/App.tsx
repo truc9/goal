@@ -15,6 +15,9 @@ const ASQuestions = lazy(() => import('./containers/AssessmentSetup/Questions'))
 const Employees = lazy(() => import('./containers/Employees'))
 const MyBooking = lazy(() => import('./containers/MyBooking'))
 const MyAssessment = lazy(() => import('./containers/MyAssessment'))
+const MyAssessmentDetails = lazy(
+	() => import('./containers/MyAssessment/MyAssessmentDetails')
+)
 
 function App() {
 	return (
@@ -29,6 +32,10 @@ function App() {
 				<Route index element={<Home />} />
 				<Route path='my-booking' element={<MyBooking />} />
 				<Route path='my-assessment' element={<MyAssessment />} />
+				<Route
+					path='my-assessment/:versionId'
+					element={<MyAssessmentDetails />}
+				/>
 				<Route path='booking-periods' element={<BookingPeriods />} />
 				<Route
 					path='booking-dashboard'

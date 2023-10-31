@@ -37,7 +37,8 @@ type (
 		AssessmentId   int64  `json:"assessmentId"`
 		AssessmentName string `json:"assessmentName"`
 		Description    string `json:"description"`
-		VersionId      int64  `json:"version_id"`
+		VersionId      int64  `json:"versionId"`
 		Version        int64  `json:"version"`
+		IsDone         bool   `json:"isDone"`
 	}
 )
