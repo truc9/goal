@@ -16,6 +16,7 @@ type Base struct {
 
 func (entity *Base) BeforeCreate(tx *gorm.DB) (err error) {
 	entity.Uid = uuid.New()
+	entity.CreatedDate = time.Now().UTC()
 	return
 }
 

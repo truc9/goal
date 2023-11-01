@@ -24,7 +24,7 @@ func (sv QuestionService) GetByVersion(assessmentVersionId int64) []QuestionMode
 
 	sv.db.
 		Where("assessment_version_id = ?", assessmentVersionId).
-		Order("ordinal").
+		Order("created_date").
 		Model(&entity.Question{}).
 		Preload("Choices").
 		Find(&questions)
@@ -33,7 +33,19 @@ func (sv QuestionService) GetByVersion(assessmentVersionId int64) []QuestionMode
 	_, anyZeroOrdinal := lo.Find(questions, func(item entity.Question) bool {
 		return item.Ordinal == 0
 	})
-	if anyZeroOrdinal {
+
+	// TODO: find better approach
+	invalidOrdinal := false
+	for i := 0; i < len(questions); i++ {
+		for j := 1; j < len(questions); j++ {
+			if questions[i].Ordinal == questions[j].Ordinal {
+				invalidOrdinal = true
+				break
+			}
+		}
+	}
+
+	if anyZeroOrdinal || invalidOrdinal {
 		for i, q := range questions {
 			q.Ordinal = int64(i + 1)
 			sv.db.Save(&q)
