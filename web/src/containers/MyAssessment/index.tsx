@@ -15,8 +15,9 @@ const MyAssessment = () => {
 
 	return (
 		<PageContainer icon={<FiTarget />} title='My Assessment'>
-			{isLoading && <LoadingSkeleton number={3} />}
-			{!isLoading && (
+			{isLoading ? (
+				<LoadingSkeleton number={3} />
+			) : (
 				<div className='flex justify-center'>
 					<div className='flex w-full flex-col justify-center gap-3 xl:w-1/2'>
 						{assessments?.map((ass) => {
@@ -25,7 +26,9 @@ const MyAssessment = () => {
 									key={ass.versionId}
 									className='flex items-center justify-between rounded bg-slate-100 p-5'>
 									<div className='flex flex-col gap-3'>
-										<h3>{ass.assessmentName}</h3>
+										<h3 className='font-bold'>
+											{ass.assessmentName}
+										</h3>
 										<small>Version {ass.version}</small>
 									</div>
 									<div>

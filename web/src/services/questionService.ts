@@ -3,20 +3,19 @@ import { QuestionOrdinalModel } from "../containers/AssessmentSetup/models/Quest
 import httpClient from "./httpClient"
 
 async function getByVersion(versionId: number) {
-    const result = await httpClient.get<QuestionModel[]>(`assessments/versions/${versionId}/questions`)
-    return result
+    return await httpClient.get<QuestionModel[]>(`assessments/versions/${versionId}/questions`)
 }
 
-async function create(question: QuestionModel) {
-    await httpClient.post("assessments/questions", question)
+function create(question: QuestionModel) {
+    return httpClient.post("assessments/questions", question)
 }
 
-async function remove(id: number) {
-    await httpClient.remove(`assessments/questions/${id}`)
+function remove(id: number) {
+    return httpClient.remove(`assessments/questions/${id}`)
 }
 
-async function updateOrdinal(id: number, model: QuestionOrdinalModel) {
-    await httpClient.put(`assessments/questions/${id}/ordinal`, model)
+function updateOrdinal(id: number, model: QuestionOrdinalModel) {
+    return httpClient.put(`assessments/questions/${id}/ordinal`, model)
 }
 
 export default {

@@ -22,7 +22,7 @@ func NewQuestionController(questionSv hse.QuestionService) QuestionController {
 
 func (ct QuestionController) GetByVersion(c echo.Context) error {
 	assessmentVersionId, _ := strconv.ParseInt(c.Param("assessmentVersionId"), 10, 64)
-	result := ct.questionSv.GetAll(assessmentVersionId)
+	result := ct.questionSv.GetByVersion(assessmentVersionId)
 	return c.JSON(http.StatusOK, result)
 }
 

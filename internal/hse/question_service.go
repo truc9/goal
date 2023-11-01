@@ -19,7 +19,7 @@ func NewQuestionService(db *gorm.DB) QuestionService {
 	}
 }
 
-func (sv QuestionService) GetAll(assessmentVersionId int64) []QuestionModel {
+func (sv QuestionService) GetByVersion(assessmentVersionId int64) []QuestionModel {
 	questions := []entity.Question{}
 
 	sv.db.
