@@ -38,7 +38,7 @@ func (ct AssessmentController) Create(c echo.Context) (err error) {
 
 	result, err := ct.assessmentSv.Create(userId, model)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	return c.JSON(http.StatusCreated, result)
@@ -55,7 +55,7 @@ func (ct AssessmentController) Create(c echo.Context) (err error) {
 func (ct AssessmentController) GetAll(c echo.Context) (err error) {
 	assessments, err := ct.assessmentSv.GetAll()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, assessments)
 }
@@ -71,7 +71,7 @@ func (ct AssessmentController) GetAll(c echo.Context) (err error) {
 func (ct AssessmentController) GetAssessmentPairItems(c echo.Context) (err error) {
 	items, err := ct.assessmentSv.GetAssessmentPairItems()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, items)
 }
@@ -89,7 +89,7 @@ func (ct AssessmentController) Delete(c echo.Context) error {
 	deleteError := ct.assessmentSv.Delete(assessmentId)
 
 	if deleteError != nil {
-		return c.JSON(http.StatusInternalServerError, deleteError)
+		return c.JSON(http.StatusBadRequest, deleteError)
 	}
 	return c.JSON(http.StatusOK, assessmentId)
 }
@@ -127,7 +127,7 @@ func (ct AssessmentController) Update(c echo.Context) error {
 	err := ct.assessmentSv.Update(id, model)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, nil)
 }
@@ -151,7 +151,7 @@ func (ct AssessmentController) Assign(c echo.Context) error {
 
 	err := ct.assessmentSv.Assign(model.UserId, versionId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	return c.JSON(http.StatusCreated, nil)
@@ -179,7 +179,7 @@ func (ct AssessmentController) Unassign(c echo.Context) error {
 	err := ct.assessmentSv.Unassign(model.UserId, versionId)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, nil)

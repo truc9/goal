@@ -22,7 +22,7 @@ func (ct *StatController) GetBookingStats(c echo.Context) (err error) {
 	result, err := ct.statSv.GetBookingOverallStats()
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, nil)
+		return c.JSON(http.StatusBadRequest, nil)
 	}
 
 	return c.JSON(http.StatusOK, result)
@@ -31,7 +31,7 @@ func (ct *StatController) GetBookingStats(c echo.Context) (err error) {
 func (ct *StatController) GetBookingPerPeriodStats(c echo.Context) error {
 	res, err := ct.statSv.GetBookingPerPeriodStats()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, nil)
+		return c.JSON(http.StatusBadRequest, nil)
 	}
 	return c.JSON(http.StatusOK, res)
 }

@@ -31,7 +31,7 @@ func (ct EmployeeController) AllocEmployeeNumber(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
 	err := ct.employeeSv.AllocEmployeeNumber(userId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, nil)
 }
@@ -46,7 +46,7 @@ func (ct EmployeeController) GetMyAssignments(c echo.Context) error {
 	userId := httpcontext.CurrentUserId(c)
 	assessments, err := ct.employeeSv.GetAssessments(userId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, assessments)
 }
@@ -55,7 +55,7 @@ func (ct EmployeeController) Deactivate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
 	res, err := ct.employeeSv.DeactivateUser(userId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, res)
 }
@@ -64,7 +64,7 @@ func (ct EmployeeController) Activate(c echo.Context) error {
 	userId := params.GetIntParam(c, "userId")
 	res, err := ct.employeeSv.ActivateUser(userId)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 	return c.JSON(http.StatusOK, res)
 }
@@ -104,7 +104,7 @@ func (ct EmployeeController) Import(c echo.Context) error {
 		})
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, fmt.Errorf("import %v %v %v failed due to %s", row[0], row[1], row[2], err.Error()))
+			return c.JSON(http.StatusBadRequest, fmt.Errorf("import %v %v %v failed due to %s", row[0], row[1], row[2], err.Error()))
 		}
 	}
 
