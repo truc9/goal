@@ -8,6 +8,11 @@ body {
 }
 
 @layer base {
+	input[type='checkbox'],
+	input[type='radio'] {
+		@apply cursor-pointer;
+	}
+
 	input[type='text'],
 	input[type='password'],
 	textarea {

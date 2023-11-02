@@ -18,7 +18,7 @@ const Questions = () => {
 	const [loading, setLoading] = useState(false)
 	const { versionId } = useParams()
 	const store = useBearStore()
-	const [openQuestionPopup, setOpenQuestionPopup] = useState(false)
+	const [isOpen, setIsOpen] = useState(false)
 
 	useEffect(() => {
 		loadQuestions()
@@ -32,12 +32,12 @@ const Questions = () => {
 	}
 
 	async function handleSubmitQuestion(question: QuestionModel) {
-		setOpenQuestionPopup(false)
 		await questionService.create({
 			...question,
 			ordinal: store.currentVersion.questionCount + 1
 		})
 		await loadQuestions()
+		setIsOpen(false)
 	}
 
 	async function handleDeleteQuestion(question: QuestionModel) {
@@ -59,14 +59,17 @@ const Questions = () => {
 		await loadQuestions()
 	}
 
+	async function openPopup() {
+		await loadQuestions()
+		setIsOpen(true)
+	}
+
 	return (
 		<>
 			<div className='flex h-full flex-1 flex-col gap-3'>
 				<div className='flex flex-col gap-3 p-3 md:w-full'>
 					<div className='flex items-center gap-2'>
-						<button
-							className='btn-secondary'
-							onClick={() => setOpenQuestionPopup(true)}>
+						<button className='btn-secondary' onClick={openPopup}>
 							<FiPlus /> Add Question
 						</button>
 					</div>
@@ -127,8 +130,8 @@ const Questions = () => {
 
 			<QuestionPopup
 				versionId={+versionId!}
-				isOpen={openQuestionPopup}
-				onClose={() => setOpenQuestionPopup(false)}
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}
 				onSubmit={handleSubmitQuestion}
 			/>
 		</>

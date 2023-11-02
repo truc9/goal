@@ -1,26 +1,23 @@
 import { useParams } from 'react-router-dom'
 import { PageContainer } from '../../components/PageContainer'
-import {
-	FiChevronLeft,
-	FiChevronRight,
-	FiSend,
-	FiTriangle
-} from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight, FiCoffee, FiSearch } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
-import questionService from '../../services/questionService'
 import { AsyncContent } from '../../components/AsyncContent'
 import { QuestionTypeDict } from '../../constant'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { QuestionModel } from '../AssessmentSetup/models'
-import { IoCafe } from 'react-icons/io5'
-import { LinearProgress } from '@mui/material'
 import { QuestionType } from '../AssessmentSetup/models/QuestionModel'
+import questionService from '../../services/questionService'
+
+const lsAssessmentKey = '__assessment_key__'
 
 const MyAssessmentDetails = () => {
 	const params = useParams()
-	const [q, setQ] = useState<QuestionModel | null>(null)
+	const textRef = useRef<any>(null!)
+	const [question, setQuestion] = useState<QuestionModel | null>(null)
+	const [answers, setAnswers] = useState<any>(null!)
 	const [currentIndex, setCurrentIndex] = useState(1)
-	const [progress, setProgress] = useState(0)
+	const [multiChoices, setMultiChoices] = useState<number[]>([])
 
 	const { isLoading, data: questions } = useQuery({
 		queryKey: ['assessment_details_questions'],
@@ -30,18 +27,22 @@ const MyAssessmentDetails = () => {
 	})
 
 	useEffect(() => {
-		if (questions) {
-			setProgress((currentIndex / questions.length) * 100)
-		}
-
 		if (questions && questions.length > 0) {
-			setQ(questions.find((q) => q.ordinal === currentIndex) ?? null)
+			setQuestion(questions.find((q) => q.ordinal === currentIndex) ?? null)
 		}
-	}, [questions, q, currentIndex])
+	}, [questions, question, currentIndex])
 
 	const goNext = () => {
+		if (textRef.current) {
+			textRef.current.value = ''
+		}
+
+		saveToStorage()
 		if (currentIndex < (questions?.length ?? 0)) {
 			setCurrentIndex(currentIndex + 1)
+		}
+		if (multiChoices.length > 0) {
+			setMultiChoices([])
 		}
 	}
 
@@ -49,176 +50,191 @@ const MyAssessmentDetails = () => {
 		if (currentIndex > 1) {
 			setCurrentIndex(currentIndex - 1)
 		}
+		setMultiChoices([])
+	}
+
+	const saveToStorage = () => {
+		localStorage.setItem(lsAssessmentKey, JSON.stringify(answers))
+	}
+
+	const answersUpdate = (value: any) => {
+		setAnswers({
+			...answers,
+			[question!.id!]: `${value}`
+		})
+	}
+
+	const answersMultipleChoices = (e: any) => {
+		if (e.target.checked) {
+			setMultiChoices([...multiChoices, e.target.value])
+		} else {
+			setMultiChoices(multiChoices.filter((c) => c !== e.target.value))
+		}
 	}
 
 	return (
 		<PageContainer
-			icon={<IoCafe />}
-			title={`Assessment ${params.versionId}`}
-			action={
-				<div className='flex items-center gap-3'>
-					<div className='text-xs font-bold text-slate-500'>
-						Question {q?.ordinal} / {questions?.length}
-					</div>
-					<LinearProgress
-						className='w-[250px] xl:w-[500px]'
-						variant='determinate'
-						value={progress}
-					/>
-					<span className='text-xs font-bold text-slate-500'>
-						{Math.round(progress)}%
-					</span>
-				</div>
-			}>
+			showGoBack
+			title={questions?.length > 0 ? `Question ${currentIndex}/${questions?.length ?? 0}` : 'No Questions'}>
 			<AsyncContent loading={isLoading}>
 				{questions?.length === 0 && (
 					<div className='flex items-center justify-center gap-3 text-center text-xl text-slate-300'>
-						<FiTriangle /> No Questions
+						<FiCoffee />
+						<span>Oops! It is an empty assessment. Go and make your coffee</span>
 					</div>
 				)}
 
-				{q && (
+				{question && (
 					<div className='flex flex-col gap-3 text-center'>
-						<div className='flex items-center justify-center text-4xl font-bold text-rose-500'>
-							<span>{q.description}</span>
+						<div className='flex items-center justify-center'>
+							<span className='rounded bg-emerald-500 p-1 text-xs text-white'>
+								{QuestionTypeDict[question.type]}
+							</span>
 						</div>
-						<span className='flex items-center justify-center text-xs'>
-							{QuestionTypeDict[q.type]}
-						</span>
 
-						<div className='mt-5 flex justify-center'>
-							{q.type == QuestionType.YesNo && (
-								<div className='flex flex-col gap-3'>
-									{['Yes', 'No'].map((c) => {
-										return (
-											<div className='flex items-center gap-3'>
-												<input
-													className='text-2x h-8 w-8'
-													id={`c${c.toLowerCase()}`}
-													type='radio'
-													name={`q${q.id}`}
-												/>
-												<label
-													htmlFor={`c${c.toLocaleLowerCase()}`}>
-													{c}
-												</label>
-											</div>
-										)
-									})}
-								</div>
+						<div className='flex items-center justify-center'>
+							<div className='flex w-1/2 justify-center rounded-lg border border-slate-200 bg-slate-100 p-2 text-center text-xl'>
+								<span>{question.description}</span>
+							</div>
+						</div>
+
+						<div className='flex items-center justify-center'>
+							<div className='flex w-1/2 justify-start rounded-lg border border-slate-200 bg-slate-100 p-5'>
+								{question.type == QuestionType.YesNo && (
+									<div className='flex flex-col gap-3'>
+										{['Yes', 'No'].map((c) => {
+											return (
+												<div key={c.toLowerCase()} className='flex items-center gap-3'>
+													<input
+														className='text-2x h-8 w-8'
+														id={`c${c.toLowerCase()}`}
+														type='radio'
+														name={`q${question.id}`}
+														value={c}
+														onChange={(e: any) => answersUpdate(e.target.value === 'Yes')}
+													/>
+													<label htmlFor={`c${c.toLocaleLowerCase()}`}>{c}</label>
+												</div>
+											)
+										})}
+									</div>
+								)}
+
+								{question.type == QuestionType.YesNoNA && (
+									<div className='flex flex-col gap-3'>
+										{[
+											{ name: 'Yes', value: 'yes' },
+											{ name: 'No', value: 'no' },
+											{ name: 'N/A', value: 'na' }
+										].map((c) => {
+											return (
+												<div key={c.value} className='flex items-center gap-3'>
+													<input
+														className='text-2x h-8 w-8'
+														id={`c${c.value}`}
+														type='radio'
+														name={`q${question.id}`}
+														onChange={() => answersUpdate(c.value)}
+													/>
+													<label htmlFor={`c${c.value}`}>{c.name}</label>
+												</div>
+											)
+										})}
+									</div>
+								)}
+
+								{question.type == QuestionType.FreeText && (
+									<div className='flex w-full'>
+										<textarea
+											ref={textRef}
+											placeholder='Answer free text...'
+											rows={10}
+											onChange={(e: any) => answersUpdate(e.target.value)}
+										/>
+									</div>
+								)}
+
+								{question.type === QuestionType.SingleChoice && (
+									<div className='flex flex-col gap-3'>
+										{question.choices?.map((c) => {
+											return (
+												<div key={c.id} className='flex items-center gap-3'>
+													<input
+														className='text-2x h-8 w-8'
+														id={`c${c.id}`}
+														type='radio'
+														value={c.id}
+														name={`q${question.id}`}
+														onChange={(e: any) => answersUpdate(e.target.value)}
+													/>
+													<label htmlFor={`c${c.id}`}>{c.description}</label>
+												</div>
+											)
+										})}
+									</div>
+								)}
+
+								{question.type === QuestionType.MultipleChoice && (
+									<div className='flex flex-col gap-3'>
+										{question.choices?.map((c) => {
+											return (
+												<div key={c.id} className='flex items-center gap-3'>
+													<input
+														className='text-2x h-8 w-8'
+														id={`c${c.id}`}
+														type='checkbox'
+														value={c.id}
+														onChange={answersMultipleChoices}
+													/>
+													<label htmlFor={`c${c.id}`}>{c.description}</label>
+												</div>
+											)
+										})}
+									</div>
+								)}
+
+								{question.type === QuestionType.Confirmation && (
+									<div className='flex items-center gap-3'>
+										<input id='confirm' className='text-2x h-8 w-8' type='checkbox' />
+										<label htmlFor='confirm'>Confirm</label>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				)}
+
+				{questions?.length > 0 && (
+					<div className='flex flex-col'>
+						<div className='flex items-center justify-between'>
+							{currentIndex === 1 ? (
+								<span></span>
+							) : (
+								<button
+									onClick={goPrev}
+									className='flex w-32 items-center justify-center gap-2 rounded bg-black p-3 text-center text-xl text-white hover:ring-2 active:-translate-x-1'>
+									<FiChevronLeft />
+									Prev
+								</button>
 							)}
-
-							{q.type == QuestionType.YesNoNA && (
-								<div className='flex flex-col gap-3'>
-									{['Yes', 'No', 'N/A'].map((c) => {
-										return (
-											<div className='flex items-center gap-3'>
-												<input
-													className='text-2x h-8 w-8'
-													id={`c${c.toLowerCase()}`}
-													type='radio'
-													name={`q${q.id}`}
-												/>
-												<label
-													htmlFor={`c${c.toLocaleLowerCase()}`}>
-													{c}
-												</label>
-											</div>
-										)
-									})}
-								</div>
-							)}
-
-							{q.type == QuestionType.FreeText && (
-								<div className='flex w-1/2'>
-									<textarea
-										placeholder='Answer free text...'
-										rows={10}
-									/>
-								</div>
-							)}
-
-							{q.type === QuestionType.SingleChoice && (
-								<div className='flex flex-col gap-3'>
-									{q.choices?.map((c) => {
-										return (
-											<div className='flex items-center gap-3'>
-												<input
-													className='text-2x h-8 w-8'
-													id={`c${c.id}`}
-													type='radio'
-													name={`q${q.id}`}
-												/>
-												<label htmlFor={`c${c.id}`}>
-													{c.description}
-												</label>
-											</div>
-										)
-									})}
-								</div>
-							)}
-
-							{q.type === QuestionType.MultipleChoice && (
-								<div className='flex flex-col gap-3'>
-									{q.choices?.map((c) => {
-										return (
-											<div className='flex items-center gap-3'>
-												<input
-													className='text-2x h-8 w-8'
-													id={`c${c.id}`}
-													type='checkbox'
-												/>
-												<label htmlFor={`c${c.id}`}>
-													{c.description}
-												</label>
-											</div>
-										)
-									})}
-								</div>
-							)}
-
-							{q.type === QuestionType.Confirmation && (
-								<div className='flex items-center gap-3'>
-									<input
-										id='confirm'
-										className='text-2x h-8 w-8'
-										type='checkbox'
-									/>
-									<label htmlFor='confirm'>Confirm</label>
-								</div>
+							{currentIndex === questions?.length ? (
+								<button
+									onClick={goNext}
+									className='flex items-center justify-center gap-2 rounded bg-emerald-500 p-3 text-center text-xl text-white hover:ring-2 active:translate-x-1'>
+									<FiSearch />
+									Review Your Answers
+								</button>
+							) : (
+								<button
+									onClick={goNext}
+									className='flex w-32 items-center justify-center gap-2 rounded bg-black p-3 text-center text-xl text-white hover:ring-2 active:translate-x-1'>
+									<FiChevronRight />
+									Next
+								</button>
 							)}
 						</div>
 					</div>
 				)}
-				<div className='flex flex-col'>
-					<div className='flex items-center justify-between'>
-						{currentIndex === 1 ? (
-							<span></span>
-						) : (
-							<button
-								onClick={goPrev}
-								className='flex w-32 items-center justify-center gap-2 rounded bg-black p-3 text-center text-xl text-white ring-emerald-400 ring-offset-2 hover:ring-2 active:-translate-x-1 active:ring-2'>
-								<FiChevronLeft />
-								Prev
-							</button>
-						)}
-						{currentIndex === questions?.length ? (
-							<button
-								onClick={goNext}
-								className='flex w-32 items-center justify-center gap-2 rounded bg-rose-500 p-3 text-center text-xl text-white ring-emerald-400 ring-offset-2 hover:ring-2 active:translate-x-1 active:ring-2'>
-								<FiSend />
-								Submit
-							</button>
-						) : (
-							<button
-								onClick={goNext}
-								className='flex w-32 items-center justify-center gap-2 rounded bg-black p-3 text-center text-xl text-white ring-emerald-400 ring-offset-2 hover:ring-2 active:translate-x-1 active:ring-2'>
-								<FiChevronRight />
-								Next
-							</button>
-						)}
-					</div>
-				</div>
 			</AsyncContent>
 		</PageContainer>
 	)

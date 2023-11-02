@@ -29,7 +29,7 @@ export const PageContainer: React.FC<Props> = ({
 						<FiChevronLeft /> <span>Back</span>
 					</button>
 				)}
-				<div className='flex items-center gap-3 font-bold'>
+				<div className='flex items-center gap-3'>
 					{icon && <span className='text-2xl'>{icon}</span>}
 					<h3 className='text-2xl'>{title}</h3>
 				</div>

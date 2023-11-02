@@ -9,5 +9,5 @@
 	"plugins": ["prettier-plugin-tailwindcss"],
 	"singleAttributePerLine": false,
 	"jsxSingleQuote": true,
-	"printWidth": 80
+	"printWidth": 120
 }
