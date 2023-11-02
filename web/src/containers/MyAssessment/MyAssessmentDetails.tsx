@@ -25,7 +25,8 @@ const MyAssessmentDetails = () => {
 	const { isLoading, data: questions } = useQuery({
 		queryKey: ['assessment_details_questions'],
 		queryFn: () => questionService.getByVersion(Number(params.versionId)),
-		enabled: params && !!params.versionId
+		enabled: params && !!params.versionId,
+		initialData: []
 	})
 
 	useEffect(() => {
