@@ -6,18 +6,20 @@ import { AsyncContent } from '../../components/AsyncContent'
 import { QuestionTypeDict } from '../../constant'
 import { useEffect, useRef, useState } from 'react'
 import { QuestionModel } from '../AssessmentSetup/models'
-import { QuestionType } from '../AssessmentSetup/models/QuestionModel'
+import { AnswerSubmissionModel, QuestionType } from '../AssessmentSetup/models/QuestionModel'
 import questionService from '../../services/questionService'
+import { MultiChoicesAnswer } from './components/MultiChoicesAnswer'
+import { YesNoAnswer } from './components/YesNoAnswer'
+import { SingleChoiceAnswer } from './components/SingleChoiceAnswer'
 
-const lsAssessmentKey = '__assessment_key__'
+const AUTO_SAVE_KEY = '__assessmentautosaved__'
 
 const MyAssessmentDetails = () => {
 	const params = useParams()
 	const textRef = useRef<any>(null!)
 	const [question, setQuestion] = useState<QuestionModel | null>(null)
-	const [answers, setAnswers] = useState<any>(null!)
-	const [currentIndex, setCurrentIndex] = useState(1)
-	const [multiChoices, setMultiChoices] = useState<number[]>([])
+	const [answers, setAnswers] = useState<AnswerSubmissionModel[]>([])
+	const [currentOrdinal, setCurrentOrdinal] = useState(1)
 
 	const { isLoading, data: questions } = useQuery({
 		queryKey: ['assessment_details_questions'],
@@ -27,60 +29,64 @@ const MyAssessmentDetails = () => {
 	})
 
 	useEffect(() => {
-		if (questions && questions.length > 0) {
-			setQuestion(questions.find((q) => q.ordinal === currentIndex) ?? null)
+		return () => {
+			localStorage.removeItem(AUTO_SAVE_KEY)
 		}
-	}, [questions, question, currentIndex])
+	}, [])
+
+	useEffect(() => {
+		if (answers && answers.length > 0) {
+			localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(answers))
+		}
+	}, [answers])
+
+	useEffect(() => {
+		if (questions && questions.length > 0) {
+			const q = questions.find((q) => q.ordinal === currentOrdinal)
+			setQuestion(q ?? null)
+		}
+	}, [questions, question, currentOrdinal])
 
 	const goNext = () => {
 		if (textRef.current) {
 			textRef.current.value = ''
 		}
 
-		saveToStorage()
-		if (currentIndex < (questions?.length ?? 0)) {
-			setCurrentIndex(currentIndex + 1)
-		}
-		if (multiChoices.length > 0) {
-			setMultiChoices([])
+		if (currentOrdinal < (questions?.length ?? 0)) {
+			setCurrentOrdinal(currentOrdinal + 1)
 		}
 	}
 
 	const goPrev = () => {
-		if (currentIndex > 1) {
-			setCurrentIndex(currentIndex - 1)
+		if (currentOrdinal > 1) {
+			setCurrentOrdinal(currentOrdinal - 1)
 		}
-		setMultiChoices([])
 	}
 
-	const saveToStorage = () => {
-		localStorage.setItem(lsAssessmentKey, JSON.stringify(answers))
-	}
-
-	const answersUpdate = (value: any) => {
-		setAnswers({
-			...answers,
-			[question!.id!]: `${value}`
-		})
-	}
-
-	const answersMultipleChoices = (e: any) => {
-		if (e.target.checked) {
-			setMultiChoices([...multiChoices, e.target.value])
-		} else {
-			setMultiChoices(multiChoices.filter((c) => c !== e.target.value))
+	const handleAnswerChange = (questionId: number, answer: any) => {
+		let currentAnswers = answers
+		if (answers.find((a) => a.questionId === questionId)) {
+			currentAnswers = answers.filter((a) => a.questionId !== questionId)
 		}
+
+		setAnswers([
+			...currentAnswers,
+			{
+				questionId,
+				answer
+			}
+		])
 	}
 
 	return (
 		<PageContainer
 			showGoBack
-			title={questions?.length > 0 ? `Question ${currentIndex}/${questions?.length ?? 0}` : 'No Questions'}>
+			title={questions?.length > 0 ? `Question ${currentOrdinal}/${questions?.length ?? 0}` : 'No Questions'}>
 			<AsyncContent loading={isLoading}>
 				{questions?.length > 0 && (
 					<div className='flex flex-col'>
 						<div className='flex items-center justify-between'>
-							{currentIndex === 1 ? (
+							{currentOrdinal === 1 ? (
 								<span className='flex w-32 items-center justify-center gap-2 rounded bg-slate-300 p-3 text-center text-xl'>
 									<FiChevronLeft />
 									Prev
@@ -102,7 +108,7 @@ const MyAssessmentDetails = () => {
 								</div>
 							)}
 
-							{currentIndex === questions?.length ? (
+							{currentOrdinal === questions?.length ? (
 								<button
 									onClick={goNext}
 									className='flex items-center justify-center gap-2 rounded bg-emerald-500 p-3 text-center text-xl text-white active:translate-x-1'>
@@ -139,56 +145,18 @@ const MyAssessmentDetails = () => {
 						<div className='flex items-center justify-center'>
 							<div className='flex w-1/2 justify-start rounded-lg border border-slate-200 bg-slate-100 p-5'>
 								{question.type == QuestionType.YesNo && (
-									<div className='flex flex-col rounded-lg p-2'>
-										{['Yes', 'No'].map((c) => {
-											return (
-												<div
-													key={c.toLowerCase()}
-													className='flex items-center gap-3 rounded-lg p-3 hover:bg-slate-200'>
-													<input
-														className='text-2x h-8 w-8'
-														id={`c${c.toLowerCase()}`}
-														type='radio'
-														name={`q${question.id}`}
-														value={c}
-														onChange={(e: any) => answersUpdate(e.target.value === 'Yes')}
-													/>
-													<label
-														htmlFor={`c${c.toLocaleLowerCase()}`}
-														className='hover:cursor-pointer'>
-														{c}
-													</label>
-												</div>
-											)
-										})}
-									</div>
+									<YesNoAnswer
+										onChange={(e) => handleAnswerChange(question.id!, e)}
+										defaultValue={question.answer}
+									/>
 								)}
 
 								{question.type == QuestionType.YesNoNA && (
-									<div className='flex flex-col'>
-										{[
-											{ name: 'Yes', value: 'yes' },
-											{ name: 'No', value: 'no' },
-											{ name: 'N/A', value: 'na' }
-										].map((c) => {
-											return (
-												<div
-													key={c.value}
-													className='flex items-center gap-3 rounded-lg p-3 hover:bg-slate-200'>
-													<input
-														className='text-2x h-8 w-8'
-														id={`c${c.value}`}
-														type='radio'
-														name={`q${question.id}`}
-														onChange={() => answersUpdate(c.value)}
-													/>
-													<label htmlFor={`c${c.value}`} className='hover:cursor-pointer'>
-														{c.name}
-													</label>
-												</div>
-											)
-										})}
-									</div>
+									<YesNoAnswer
+										includeNA
+										onChange={(e) => handleAnswerChange(question.id!, e)}
+										defaultValue={question.answer}
+									/>
 								)}
 
 								{question.type == QuestionType.FreeText && (
@@ -197,56 +165,30 @@ const MyAssessmentDetails = () => {
 											ref={textRef}
 											placeholder='Answer free text...'
 											rows={10}
-											onChange={(e: any) => answersUpdate(e.target.value)}
+											onChange={(e: any) => handleAnswerChange(question!.id!, e.target.value)}
+											value={question.answer}
 										/>
 									</div>
 								)}
 
 								{question.type === QuestionType.SingleChoice && (
-									<div className='flex flex-col'>
-										{question.choices?.map((c) => {
-											return (
-												<div
-													key={c.id}
-													className='flex items-center gap-3 rounded-lg p-3 hover:bg-slate-200'>
-													<input
-														className='text-2x h-8 w-8'
-														id={`c${c.id}`}
-														type='radio'
-														value={c.id}
-														name={`q${question.id}`}
-														onChange={(e: any) => answersUpdate(e.target.value)}
-													/>
-													<label htmlFor={`c${c.id}`} className='hover:cursor-pointer'>
-														{c.description}
-													</label>
-												</div>
-											)
-										})}
-									</div>
+									<SingleChoiceAnswer
+										choices={question.choices!}
+										valueMember='id'
+										displayMember='description'
+										defaultValue={question.answer}
+										onChange={(value) => handleAnswerChange(question.id!, value)}
+									/>
 								)}
 
 								{question.type === QuestionType.MultipleChoice && (
-									<div className='flex flex-col'>
-										{question.choices?.map((c) => {
-											return (
-												<div
-													key={c.id}
-													className='flex items-center gap-3 rounded-lg p-3 hover:bg-slate-200'>
-													<input
-														className='text-2x h-8 w-8'
-														id={`c${c.id}`}
-														type='checkbox'
-														value={c.id}
-														onChange={answersMultipleChoices}
-													/>
-													<label htmlFor={`c${c.id}`} className='hover:cursor-pointer'>
-														{c.description}
-													</label>
-												</div>
-											)
-										})}
-									</div>
+									<MultiChoicesAnswer
+										choices={question.choices!}
+										displayMember='description'
+										valueMember='id'
+										defaultValues={question.answer}
+										onChange={(values) => handleAnswerChange(question!.id!, values)}
+									/>
 								)}
 
 								{question.type === QuestionType.Confirmation && (

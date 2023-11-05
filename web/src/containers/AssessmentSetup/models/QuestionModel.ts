@@ -15,17 +15,12 @@ export interface QuestionModel {
     type: QuestionType
     choices?: ChoiceAnswer[]
     assessmentVersionId: number
+    answer?: any
 }
 
 export interface AnswerSubmissionModel {
     questionId: number
-    text?: string
-    yesNo?: boolean
-    yesNoNa?: 'yes' | 'no' | 'na'
-    confirmation?: boolean
-    singleChoice?: number
-    multipleChoices?: number[]
-    photo?: string //URL
+    answer: any
 }
 
 export interface ChoiceAnswer {

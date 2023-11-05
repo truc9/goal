@@ -1,7 +1,5 @@
 package entity
 
-import "log"
-
 type AssessmentVersion struct {
 	Base
 	Version      int        `json:"version"`
@@ -20,8 +18,6 @@ func NewAssessmentVersion(version int, assessmentId int64) AssessmentVersion {
 func (v *AssessmentVersion) AddQuestion(q Question) []Question {
 	q.Ordinal = int64(len(v.Questions) + 1)
 	v.Questions = append(v.Questions, q)
-	log.Println(q)
-	log.Println(v.Questions)
 	return v.Questions
 }
 
