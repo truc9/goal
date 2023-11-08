@@ -1,7 +1,8 @@
 import httpClient from "./httpClient"
 
 async function getBookingPerPeriodsStats() {
-    return await httpClient.get('stats/booking-per-periods')
+    const response = await httpClient.get('stats/booking-per-periods')
+    return response
 }
 
 export default {

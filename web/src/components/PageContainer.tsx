@@ -10,17 +10,11 @@ interface Props {
 	showGoBack?: boolean
 }
 
-export const PageContainer: React.FC<Props> = ({
-	title,
-	action,
-	icon,
-	showGoBack,
-	children
-}) => {
+export const PageContainer: React.FC<Props> = ({ title, action, icon, showGoBack, children }) => {
 	const navigate = useNavigate()
 
 	return (
-		<div className='m-2 flex flex-col gap-5 rounded border bg-white p-5 shadow'>
+		<div className='m-2 flex flex-col gap-5 rounded border bg-white p-5 shadow-sm'>
 			<div className='flex items-center justify-between'>
 				{showGoBack && (
 					<button

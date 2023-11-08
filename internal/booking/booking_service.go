@@ -20,7 +20,7 @@ func (sv BookingService) CreateBooking(userId int64, model *entity.Booking) (*en
 	booking := &entity.Booking{
 		UserId:          userId,
 		BookingPeriodId: model.BookingPeriodId,
-		Date:            model.Date,
+		Date:            model.Date.UTC(),
 	}
 
 	res := sv.db.Create(booking)

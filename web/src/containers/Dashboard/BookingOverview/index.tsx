@@ -11,7 +11,7 @@ import { BookingPeriod, UserBooking } from '../../../models/booking'
 import { BookingPerPeriodStat } from '../../../models/stats'
 import bookingService from '../../../services/bookingService'
 import statService from '../../../services/statService'
-import { CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, AreaChart, Area } from 'recharts'
+import { CartesianGrid, Tooltip, XAxis, YAxis, AreaChart, Area, ResponsiveContainer } from 'recharts'
 import { AsyncContent } from '../../../components/AsyncContent'
 import { LoadingSkeleton } from '../../../components/LoadingSkeleton'
 import dateTimeUtil from '../../../utils/datetimeUtil'
@@ -21,7 +21,7 @@ const BookingOverview: React.FC = () => {
 	const [dates, setDates] = useState<Date[]>([])
 	const [nextPeriod, setNextPeriod] = useState<BookingPeriod>()
 	const [title, setTitle] = useState('')
-	const [bookingPerPeriods, setBookingPerPeriods] = useState<BookingPerPeriodStat[]>([])
+	const [periodBookings, setPeriodBookings] = useState<BookingPerPeriodStat[]>([])
 	const [loadingBookingPerPeriods, setLoadingPerPeriods] = useState(false)
 	const [loadingAllBookings, setLoadingAllBookings] = useState(false)
 
@@ -35,6 +35,10 @@ const BookingOverview: React.FC = () => {
 		handleNextPeriod()
 		loadLineChart()
 	}, [])
+
+	useEffect(() => {
+		console.log(periodBookings)
+	}, [periodBookings])
 
 	useEffect(() => {
 		if (nextPeriod) {
@@ -61,22 +65,19 @@ const BookingOverview: React.FC = () => {
 
 	const loadLineChart = async () => {
 		setLoadingPerPeriods(true)
-		const data = await statService.getBookingPerPeriodsStats()
-		console.log(data)
-		setBookingPerPeriods(data)
+		const response = await statService.getBookingPerPeriodsStats()
+		setPeriodBookings(response)
 		setLoadingPerPeriods(false)
 	}
 
 	return (
 		<div>
 			<PageContainer icon={<FiBarChart2 />} title='Booking By Period'>
-				<div className='mb-3 h-[250px] w-full'>
+				<div className='mb-3 w-full'>
 					<AsyncContent loading={loadingBookingPerPeriods}>
-						<ResponsiveContainer width='100%' height='100%'>
+						<ResponsiveContainer width='100%' height={300}>
 							<AreaChart
-								width={730}
-								height={250}
-								data={bookingPerPeriods}
+								data={periodBookings}
 								margin={{
 									top: 10,
 									right: 0,
@@ -89,7 +90,7 @@ const BookingOverview: React.FC = () => {
 										<stop offset='95%' stopColor='#82ca9d' stopOpacity={0} />
 									</linearGradient>
 								</defs>
-								<XAxis dataKey='from' tickFormatter={(item) => dayjs(item).format('DD.MM.YYYY')} />
+								<XAxis dataKey='from' tickFormatter={(item) => dayjs(item).format('DD MMM YYYY')} />
 								<YAxis />
 								<CartesianGrid strokeDasharray='5 5' />
 								<Tooltip />

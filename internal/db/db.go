@@ -3,6 +3,7 @@ package db
 import (
 	"log"
 	"sync"
+	"time"
 
 	"github.com/truc9/goal/internal/config"
 	"github.com/truc9/goal/internal/entity"
@@ -17,7 +18,11 @@ var (
 
 func createSingleInstanceDb() *gorm.DB {
 	once.Do(func() {
-		dbCtx, err := gorm.Open(postgres.Open(config.ConnectionString), &gorm.Config{})
+		dbCtx, err := gorm.Open(postgres.Open(config.ConnectionString), &gorm.Config{
+			NowFunc: func() time.Time {
+				return time.Now().UTC()
+			},
+		})
 
 		if err != nil {
 			log.Fatalln(err)

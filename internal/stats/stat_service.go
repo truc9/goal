@@ -1,9 +1,6 @@
 package stats
 
 import (
-	"log"
-	"time"
-
 	"github.com/truc9/goal/internal/booking"
 	"github.com/truc9/goal/internal/entity"
 	"gorm.io/gorm"
@@ -54,13 +51,6 @@ func (sv *StatsService) GetBookingPerPeriodStats() ([]BookingPerPeriodModel, err
 		GROUP BY bp.from, bp.to
 		ORDER BY bp.from
 	`).Scan(&stats)
-
-	location, _ := time.LoadLocation("local")
-	log.Print(location)
-
-	for _, item := range stats {
-		log.Print(item)
-	}
 
 	if res.Error != nil {
 		return nil, res.Error
