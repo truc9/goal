@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react'
 
 interface Props {
-	defaultValue: any
+	defaultValue?: any
 	onChange: (value: any) => void
 	includeNA?: boolean
 }

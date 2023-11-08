@@ -10,9 +10,9 @@ function formatDateTime(date: Date) {
 
 function greeting() {
     const h = new Date().getHours()
-    if (h < 9) {
+    if (h < 12) {
         return '🌤️ Good Morning'
-    } else if (h < 13) {
+    } else if (h < 17) {
         return '☀️ Good Afternoon'
     }
     return '🌜 Good Evening'

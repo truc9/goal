@@ -50,9 +50,7 @@ const Home = () => {
 
 	const loadBookingStat = async () => {
 		setLoadingBookingStat(true)
-		const { booked, unbooked, total } = await httpClient.get(
-			'stats/booking-overall'
-		)
+		const { booked, unbooked, total } = await httpClient.get('stats/booking-overall')
 		setData({ total, booked, unbooked })
 		setLoadingBookingStat(false)
 	}
@@ -63,8 +61,7 @@ const Home = () => {
 			title='Dashboard'
 			action={
 				<span className='text-xl'>
-					{dateTimeUtil.greeting()},{' '}
-					<span className='font-bold'>{user.name}</span> !
+					{dateTimeUtil.greeting()}, <span className='font-bold'>{user.name}</span> !
 				</span>
 			}>
 			<div className='grid grid-cols-3 gap-5'>
@@ -76,10 +73,10 @@ const Home = () => {
 				/>
 				<ClickableCard
 					disabled={user.role !== 'admin'}
-					title='Booking Dashboard'
+					title='Booking Overview'
 					subTitle='Manage Employee Bookings'
 					icon={<FiBarChart2 size={30} />}
-					link='/booking-dashboard'
+					link='/dashboard/booking-overview'
 				/>
 				<ClickableCard
 					disabled={user.role !== 'admin'}
@@ -104,13 +101,7 @@ const Home = () => {
 					<div>
 						<AsyncContent loading={loadingBookingStat}>
 							<PieChart width={300} height={300}>
-								<Pie
-									dataKey='value'
-									isAnimationActive={false}
-									data={stats}
-									outerRadius={90}
-									label
-								/>
+								<Pie dataKey='value' isAnimationActive={false} data={stats} outerRadius={90} label />
 								<Tooltip />
 								<Legend verticalAlign='top' height={36} />
 							</PieChart>

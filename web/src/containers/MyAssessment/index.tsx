@@ -9,8 +9,7 @@ import { Link } from 'react-router-dom'
 const MyAssessment = () => {
 	const { isLoading, data: assessments } = useQuery({
 		queryKey: ['myAssignmentQuery'],
-		queryFn: () =>
-			httpClient.get<MyAssessmentModel[]>('employees/my-assignments')
+		queryFn: () => httpClient.get<MyAssessmentModel[]>('employees/my-assignments')
 	})
 
 	return (
@@ -26,15 +25,12 @@ const MyAssessment = () => {
 									key={ass.versionId}
 									className='flex items-center justify-between rounded bg-slate-100 p-5'>
 									<div className='flex flex-col gap-3'>
-										<h3 className='font-bold'>
-											{ass.assessmentName}
-										</h3>
+										<h3 className='font-bold'>{ass.assessmentName}</h3>
 										<small>Version {ass.version}</small>
 									</div>
 									<div>
 										{ass.isDone ? (
-											<Link
-												to={`${ass.versionId}?mode=readonly`}>
+											<Link to={`${ass.versionId}?mode=readonly`}>
 												<button className='btn-secondary'>
 													<FiEye /> View
 												</button>

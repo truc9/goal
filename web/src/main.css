@@ -16,7 +16,7 @@ body {
 	input[type='text'],
 	input[type='password'],
 	textarea {
-		@apply w-full rounded border px-4 py-2 shadow-inner focus:border-none focus:outline-none focus:ring-2 focus:ring-emerald-500;
+		@apply w-full rounded border px-4 py-2 shadow-inner focus:outline-none;
 	}
 
 	.btn {

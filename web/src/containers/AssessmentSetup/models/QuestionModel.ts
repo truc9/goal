@@ -20,6 +20,8 @@ export interface QuestionModel {
 
 export interface AnswerSubmissionModel {
     questionId: number
+    ordinal: number
+    description: string
     answer: any
 }
 

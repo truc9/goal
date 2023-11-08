@@ -13,5 +13,5 @@ export const AsyncContent: React.FC<Props> = ({ loading, children }) => {
 				<Loading />
 			</div>
 		)
-	return <>{children}</>
+	return <div>{children}</div>
 }
