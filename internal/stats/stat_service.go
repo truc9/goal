@@ -61,6 +61,6 @@ func (sv *StatsService) GetBookingPerPeriodStats() ([]BookingPerPeriodModel, err
 
 func (sv *StatsService) GetEmployeeAsignmentCount(employeeId int64) int64 {
 	var count int64
-	sv.db.Where("user_id = ?", employeeId).Find(&[]entity.AssessmentAssignment{}).Count(&count)
+	sv.db.Where("user_id = ?", employeeId).Find(&[]entity.Assignment{}).Count(&count)
 	return count
 }

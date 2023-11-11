@@ -194,7 +194,30 @@ func (ct AssessmentController) Unassign(c echo.Context) error {
 //	@Success		200
 //	@Router			/api/assignments [GET]
 func (ct AssessmentController) GetAssignments(c echo.Context) error {
-	userId := params.GetIntParam(c, "userId")
+	userId := httpcontext.CurrentUserId(c)
 	result := ct.assessmentSv.GetAssignments(userId)
 	return c.JSON(http.StatusOK, result)
+}
+
+func (ct AssessmentController) StartAssessment(c echo.Context) error {
+	userId := httpcontext.CurrentUserId(c)
+	assignmentId := params.GetIntParam(c, "assignmentId")
+	ct.assessmentSv.StartAssessment(userId, assignmentId)
+	return c.JSON(http.StatusOK, nil)
+}
+
+func (ct AssessmentController) SubmitQuestionAnswer(c echo.Context) error {
+	userId := httpcontext.CurrentUserId(c)
+
+	var model struct {
+		AssignmentId int64 `json:"assignmentId"`
+		QuestionId   int64 `json:"questionId"`
+		AnswerId     int64 `json:"answerId"`
+	}
+	if err := c.Bind(&model); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	ct.assessmentSv.SubmitQuestionAnswer(model.AssignmentId, model.QuestionId, model.AnswerId)
+	return c.JSON(http.StatusOK, userId)
 }

@@ -79,6 +79,15 @@ func (sv QuestionService) Create(model *QuestionModel) (int64, error) {
 		for _, item := range model.Choices {
 			question.AddChoice(item.Description, item.TriggerQuestionId)
 		}
+	} else if model.Type == entity.YesNo || model.Type == entity.YesNoNa {
+		question.AddChoice("Yes", 0)
+		question.AddChoice("No", 0)
+		if model.Type == entity.YesNoNa {
+			question.AddChoice("N/A", 0)
+		}
+	} else if model.Type == entity.Confirmation {
+		question.AddChoice("Not Confirmed", 0)
+		question.AddChoice("Confirmed", 0)
 	}
 
 	res := sv.db.Create(&question)

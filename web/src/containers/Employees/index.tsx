@@ -30,7 +30,6 @@ const Employees = () => {
 			await employeeService.upload(files[0])
 			enqueueSnackbar('Import successfully', { variant: 'success' })
 		} catch (e: any) {
-			console.log(e)
 			enqueueSnackbar('Failed to import employee', { variant: 'error' })
 		}
 		await load()
@@ -43,9 +42,7 @@ const Employees = () => {
 			icon={<FiUsers />}
 			action={
 				<HContainer>
-					<button
-						className='btn-primary'
-						onClick={() => setShow(true)}>
+					<button className='btn-primary' onClick={() => setShow(true)}>
 						<FiUpload /> Import
 					</button>
 				</HContainer>
@@ -61,10 +58,7 @@ const Employees = () => {
 				title='Import Employees'
 				onCloseClicked={() => setShow(false)}
 				showFooter={false}>
-				<FileUploader
-					extensions={['text/csv']}
-					onUpload={handleUpload}
-				/>
+				<FileUploader extensions={['text/csv']} onUpload={handleUpload} />
 			</Popup>
 		</PageContainer>
 	)

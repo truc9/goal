@@ -37,10 +37,6 @@ const BookingOverview: React.FC = () => {
 	}, [])
 
 	useEffect(() => {
-		console.log(periodBookings)
-	}, [periodBookings])
-
-	useEffect(() => {
 		if (nextPeriod) {
 			const days = Array.from(Array(7).keys()).map((d) => dayjs(nextPeriod.from).add(d, 'day'))
 			setDates(days.map((dd) => dd.toDate()))

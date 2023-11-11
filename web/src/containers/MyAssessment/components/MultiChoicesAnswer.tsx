@@ -9,7 +9,6 @@ type Props = {
 }
 
 export const MultiChoicesAnswer: FC<Props> = ({ choices, displayMember, valueMember, defaultValues, onChange }) => {
-	console.log('default values', defaultValues)
 	const [values, setValues] = useState<any[]>([])
 
 	useEffect(() => {

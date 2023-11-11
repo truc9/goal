@@ -34,6 +34,7 @@ type (
 	}
 
 	AssessmentAssignmentModel struct {
+		AssignmentId   int64  `json:"assignmentId"`
 		AssessmentId   int64  `json:"assessmentId"`
 		AssessmentName string `json:"assessmentName"`
 		Description    string `json:"description"`

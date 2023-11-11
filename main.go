@@ -106,9 +106,11 @@ func main() {
 		api.DELETE("/assessments/questions/:id", questionController.Delete)
 		api.PUT("/assessments/questions/:id/ordinal", questionController.UpdateOrdinal)
 
-		// HSE Assessment Assignments
-		api.PUT("/assignments/:versionId/assign", assessmentController.Assign)
-		api.PUT("/assignments/:versionId/unassign", assessmentController.Unassign)
+		// Assignments
+		api.PUT("/assignments/versions/:versionId/assign", assessmentController.Assign)
+		api.PUT("/assignments/versions/:versionId/unassign", assessmentController.Unassign)
+		api.PUT("/assignments/:assignmentId/start", assessmentController.StartAssessment)
+		api.POST("/assignments/:assigmentId/submit", assessmentController.SubmitQuestionAnswer)
 
 		// Users & Employees
 		api.GET("/employees", employeeController.GetAll)

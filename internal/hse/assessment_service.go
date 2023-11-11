@@ -164,7 +164,7 @@ func (sv AssessmentService) Assign(userId, versionId int64) error {
 	sv.db.Debug().
 		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
 		Select("id").
-		Find(&[]entity.AssessmentAssignment{}).
+		Find(&[]entity.Assignment{}).
 		Count(&c)
 
 	log.Printf("found %v", c)
@@ -173,7 +173,7 @@ func (sv AssessmentService) Assign(userId, versionId int64) error {
 		return fmt.Errorf("assessment version %v already assigned to %v", versionId, userId)
 	}
 
-	r := sv.db.Create(&entity.AssessmentAssignment{
+	r := sv.db.Create(&entity.Assignment{
 		UserId:              userId,
 		AssessmentVersionId: versionId,
 	})
@@ -184,7 +184,7 @@ func (sv AssessmentService) Assign(userId, versionId int64) error {
 func (sv AssessmentService) Unassign(userId, versionId int64) error {
 	var c int64
 
-	deletingItems := []entity.AssessmentAssignment{}
+	deletingItems := []entity.Assignment{}
 	sv.db.Debug().
 		Where("user_id = ? and assessment_version_id = ?", userId, versionId).
 		Select("id").
@@ -203,12 +203,37 @@ func (sv AssessmentService) Unassign(userId, versionId int64) error {
 }
 
 func (sv AssessmentService) GetAssignments(userId int64) []AssignmentModel {
-	entities := []entity.AssessmentAssignment{}
+	entities := []entity.Assignment{}
 	sv.db.Where("user_id = ?", userId).Find(&entities)
-	return lo.Map(entities, func(item entity.AssessmentAssignment, _ int) AssignmentModel {
+	return lo.Map(entities, func(item entity.Assignment, _ int) AssignmentModel {
 		return AssignmentModel{
 			UserId:    item.UserId,
 			VersionId: item.AssessmentVersionId,
 		}
+	})
+}
+
+func (sv AssessmentService) StartAssessment(userId, assignmentId int64) error {
+	asm := &entity.Assignment{}
+	if err := sv.db.Find(&asm, assignmentId).Error; err != nil {
+		return err
+	}
+
+	asm.Status = entity.DraftAssignment
+
+	log.Println("About to update!!!")
+	log.Print(asm.UserId)
+	log.Print(asm.SubmittedById)
+
+	sv.db.Save(&asm)
+
+	return nil
+}
+
+func (sv AssessmentService) SubmitQuestionAnswer(assignmentId, questionId, answerId int64) {
+	sv.db.Create(&entity.AssignmentQuestionAnswer{
+		QuestionId:   questionId,
+		AnswerId:     answerId,
+		AssignmentId: assignmentId,
 	})
 }

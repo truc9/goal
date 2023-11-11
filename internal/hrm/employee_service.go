@@ -127,12 +127,15 @@ func (s EmployeeService) DeactivateUser(userId int64) (*EmployeeResponse, error)
 
 func (s EmployeeService) GetAssessments(userId int64) ([]AssessmentAssignmentModel, error) {
 	var assessments []AssessmentAssignmentModel
-	res := s.db.Raw(`
-		SELECT a.id AS assessment_id, a.name as assessment_name, a.description, vs.id AS version_id, vs.version, aa.is_done
-		FROM assessment_assignments aa
-		JOIN assessment_versions vs ON aa.assessment_version_id = vs.id
-		JOIN assessments a on a.id = vs.assessment_id
-		WHERE aa.user_id = ?
-	`, userId).Scan(&assessments)
+	res := s.db.
+		Debug().
+		Raw(`
+			SELECT aa.id as assignment_id, a.id AS assessment_id, a.name as assessment_name, a.description, vs.id AS version_id, vs.version, aa.status
+			FROM assignments aa
+			JOIN assessment_versions vs ON aa.assessment_version_id = vs.id
+			JOIN assessments a on a.id = vs.assessment_id
+			WHERE aa.user_id = ?
+		`, userId).
+		Scan(&assessments)
 	return assessments, res.Error
 }

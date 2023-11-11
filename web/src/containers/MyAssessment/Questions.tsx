@@ -23,25 +23,16 @@ const Questions = () => {
 		initialData: []
 	})
 
-	useEffect(() => {
-		window.addEventListener('keypress', (e) => {
-			if (e.key == 'ArrowRight') {
-				goNext()
-			} else if (e.key == 'ArrowLeft') {
-				goPrev()
-			}
-		})
+	const questionDict = useMemo(() => {
+		return Object.assign({}, ...questions.map((q, i) => ({ [i]: { ...q, answer: '' } })))
+	}, [questions])
 
+	useEffect(() => {
 		return () => {
 			for (const q of questions) {
 				localStorage.removeItem(`q${q.id}`)
 			}
-			window.removeEventListener('keydown', () => {})
 		}
-	}, [])
-
-	const questionDict = useMemo(() => {
-		return Object.assign({}, ...questions.map((q, i) => ({ [i]: { ...q, answer: '' } })))
 	}, [questions])
 
 	useEffect(() => {
@@ -53,11 +44,7 @@ const Questions = () => {
 			const saved = localStorage.getItem(`q${question.id}`)
 			if (saved) {
 				const parsed = JSON.parse(saved)
-				if (Array.isArray(parsed)) {
-					setSavedAnswer(parsed)
-				} else {
-					setSavedAnswer(parsed)
-				}
+				setSavedAnswer(parsed)
 			}
 
 			if (question.answer) {
@@ -67,14 +54,12 @@ const Questions = () => {
 	}, [question])
 
 	const goNext = () => {
-		console.log('Go next')
 		if (index < questions.length - 1) {
 			setIndex(index + 1)
 		}
 	}
 
 	const goPrev = () => {
-		console.log('Go prev')
 		if (index > 0) {
 			setIndex(index - 1)
 		}
@@ -153,8 +138,8 @@ const Questions = () => {
 									<div className='flex w-full'>
 										<textarea
 											placeholder='Answer free text...'
+											defaultValue={savedAnswer}
 											rows={10}
-											value={savedAnswer}
 											onChange={(e: any) => onAnswerChange(e.target.value)}
 										/>
 									</div>

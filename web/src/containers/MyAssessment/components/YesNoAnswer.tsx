@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const YesNoAnswer: FC<Props> = ({ onChange, value, includeNA }) => {
-	const v = useMemo(() => Number(value), [value])
+	const v = useMemo(() => (value ? Number(value) : null), [value])
 	const items = useMemo(() => {
 		let response = [
 			{ name: 'Yes', value: 1 },

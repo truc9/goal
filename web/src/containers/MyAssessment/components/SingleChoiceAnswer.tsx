@@ -9,8 +9,6 @@ interface Props {
 }
 
 export const SingleChoiceAnswer: FC<Props> = ({ choices, displayMember, valueMember, defaultValue, onChange }) => {
-	console.log(defaultValue)
-
 	return (
 		<div className='flex flex-col'>
 			{choices.map((choice) => {

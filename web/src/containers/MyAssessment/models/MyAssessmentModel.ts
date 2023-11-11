@@ -1,8 +1,9 @@
-export interface MyAssessmentModel {
+export interface AssignmentModel {
+    assignmentId: number
     assessmentId: number
     assessmentName: string
     description: string
     versionId: number
     version: number
-    isDone: boolean
+    isCompleted: boolean
 }

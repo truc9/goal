@@ -16,30 +16,30 @@ body {
 	input[type='text'],
 	input[type='password'],
 	textarea {
-		@apply w-full rounded border px-4 py-2 shadow-inner focus:outline-none;
+		@apply w-full rounded border px-4 py-3 shadow-inner focus:outline-none;
 	}
 
 	.btn {
-		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-3 py-2 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-4 py-3 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
 	}
 
 	.btn-secondary {
-		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-3 py-2 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-slate-200 px-4 py-3 text-sm text-slate-900 transition-all hover:bg-slate-100 active:ring-2 active:ring-slate-100 active:ring-offset-2;
 	}
 
 	.btn-primary {
-		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-3 py-2 text-sm text-white transition-all hover:bg-emerald-500 active:ring-2 active:ring-emerald-500 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-4 py-3 text-sm text-white transition-all hover:bg-emerald-500 active:ring-2 active:ring-emerald-500 active:ring-offset-2;
 	}
 
 	.btn-danger {
-		@apply flex items-center justify-center gap-2 rounded bg-red-500 px-3 py-2 text-sm text-white transition-all hover:bg-red-400 active:ring-2 active:ring-red-400 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-red-500 px-3 py-4 text-sm text-white transition-all hover:bg-red-400 active:ring-2 active:ring-red-400 active:ring-offset-2;
 	}
 
 	.btn-warning {
-		@apply flex items-center justify-center gap-2 rounded bg-orange-500 px-3 py-2 text-sm text-white transition-all hover:bg-orange-400 active:ring-2 active:ring-orange-400 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-orange-500 px-4 py-3 text-sm text-white transition-all hover:bg-orange-400 active:ring-2 active:ring-orange-400 active:ring-offset-2;
 	}
 
 	.btn-icon {
-		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-3 py-2 text-sm text-white transition-all hover:bg-emerald-400 active:ring-2 active:ring-emerald-400 active:ring-offset-2;
+		@apply flex items-center justify-center gap-2 rounded bg-emerald-500 px-4 py-3 text-sm text-white transition-all hover:bg-emerald-400 active:ring-2 active:ring-emerald-400 active:ring-offset-2;
 	}
 }
