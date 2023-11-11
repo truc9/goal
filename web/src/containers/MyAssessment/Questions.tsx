@@ -13,6 +13,8 @@ import questionService from '../../services/questionService'
 const Questions = () => {
 	const params = useParams()
 	const [index, setIndex] = useState(0)
+	const [question, setQuestion] = useState<QuestionModel | null>(null!)
+	const [savedAnswer, setSavedAnswer] = useState('')
 
 	const { isLoading, data: questions } = useQuery({
 		queryKey: ['assessment_details_questions'],
@@ -21,16 +23,31 @@ const Questions = () => {
 		initialData: []
 	})
 
-	const dict = useMemo(() => {
-		return Object.assign({}, ...questions.map((q, i) => ({ [i]: q })))
+	useEffect(() => {
+		return () => {
+			for (const q of questions) {
+				localStorage.removeItem(`q${q.id}`)
+			}
+		}
+	}, [])
+
+	const questionDict = useMemo(() => {
+		return Object.assign({}, ...questions.map((q, i) => ({ [i]: { ...q, answer: '' } })))
 	}, [questions])
 
-	const question = useMemo(() => {
-		return dict[index] as QuestionModel
-	}, [dict, index])
+	useEffect(() => {
+		setQuestion(questionDict[index])
+	}, [questionDict, index])
 
 	useEffect(() => {
-		console.log(question)
+		if (question) {
+			if (question.answer) {
+				localStorage.setItem(`q${question.id}`, JSON.stringify(question.answer))
+			}
+
+			const saved = localStorage.getItem(`q${question.id}`)
+			setSavedAnswer(saved ? JSON.parse(saved) : '')
+		}
 	}, [question])
 
 	const goNext = () => {
@@ -45,32 +62,36 @@ const Questions = () => {
 		}
 	}
 
-	const onAnswerChange = (questionId: number, value: any) => {
-		console.log(questionId)
-		console.log(value)
+	const onAnswerChange = (answer: any) => {
+		const q = { ...question, answer }
+		setQuestion(q)
 	}
 
 	return (
-		<PageContainer showGoBack title='Assessment Submission'>
+		<PageContainer
+			showGoBack
+			title='Assessment Submission'
+			action={
+				<div className='rounded bg-rose-500 px-3 py-1 text-white'>
+					Question {question?.id} ({index + 1}/{questions.length ?? 0})
+				</div>
+			}>
 			<AsyncContent loading={isLoading}>
 				{questions?.length > 0 && (
 					<div className='flex flex-col'>
 						<div className='flex items-center justify-between'>
-							{index === 0 ? (
-								<span className='flex w-32 items-center justify-center gap-2 rounded bg-slate-300 p-3 text-center text-xl'>
-									<FiChevronLeft />
-									Prev
-								</span>
-							) : (
+							{index > 0 ? (
 								<button
 									onClick={goPrev}
-									className='flex w-32 items-center justify-center gap-2 rounded bg-rose-500 p-3 text-center text-xl text-white active:-translate-x-1'>
+									className='flex w-32 items-center justify-center gap-2 rounded bg-slate-300 p-3 text-center text-xl active:-translate-x-1'>
 									<FiChevronLeft />
 									Prev
 								</button>
+							) : (
+								<span></span>
 							)}
 
-							{index === questions?.length ? (
+							{index === questions?.length - 1 ? (
 								<button
 									onClick={goNext}
 									className='flex items-center justify-center gap-2 rounded bg-emerald-500 p-3 text-center text-xl text-white active:translate-x-1'>
@@ -80,7 +101,7 @@ const Questions = () => {
 							) : (
 								<button
 									onClick={goNext}
-									className='flex w-32 items-center justify-center gap-2 rounded bg-orange-500 p-3 text-center text-xl text-white active:translate-x-1'>
+									className='flex w-32 items-center justify-center gap-2 rounded bg-slate-300 p-3 text-center text-xl active:translate-x-1'>
 									<FiChevronRight />
 									Next
 								</button>
@@ -92,21 +113,21 @@ const Questions = () => {
 				{question && (
 					<div className='flex flex-col gap-3 text-center'>
 						<div className='flex items-center justify-center'>
-							<div className='flex w-1/2 justify-center rounded-lg border border-slate-200 bg-slate-100 p-2 text-center text-xl'>
+							<div className='flex w-1/2 justify-center text-center text-xl'>
 								<span>{question.description}</span>
 							</div>
 						</div>
 						<div className='flex items-center justify-center'>
-							<div className='flex w-1/2 justify-start rounded-lg border border-slate-200 bg-slate-100 p-5'>
+							<div className='flex w-1/2 justify-start'>
 								{question.type == QuestionType.YesNo && (
-									<YesNoAnswer onChange={(e) => onAnswerChange(question.id!, e)} />
+									<YesNoAnswer onChange={(value) => onAnswerChange(value)} value={savedAnswer} />
 								)}
 
 								{question.type == QuestionType.YesNoNA && (
 									<YesNoAnswer
 										includeNA
-										onChange={(e) => onAnswerChange(question!.id!, e)}
-										defaultValue={question.answer}
+										onChange={(value) => onAnswerChange(value)}
+										value={savedAnswer}
 									/>
 								)}
 
@@ -115,8 +136,8 @@ const Questions = () => {
 										<textarea
 											placeholder='Answer free text...'
 											rows={10}
-											value={question.answer}
-											onChange={(e: any) => onAnswerChange(question!.id!, e.target.value)}
+											value={savedAnswer}
+											onChange={(e: any) => onAnswerChange(e.target.value)}
 										/>
 									</div>
 								)}
@@ -126,7 +147,7 @@ const Questions = () => {
 										choices={question.choices!}
 										valueMember='id'
 										displayMember='description'
-										onChange={(value) => onAnswerChange(question.id!, value)}
+										onChange={(value) => onAnswerChange(value)}
 									/>
 								)}
 
@@ -135,7 +156,7 @@ const Questions = () => {
 										choices={question.choices!}
 										displayMember='description'
 										valueMember='id'
-										onChange={(values) => onAnswerChange(question!.id!, values)}
+										onChange={(values) => onAnswerChange(values)}
 									/>
 								)}
 
@@ -145,7 +166,8 @@ const Questions = () => {
 											id='confirm'
 											className='text-2x h-8 w-8'
 											type='checkbox'
-											onChange={(e) => onAnswerChange(question.id!, e.target.value)}
+											checked={!!savedAnswer}
+											onChange={(e) => onAnswerChange(e.target.value)}
 										/>
 										<label htmlFor='confirm' className='hover:cursor-pointer'>
 											Confirm

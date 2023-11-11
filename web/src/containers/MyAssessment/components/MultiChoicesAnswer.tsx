@@ -34,7 +34,7 @@ export const MultiChoicesAnswer: FC<Props> = ({ choices, displayMember, valueMem
 							className='text-2x h-8 w-8'
 							type='checkbox'
 							value={choice[valueMember]}
-							defaultChecked={defaultValues && defaultValues.includes(choice[valueMember])}
+							checked={defaultValues && defaultValues.includes(choice[valueMember])}
 							onChange={handleChange}
 						/>
 						<label htmlFor={`c${choice.id}`} className='hover:cursor-pointer'>
