@@ -14,7 +14,7 @@ const Questions = () => {
 	const params = useParams()
 	const [index, setIndex] = useState(0)
 	const [question, setQuestion] = useState<QuestionModel | null>(null!)
-	const [savedAnswer, setSavedAnswer] = useState('')
+	const [savedAnswer, setSavedAnswer] = useState<any>('')
 
 	const { isLoading, data: questions } = useQuery({
 		queryKey: ['assessment_details_questions'],
@@ -24,10 +24,19 @@ const Questions = () => {
 	})
 
 	useEffect(() => {
+		window.addEventListener('keypress', (e) => {
+			if (e.key == 'ArrowRight') {
+				goNext()
+			} else if (e.key == 'ArrowLeft') {
+				goPrev()
+			}
+		})
+
 		return () => {
 			for (const q of questions) {
 				localStorage.removeItem(`q${q.id}`)
 			}
+			window.removeEventListener('keydown', () => {})
 		}
 	}, [])
 
@@ -41,22 +50,31 @@ const Questions = () => {
 
 	useEffect(() => {
 		if (question) {
+			const saved = localStorage.getItem(`q${question.id}`)
+			if (saved) {
+				const parsed = JSON.parse(saved)
+				if (Array.isArray(parsed)) {
+					setSavedAnswer(parsed)
+				} else {
+					setSavedAnswer(parsed)
+				}
+			}
+
 			if (question.answer) {
 				localStorage.setItem(`q${question.id}`, JSON.stringify(question.answer))
 			}
-
-			const saved = localStorage.getItem(`q${question.id}`)
-			setSavedAnswer(saved ? JSON.parse(saved) : '')
 		}
 	}, [question])
 
 	const goNext = () => {
+		console.log('Go next')
 		if (index < questions.length - 1) {
 			setIndex(index + 1)
 		}
 	}
 
 	const goPrev = () => {
+		console.log('Go prev')
 		if (index > 0) {
 			setIndex(index - 1)
 		}
@@ -147,6 +165,7 @@ const Questions = () => {
 										choices={question.choices!}
 										valueMember='id'
 										displayMember='description'
+										defaultValue={savedAnswer}
 										onChange={(value) => onAnswerChange(value)}
 									/>
 								)}
@@ -156,6 +175,7 @@ const Questions = () => {
 										choices={question.choices!}
 										displayMember='description'
 										valueMember='id'
+										defaultValues={savedAnswer}
 										onChange={(values) => onAnswerChange(values)}
 									/>
 								)}
@@ -167,7 +187,7 @@ const Questions = () => {
 											className='text-2x h-8 w-8'
 											type='checkbox'
 											checked={!!savedAnswer}
-											onChange={(e) => onAnswerChange(e.target.value)}
+											onChange={(e) => onAnswerChange(e.target.checked)}
 										/>
 										<label htmlFor='confirm' className='hover:cursor-pointer'>
 											Confirm

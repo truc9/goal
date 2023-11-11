@@ -1,6 +1,6 @@
 package entity
 
-type Answer struct {
+type QuestionChoice struct {
 	Base
 	Description       string   `json:"description"`
 	QuestionId        int64    `json:"questionId"`

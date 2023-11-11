@@ -64,7 +64,7 @@ func (sv AssessmentService) Create(userId int64, model *AssessmentModel) (int64,
 
 func (sv AssessmentService) GetAll() ([]AssessmentModel, error) {
 	var entities []entity.Assessment
-	res := sv.db.Order("created_at desc").Find(&entities)
+	res := sv.db.Order("created_date desc").Find(&entities)
 	if res.Error != nil {
 		return nil, res.Error
 	}

@@ -14,7 +14,7 @@ export const YesNoAnswer: FC<Props> = ({ onChange, value, includeNA }) => {
 			{ name: 'No', value: 0 }
 		]
 		if (includeNA) {
-			response = [...response, { name: 'No', value: -1 }]
+			response = [...response, { name: 'N/A', value: -1 }]
 		}
 		return response
 	}, [includeNA])

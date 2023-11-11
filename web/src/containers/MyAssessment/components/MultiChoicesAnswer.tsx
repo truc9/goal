@@ -9,6 +9,7 @@ type Props = {
 }
 
 export const MultiChoicesAnswer: FC<Props> = ({ choices, displayMember, valueMember, defaultValues, onChange }) => {
+	console.log('default values', defaultValues)
 	const [values, setValues] = useState<any[]>([])
 
 	useEffect(() => {
@@ -34,7 +35,7 @@ export const MultiChoicesAnswer: FC<Props> = ({ choices, displayMember, valueMem
 							className='text-2x h-8 w-8'
 							type='checkbox'
 							value={choice[valueMember]}
-							checked={defaultValues && defaultValues.includes(choice[valueMember])}
+							checked={defaultValues && defaultValues?.find((v) => v == choice[valueMember])}
 							onChange={handleChange}
 						/>
 						<label htmlFor={`c${choice.id}`} className='hover:cursor-pointer'>

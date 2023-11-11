@@ -22,7 +22,7 @@ func NewQuestionService(db *gorm.DB) QuestionService {
 func (sv QuestionService) GetByVersion(assessmentVersionId int64) []QuestionModel {
 	questions := []entity.Question{}
 
-	sv.db.
+	sv.db.Debug().
 		Where("assessment_version_id = ?", assessmentVersionId).
 		Order("created_date").
 		Model(&entity.Question{}).
@@ -59,7 +59,7 @@ func (sv QuestionService) GetByVersion(assessmentVersionId int64) []QuestionMode
 			Description: item.Description,
 			Type:        item.QuestionType,
 			Version:     item.AssessmentVersion.Version,
-			Choices: lop.Map(item.Choices, func(item entity.Answer, _ int) ChoiceModel {
+			Choices: lop.Map(item.Choices, func(item entity.QuestionChoice, _ int) ChoiceModel {
 				return ChoiceModel{
 					Id:                item.Id,
 					Description:       item.Description,
@@ -93,7 +93,7 @@ func (sv QuestionService) Delete(id int64) error {
 			return err
 		}
 
-		err = sv.db.Where("question_id = ?", id).Delete(&entity.Answer{}).Error
+		err = sv.db.Where("question_id = ?", id).Delete(&entity.QuestionChoice{}).Error
 		if err != nil {
 			return err
 		}

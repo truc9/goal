@@ -37,7 +37,7 @@ func createSingleInstanceDb() *gorm.DB {
 			&entity.AssessmentVersion{},
 			&entity.AssessmentAssignment{},
 			&entity.Question{},
-			&entity.Answer{},
+			&entity.QuestionChoice{},
 			&entity.UserPreference{},
 		)
 

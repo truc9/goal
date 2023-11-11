@@ -9,23 +9,24 @@ interface Props {
 }
 
 export const SingleChoiceAnswer: FC<Props> = ({ choices, displayMember, valueMember, defaultValue, onChange }) => {
+	console.log(defaultValue)
+
 	return (
 		<div className='flex flex-col'>
 			{choices.map((choice) => {
 				return (
-					<div
-						key={choice[valueMember]}
-						className='flex items-center gap-3 rounded-lg p-3 hover:bg-slate-200'>
+					<div key={choice[valueMember]} className='flex items-center rounded-lg p-3 hover:bg-slate-200'>
 						<input
 							className='text-2x h-8 w-8'
 							type='radio'
 							value={choice[valueMember]}
+							id={`c${choice[valueMember]}`}
 							name='singleChoice'
-							defaultChecked={defaultValue === choice[valueMember]}
+							checked={defaultValue == choice[valueMember]}
 							onChange={(e) => onChange(e.target.value)}
 						/>
 						<label htmlFor={`c${choice[valueMember]}`} className='hover:cursor-pointer'>
-							{choice[displayMember]}
+							<span className='ml-3'>{choice[displayMember]}</span>
 						</label>
 					</div>
 				)
