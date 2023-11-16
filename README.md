@@ -17,6 +17,10 @@ Simple Office Management System
 - [x] Charts for Dashboard
 - [ ] Testing
 
+## Demo
+- Username: admin@goal.com
+- Password: admin
+
 ## Screenshots
 
 ![3](art/assets/2.png)
