@@ -21,6 +21,10 @@ Simple Office Management System
 - Username: admin@goal.com
 - Password: admin
 
+## Hosting
+- Backend: https://www.fl0.com/
+- Frontend: https://vercel.com/
+
 ## Screenshots
 
 ![3](art/assets/2.png)
